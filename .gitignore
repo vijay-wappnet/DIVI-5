@@ -1,0 +1,26 @@
+# Ignore WordPress core files (optional if tracking core)
+#wp-admin/
+#wp-includes/
+
+# Ignore configuration files
+#.htaccess
+#.env
+#wp-config.php
+#wp-config-sample.php
+et-cache
+# Ignore logs and debug files
+debug.log
+*.log
+
+# Ignore build and cache files
+#cache/
+backup/
+backups/
+uploads/wpforms/logs/
+wp-content/cache/
+wp-content/et-cache/
+wp-content/backup-db/
+wp-content/advanced-cache.php
+wp-content/mu-plugins/
+#wp-content/uploads/
+.idea/
