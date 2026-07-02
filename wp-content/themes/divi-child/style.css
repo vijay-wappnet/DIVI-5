@@ -13,6 +13,11 @@ Version: 1.0.0
     justify-content: center;
     align-items: center;
 }
+.d-flex .et_flex_module {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .align-end {
     display: flex;
@@ -156,7 +161,7 @@ ul.et_mobile_menu li.menu-item-has-children .mobile-toggle-icon,
     left: 50%;
     width: 0;
     height: 2px;
-    background-color: #612228;
+    background-color: #FFC300;
     transition: all 0.3s ease;
 }
 
@@ -176,19 +181,21 @@ ul.et_mobile_menu li.menu-item-has-children .mobile-toggle-icon,
     left: 0;
     width: 100%;
     height: 2px;
-    background-color: #612228;
+    background-color: #FFC300;
 }
 
-.footer-menu .current-menu-item a::before {
+.footer-menu .current-menu-item a::before {FFC300.footer-menu .current-menu-item a::before {
     content: "";
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
     height: 2px;
-    background-color: #612228;
+    background-color: #FFC300;
 }
-
+.footer-menu #menu-quick-links{
+    flex-direction: column;
+}
 .footer-menu ul li a,
 .footer-blurb .et_pb_blurb_description a {
     position: relative;
@@ -205,7 +212,7 @@ ul.et_mobile_menu li.menu-item-has-children .mobile-toggle-icon,
     left: 50%;
     width: 0;
     height: 2px;
-    background-color: #612228;
+    background-color: #FFC300;
     transition: all 0.3s ease;
 }
 
@@ -223,6 +230,12 @@ ul.et_mobile_menu li.menu-item-has-children .mobile-toggle-icon,
 
 .footer-menu .et_pb_menu__wrap {
     justify-content: start;
+}
+
+footer .footer-menu.ft-quick-links .et_pb_menu__menu .et-menu-nav > ul.et-menu {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
 }
 
 .promise-blurb .et_pb_blurb_content {
@@ -282,7 +295,7 @@ ul.et_mobile_menu li.menu-item-has-children .mobile-toggle-icon,
     padding: 0;
     color: transparent;
     outline: none;
-    background: #612228;
+    background: #FFC300;
     border: none;
     cursor: pointer;
     top: 50%;
@@ -402,7 +415,7 @@ ul.et_mobile_menu li.menu-item-has-children .mobile-toggle-icon,
     font-weight: 600;
     border-radius: 50%;
     background: #ffffff;
-    border: 2px solid #612228;
+    border: 2px solid #FFC300;
     color: #1f1f1f;
     z-index: 2;
     transition: background 0.25s ease, border-color 0.25s ease;
@@ -440,12 +453,12 @@ ul.et_mobile_menu li.menu-item-has-children .mobile-toggle-icon,
 }
 
 .process-steps ul li.step-2-active::after {
-    background: linear-gradient(to bottom, #f7c851, #612228);
+    background: linear-gradient(to bottom, #f7c851, #FFC300);
 }
 
 .process-steps ul li.step-3-active::before {
-    background: #612228;
-    border-color: #612228;
+    background: #FFC300;
+    border-color: #FFC300;
 }
 
 .bulk-blurb ul {
@@ -464,7 +477,7 @@ ul.et_mobile_menu li.menu-item-has-children .mobile-toggle-icon,
     position: absolute;
     left: 0;
     top: 0;
-    color: #612228;
+    color: #FFC300;
     font-weight: bold;
 }
 
@@ -628,20 +641,20 @@ form.wpcf7-form .field-required {
 form.wpcf7-form .wpcf7-submit {
     width: auto;
     color: #fff;
-    border: 1px solid #612228;
+    border: 1px solid #FFC300;
     border-radius: 30px;
     letter-spacing: 0px;
     font-size: 15px;
-    background-color: #612228;
+    background-color: #FFC300;
     padding: 10px 20px;
     transition: all 300ms ease-in-out 0ms;
     cursor: pointer;
 }
 
 form.wpcf7-form .wpcf7-submit:hover {
-    color: #612228;
+    color: #FFC300;
     background-color: transparent;
-    border: 1px solid #612228;
+    border: 1px solid #FFC300;
     transform: translateY(-2px);
 }
 
@@ -669,7 +682,7 @@ form.wpcf7-form .wpcf7-submit:hover {
 }
 
 .cvbm-breadcrumb a:hover {
-    color: #612228;
+    color: #FFC300;
 }
 
 .cvbm-breadcrumb .breadcrumb-separator {
@@ -677,7 +690,7 @@ form.wpcf7-form .wpcf7-submit:hover {
 }
 
 .cvbm-breadcrumb .breadcrumb-current {
-    color: #612228;
+    color: #FFC300;
     font-weight: 500;
 }
 
@@ -689,7 +702,7 @@ form.wpcf7-form .wpcf7-submit:hover {
 .mfp-close {
     color: white !important;
     opacity: 1 !important;
-    background: #612228 !important;
+    background: #FFC300 !important;
     width: 44px !important;
     border-radius: 50% !important;
     font-size: 40px !important;
@@ -734,7 +747,7 @@ form.wpcf7-form .wpcf7-submit:hover {
 }
 
 .clr-txt {
-    color: #612228;
+    color: #FFC300;
 }
 
 .sales-team-blurb .et_pb_image_wrap {
