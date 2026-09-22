@@ -26,6 +26,7 @@ use ET\Builder\Packages\Module\Options\Text\TextClassnames;
 use ET\Builder\Packages\ModuleLibrary\CountdownTimer\CountdownTimerPresetAttrsMap;
 use ET\Builder\Packages\ModuleLibrary\ModuleRegistration;
 use ET\Builder\Packages\ModuleUtils\ChildrenUtils;
+use ET\Builder\Packages\StyleLibrary\Declarations\Background\Utils\BackgroundStyleUtils;
 use ET\Builder\Packages\StyleLibrary\Declarations\Declarations;
 use WP_Block_Type_Registry;
 use WP_Block;
@@ -83,7 +84,7 @@ class CountdownTimerModule implements DependencyInterface {
 		$classnames_instance = $args['classnamesInstance'];
 		$attrs               = $args['attrs'];
 
-		$background_color = $attrs['module']['decoration']['background']['desktop']['value']['color'] ?? '';
+		$background_value = $attrs['module']['decoration']['background']['desktop']['value'] ?? [];
 
 		$text_options_classnames = TextClassnames::text_options_classnames(
 			$attrs['module']['advanced']['text'] ?? [],
@@ -96,8 +97,8 @@ class CountdownTimerModule implements DependencyInterface {
 			$classnames_instance->add( $text_options_classnames, true );
 		}
 
-		// Add et_pb_no_bg class when background color is empty.
-		$classnames_instance->add( 'et_pb_no_bg', empty( $background_color ) );
+		// Add et_pb_no_bg class when no background type is actively configured.
+		$classnames_instance->add( 'et_pb_no_bg', ! BackgroundStyleUtils::has_active_background( $background_value ) );
 
 		// Module.
 		$classnames_instance->add(

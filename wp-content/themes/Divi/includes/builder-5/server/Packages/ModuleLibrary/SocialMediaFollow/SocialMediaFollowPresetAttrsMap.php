@@ -59,7 +59,7 @@ class SocialMediaFollowPresetAttrsMap {
 				],
 				'subName'  => 'color',
 			],
-			'module.decoration.background__gradient' => [
+			'module.decoration.background__gradient'       => [
 				'attrName' => 'module.decoration.background',
 				'preset'   => [
 					'style',
@@ -411,7 +411,7 @@ class SocialMediaFollowPresetAttrsMap {
 				'attrName' => 'module.meta.meta.forceVisible',
 				'preset'   => 'meta',
 			],
-			'module.meta.meta.tocListHeading'                => [
+			'module.meta.meta.tocListHeading'              => [
 				'attrName' => 'module.meta.meta.tocListHeading',
 				'preset'   => 'meta',
 			],
@@ -491,7 +491,7 @@ class SocialMediaFollowPresetAttrsMap {
 				],
 				'subName'  => 'color',
 			],
-			'button.decoration.background__gradient' => [
+			'button.decoration.background__gradient'       => [
 				'attrName' => 'button.decoration.background',
 				'preset'   => [
 					'style',
@@ -1222,6 +1222,62 @@ class SocialMediaFollowPresetAttrsMap {
 				'preset'   => [ 'html' ],
 				'subName'  => 'flexType',
 			],
+			'button.decoration.font.font__weightFineTune'  => [
+				'attrName' => 'button.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'weightFineTune',
+			],
+			'button.decoration.font.font__opticalSizing'   => [
+				'attrName' => 'button.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'opticalSizing',
+			],
+			'button.decoration.font.font__capitalization'  => [
+				'attrName' => 'button.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'capitalization',
+			],
+			'button.decoration.font.font__lineThickness'   => [
+				'attrName' => 'button.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'lineThickness',
+			],
+			'button.decoration.font.font__underlineOffset' => [
+				'attrName' => 'button.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'underlineOffset',
+			],
+			'button.decoration.font.font__textWrap'        => [
+				'attrName' => 'button.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'textWrap',
+			],
+			'button.decoration.font.font__writingMode'     => [
+				'attrName' => 'button.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'writingMode',
+			],
+			'button.decoration.font.font__hyphens'         => [
+				'attrName' => 'button.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'hyphens',
+			],
+			'button.decoration.font.font__columnCount'     => [
+				'attrName' => 'button.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnCount',
+			],
+			'button.decoration.font.font__columnGap'       => [
+				'attrName' => 'button.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnGap',
+			],
+			'button.decoration.font.textEffects__strokePosition' => [
+				'attrName' => 'button.decoration.font.textEffects',
+				'preset'   => [ 'style' ],
+				'subName'  => 'strokePosition',
+			],
+
 			'module.decoration.sizing__width'              => [
 				'attrName' => 'module.decoration.sizing',
 				'preset'   => [

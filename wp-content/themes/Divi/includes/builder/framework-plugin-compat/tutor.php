@@ -177,6 +177,7 @@ class ET_Builder_Plugin_Compat_Tutor extends ET_Builder_Plugin_Compat_Base {
 
 			add_action( 'get_header', 'et_theme_builder_frontend_override_header' );
 			add_action( 'get_footer', 'et_theme_builder_frontend_override_footer' );
+			et_prioritize_deferred_block_css_for_theme_builder();
 		}
 	}
 }

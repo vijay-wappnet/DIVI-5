@@ -38,6 +38,7 @@ class FontPresetAttrsMap {
 			'has_list'          => false,
 			'has_border'        => false,
 			'has_heading_level' => false,
+			'has_paragraph'     => false,
 		];
 
 		$args = array_merge( $default_args, $args );
@@ -52,6 +53,16 @@ class FontPresetAttrsMap {
 				'attrName' => "{$attr_name}.font",
 				'preset'   => [ 'style' ],
 				'subName'  => 'weight',
+			],
+			"{$attr_name}.font__weightFineTune" => [
+				'attrName' => "{$attr_name}.font",
+				'preset'   => [ 'style' ],
+				'subName'  => 'weightFineTune',
+			],
+			"{$attr_name}.font__opticalSizing" => [
+				'attrName' => "{$attr_name}.font",
+				'preset'   => [ 'style' ],
+				'subName'  => 'opticalSizing',
 			],
 			"{$attr_name}.font__style"         => [
 				'attrName' => "{$attr_name}.font",
@@ -68,15 +79,55 @@ class FontPresetAttrsMap {
 				'preset'   => [ 'style' ],
 				'subName'  => 'lineStyle',
 			],
+			"{$attr_name}.font__lineThickness" => [
+				'attrName' => "{$attr_name}.font",
+				'preset'   => [ 'style' ],
+				'subName'  => 'lineThickness',
+			],
+			"{$attr_name}.font__underlineOffset" => [
+				'attrName' => "{$attr_name}.font",
+				'preset'   => [ 'style' ],
+				'subName'  => 'underlineOffset',
+			],
 			"{$attr_name}.font__textAlign"     => [
 				'attrName' => "{$attr_name}.font",
 				'preset'   => [ 'style' ],
 				'subName'  => 'textAlign',
 			],
+			"{$attr_name}.font__textWrap"      => [
+				'attrName' => "{$attr_name}.font",
+				'preset'   => [ 'style' ],
+				'subName'  => 'textWrap',
+			],
+			"{$attr_name}.font__writingMode"   => [
+				'attrName' => "{$attr_name}.font",
+				'preset'   => [ 'style' ],
+				'subName'  => 'writingMode',
+			],
+			"{$attr_name}.font__hyphens"       => [
+				'attrName' => "{$attr_name}.font",
+				'preset'   => [ 'style' ],
+				'subName'  => 'hyphens',
+			],
+			"{$attr_name}.font__columnCount"   => [
+				'attrName' => "{$attr_name}.font",
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnCount',
+			],
+			"{$attr_name}.font__columnGap"     => [
+				'attrName' => "{$attr_name}.font",
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnGap',
+			],
 			"{$attr_name}.font__color"         => [
 				'attrName' => "{$attr_name}.font",
 				'preset'   => [ 'style' ],
 				'subName'  => 'color',
+			],
+			"{$attr_name}.font__capitalization" => [
+				'attrName' => "{$attr_name}.font",
+				'preset'   => [ 'style' ],
+				'subName'  => 'capitalization',
 			],
 			"{$attr_name}.font__size"          => [
 				'attrName' => "{$attr_name}.font",
@@ -119,6 +170,19 @@ class FontPresetAttrsMap {
 				'preset'   => [ 'style' ],
 				'subName'  => 'itemIndent',
 			],
+			"{$attr_name}.list__listSpacing" => [
+				'attrName' => "{$attr_name}.list",
+				'preset'   => [ 'style' ],
+				'subName'  => 'listSpacing',
+			],
+		] : [];
+
+		$paragraph_spacing_attrs_map = $args['has_paragraph'] ? [
+			"{$attr_name}.list__paragraphSpacing" => [
+				'attrName' => "{$attr_name}.list",
+				'preset'   => [ 'style' ],
+				'subName'  => 'paragraphSpacing',
+			],
 		] : [];
 
 		$border_font_attrs_map = $args['has_border'] ? [
@@ -137,6 +201,6 @@ class FontPresetAttrsMap {
 		$text_shadow_attrs_map = TextShadowPresetAttrsMap::get_map( "{$attr_name}.textShadow" );
 		$text_effects_attrs_map = TextEffectsPresetAttrsMap::get_map( $attr_name );
 
-		return array_merge( $font_attrs_map, $heading_level_attrs_map, $text_effects_attrs_map, $text_shadow_attrs_map, $list_font_attrs_map, $border_font_attrs_map );
+		return array_merge( $font_attrs_map, $heading_level_attrs_map, $text_effects_attrs_map, $text_shadow_attrs_map, $list_font_attrs_map, $paragraph_spacing_attrs_map, $border_font_attrs_map );
 	}
 }

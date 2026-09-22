@@ -334,7 +334,7 @@ class CodeModule implements DependencyInterface {
 	 * Decode numeric HTML entities in Code module content.
 	 *
 	 * Decodes numeric entities (e.g., &#107; → k) to match Visual Builder behavior,
-	 * while excluding dangerous entities (angle brackets, null bytes, DEL) to prevent XSS.
+	 * while excluding dangerous entities and attribute-breaking entities.
 	 *
 	 * @since ??
 	 *
@@ -344,18 +344,29 @@ class CodeModule implements DependencyInterface {
 	 */
 	private static function _decode_code_module_numeric_entities( string $content ): string {
 		// Decode numeric HTML entities (e.g., &#107; → k) to match Visual Builder behavior.
-		// Exclude angle bracket entities (&#60; and &#62;) and dangerous control characters
-		// (null byte 0, DEL 127) to prevent XSS attacks and security issues.
+		// Exclude angle bracket entities (&#60; and &#62;), quote entities used in attributes,
+		// control characters, and invalid Unicode scalar values.
 		return preg_replace_callback(
 			'/&#(\d+);/',
 			function ( $matches ) {
 				$code = (int) $matches[1];
-				// Don't decode angle brackets (60 = <, 62 = >) to prevent XSS.
-				// Don't decode null byte (0) and DEL character (127) for security.
-				if ( 0 === $code || 60 === $code || 62 === $code || 127 === $code ) {
+
+				$is_control_character = $code <= 31 || ( 127 <= $code && $code <= 159 );
+				$is_invalid_unicode   = 1114111 < $code || ( 55296 <= $code && $code <= 57343 );
+				$is_sensitive_entity  = in_array( $code, [ 34, 39, 60, 62 ], true );
+
+				if ( $is_control_character || $is_invalid_unicode || $is_sensitive_entity ) {
 					return $matches[0]; // Return original entity unchanged.
 				}
-				return chr( $code );
+
+				$decoded = html_entity_decode( '&#' . $code . ';', ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+
+				// Fallback to the original entity when decode fails unexpectedly.
+				if ( '' === $decoded || '&#' . $code . ';' === $decoded ) {
+					return $matches[0];
+				}
+
+				return $decoded;
 			},
 			$content
 		);

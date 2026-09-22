@@ -29,12 +29,6 @@ class Admin implements DependencyInterface {
 		if ( et_builder_is_tb_admin_screen() ) {
 			add_action( 'et_theme_builder_enqueue_scripts', [ $this, 'load_top_window_visual_builder_dependencies' ] );
 
-			// WordPress 6.9+ automatically enqueues wp-core-commands on all admin pages.
-			// Remove the action hook directly here to prevent conflicts with Divi 4's React 16
-			// that's used by the Theme Builder UI. The action is registered in default-filters.php
-			// which loads early, so it's safe to remove it here.
-			remove_action( 'admin_enqueue_scripts', 'wp_enqueue_command_palette_assets' );
-
 			// WP 7+ global forms.css breaks D5 input sizing; TB is admin but builder UI should match VB.
 			// Must run before core `print_admin_styles` (priority 20, wp-admin/includes/admin-filters.php), which calls
 			// `WP_Styles::do_items()` and emits `load-styles.php`; dequeuing later leaves `forms` in the concat bundle.

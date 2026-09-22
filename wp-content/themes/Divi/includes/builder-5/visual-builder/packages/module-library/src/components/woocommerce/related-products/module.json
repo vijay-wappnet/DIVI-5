@@ -174,12 +174,16 @@
         "border": {
           "propertySelectors": {
             "desktop": {
+              "hover": {
+                "border-radius": "{{selector}}.et_pb_module .et_shop_image > img{{:hover}}, {{selector}}.et_pb_module .et_shop_image .et_overlay"
+              },
               "value": {
-                "border-radius": "{{selector}}.et_pb_module .et_shop_image",
-                "border-style": "{{selector}}.et_pb_module .et_shop_image"
+                "border-radius": "{{selector}}.et_pb_module .et_shop_image > img, {{selector}}.et_pb_module .et_shop_image .et_overlay",
+                "border-style": "{{selector}}.et_pb_module .et_shop_image > img, {{selector}}.et_pb_module .et_shop_image .et_overlay"
               }
             }
-          }
+          },
+          "important": true
         },
         "boxShadow": {
           "selector": "{{selector}} .et_shop_image",

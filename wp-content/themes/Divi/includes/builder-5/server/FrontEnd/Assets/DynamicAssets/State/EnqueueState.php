@@ -66,6 +66,13 @@ class EnqueueState {
 	public bool $toggle = false;
 
 	/**
+	 * Whether tooltip module script should be enqueued.
+	 *
+	 * @var bool
+	 */
+	public bool $tooltip = false;
+
+	/**
 	 * Whether audio script should be enqueued.
 	 *
 	 * @var bool

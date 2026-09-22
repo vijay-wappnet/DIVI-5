@@ -297,12 +297,32 @@ class DropdownModule implements DependencyInterface {
 				'defaultValue' => 'floating',
 			]
 		);
-		$dropdown_offset    = self::normalize_dropdown_offset( $dropdown_offset );
+		$dropdown_horizontal_mode = ModuleUtils::get_attr_subname_value(
+			[
+				'attr'       => $dropdown_attr,
+				'breakpoint' => 'desktop',
+				'state'      => 'value',
+				'subname'    => 'horizontalMode',
+			]
+		);
+
+		$dropdown_offset = self::normalize_dropdown_offset( $dropdown_offset );
 
 		// Extract child modules IDs using helper utility.
 		$children_ids = ChildrenUtils::extract_children_ids( $block );
 
 		$parent = BlockParserStore::get_parent( $block->parsed_block['id'], $block->parsed_block['storeInstance'] );
+		$html_attrs = [
+			'data-show-dropdown-on'   => esc_attr( $show_dropdown_on ),
+			'data-dropdown-direction' => esc_attr( $dropdown_direction ),
+			'data-dropdown-alignment' => esc_attr( $dropdown_alignment ),
+			'data-dropdown-offset'    => esc_attr( $dropdown_offset ),
+			'data-dropdown-position'  => esc_attr( $dropdown_position ),
+		];
+
+		if ( in_array( $dropdown_horizontal_mode, [ 'row', 'viewport' ], true ) ) {
+			$html_attrs['data-dropdown-horizontal-mode'] = esc_attr( $dropdown_horizontal_mode );
+		}
 
 		return Module::render(
 			[
@@ -315,13 +335,7 @@ class DropdownModule implements DependencyInterface {
 				'elements'            => $elements,
 				'id'                  => $block->parsed_block['id'],
 				'name'                => $block->block_type->name,
-				'htmlAttrs'           => [
-					'data-show-dropdown-on'   => esc_attr( $show_dropdown_on ),
-					'data-dropdown-direction' => esc_attr( $dropdown_direction ),
-					'data-dropdown-alignment' => esc_attr( $dropdown_alignment ),
-					'data-dropdown-offset'    => esc_attr( $dropdown_offset ),
-					'data-dropdown-position'  => esc_attr( $dropdown_position ),
-				],
+				'htmlAttrs'           => $html_attrs,
 				'classnamesFunction'  => [ self::class, 'module_classnames' ],
 				'moduleCategory'      => $block->block_type->category,
 				'stylesComponent'     => [ self::class, 'module_styles' ],
@@ -400,6 +414,7 @@ class DropdownModule implements DependencyInterface {
 			'data-dropdown-alignment' => 'alignment',
 			'data-dropdown-offset'    => 'offset',
 			'data-dropdown-position'  => 'position',
+			'data-dropdown-horizontal-mode' => 'horizontalMode',
 		];
 
 		// Set MultiView attributes for each dropdown setting using subName parameter.

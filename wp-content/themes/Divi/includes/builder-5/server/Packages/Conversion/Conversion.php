@@ -796,6 +796,36 @@ class Conversion {
     }
 
 	/**
+	 * Rewrites legacy D4 free-form order-class tokens to `selector` during import conversion.
+	 *
+	 * @since ??
+	 *
+	 * @param string $css Free-form CSS.
+	 * @param string $moduleName Module name.
+	 *
+	 * @return string Rewritten CSS.
+	 */
+	private static function rewriteLegacyFreeFormOrderClassToSelector( $css, $moduleName ) {
+		$moduleOrderClassBase = ModuleUtils::get_module_order_class_name_base( $moduleName );
+
+		if ( ! $moduleOrderClassBase ) {
+			return $css;
+		}
+
+		$legacyOrderClassToken = '.' . $moduleOrderClassBase . '_';
+
+		if ( false === strpos( $css, $legacyOrderClassToken ) ) {
+			return $css;
+		}
+
+		// Regex test: https://regex101.com/r/bMmJMg/1.
+		$pattern = '/(?<![A-Za-z0-9_-])\.' . preg_quote( $moduleOrderClassBase, '/' ) . '_\d+(?![A-Za-z0-9_-])/';
+		$rewrittenCss = preg_replace( $pattern, 'selector', $css );
+
+		return null !== $rewrittenCss ? $rewrittenCss : $css;
+	}
+
+	/**
      * Sanitizes attribute values.
      *
      * Some values/keys have been changed from D4 format.
@@ -886,6 +916,7 @@ class Conversion {
                 // attributes hold declarations only and continue to use sanitize_css_properties().
                 if ('custom_css_free_form' === $desktopName) {
                     $sanitizedValue = SavingUtility::sanitize_css($sanitizedValue, false, false, true);
+					$sanitizedValue = self::rewriteLegacyFreeFormOrderClassToSelector( $sanitizedValue, $moduleName );
                 } else {
                     // Pass `true` to allow comments so D4 inline comments are preserved.
                     $sanitizedValue = SavingUtility::sanitize_css_properties($sanitizedValue, true);
@@ -1755,7 +1786,7 @@ class Conversion {
 		// causes a silent failure that produces an empty placeholder instead of converting.
 		$content_migrated = trim( $content_raw );
 
-		if ( $run_migration ) {
+		if ( $run_migration && ! str_contains( $content_migrated, '<!-- wp:divi/layout' ) ) {
 			$content_migrated = ShortcodeMigration::maybe_migrate_legacy_shortcode( $content_migrated );
 			$content_migrated = Migration::get_instance()->migrate_content_shortcode( $content_migrated );
 		}
@@ -1792,15 +1823,22 @@ class Conversion {
 			if ( $is_global_template ) {
 				$converted = '<!-- wp:divi/placeholder -->' . $converted . '<!-- /wp:divi/placeholder -->';
 			}
-		} else if (strpos($content, '<!-- wp:divi/layout -->') !== false) {
+		} else if ( str_contains( $content, '<!-- wp:divi/layout' ) ) {
 			// parse blocks and iteratively convert them or concatenate them
 			// as $blockObjects is an array of blocks with their details.
 			$blockObjects = parse_blocks($content);  // parse_blocks is a WordPress function to parse blocks
 			$converted = '';
 			foreach ($blockObjects as $block) {
 				if ('divi/layout' === $block['blockName']) {
+					$layout_inner_html = trim( (string) ( $block['innerHTML'] ?? '' ) );
+
+					if ( false === strpos( $layout_inner_html, '[et_pb_' ) ) {
+						$converted .= serialize_block( $block );
+						continue;
+					}
+
 					$converted .= self::convertShortcodeToGbFormat(
-						self::parseShortcode( trim( $block['innerHTML'] ), $moduleCollections ),
+						self::parseShortcode( $layout_inner_html, $moduleCollections ),
 						true,
 						null,
 						$post_id,
@@ -1808,11 +1846,10 @@ class Conversion {
 						null,
 						$is_ab_testing_active
 					);
-				} else if (null === $block['blockName']) {
-					$converted .= $block['innerHTML'];
 				} else {
-					$blockName = str_replace('core/', '', $block['blockName']);
-					$converted .= "<!-- wp:{$blockName} " . json_encode($block['attrs']) . " -->{$block['innerHTML']}<!-- /wp:{$blockName} -->";
+					// Preserve non-layout blocks using WordPress serializer to keep valid block syntax.
+					// This avoids malformed output such as `<!-- wp:paragraph [] -->`.
+					$converted .= serialize_block( $block );
 				}
 			}
 		} else if (strpos($content, 'divi/shortcode-module') !== false) {
@@ -3098,6 +3135,16 @@ class Conversion {
 
 				// Divi Booster adds `db_separators` to Menu modules; discard so it does not become unknownAttributes (theme builder layouts).
 				if ( 'db_separators' === $unknownAttr ) {
+					continue;
+				}
+
+				// Rank Math FAQ Schema integration adds `rank_math_faq_schema` to Accordion modules; discard so they convert natively (issue #50441).
+				if ( 'rank_math_faq_schema' === $unknownAttr ) {
+					continue;
+				}
+
+				// AnalyticsWP Divi integration adds `analyticswp_tracking` to CTA modules; discard so they convert natively (issue #50451).
+				if ( 'analyticswp_tracking' === $unknownAttr ) {
 					continue;
 				}
 

@@ -39,7 +39,7 @@ class SvgSanitizer {
 			return '';
 		}
 
-		$sanitized_markup = wp_kses( $markup, SvgAllowedList::get_allowed_svg_html() );
+		$sanitized_markup = wp_kses( $markup, wp_kses_array_lc( SvgAllowedList::get_allowed_svg_html() ) );
 
 		// Apply a value-level guard for `<use>` references after attribute-name allowlisting.
 		// This prevents external/non-fragment references from surviving sanitization.

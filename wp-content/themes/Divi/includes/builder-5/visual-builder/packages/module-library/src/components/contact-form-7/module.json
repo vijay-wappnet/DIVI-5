@@ -127,6 +127,12 @@
       "type": "object",
       "selector": "{{selector}} .et_pb_button.wpcf7-submit",
       "elementType": "button",
+      "styleProps": {
+        "selector": "{{selector}} .et_pb_button.wpcf7-submit",
+        "border": {
+          "important": true
+        }
+      },
       "settings": {
         "advanced": {},
         "decoration": {

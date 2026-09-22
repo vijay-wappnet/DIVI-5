@@ -56,7 +56,7 @@ class TabsPresetAttrsMap {
 				'preset'   => [ 'style' ],
 				'subName'  => 'color',
 			],
-			'content.decoration.background__gradient' => [
+			'content.decoration.background__gradient'      => [
 				'attrName' => 'content.decoration.background',
 				'preset'   => [ 'style', 'html' ],
 				'subName'  => 'gradient',
@@ -309,7 +309,7 @@ class TabsPresetAttrsMap {
 				'attrName' => 'module.meta.meta.forceVisible',
 				'preset'   => 'meta',
 			],
-			'module.meta.meta.tocListHeading'                => [
+			'module.meta.meta.tocListHeading'              => [
 				'attrName' => 'module.meta.meta.tocListHeading',
 				'preset'   => 'meta',
 			],
@@ -808,6 +808,447 @@ class TabsPresetAttrsMap {
 				'preset'   => [ 'style' ],
 				'subName'  => 'color',
 			],
+			'content.decoration.bodyFont.body.font__weightFineTune' => [
+				'attrName' => 'content.decoration.bodyFont.body.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'weightFineTune',
+			],
+			'content.decoration.bodyFont.body.font__opticalSizing' => [
+				'attrName' => 'content.decoration.bodyFont.body.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'opticalSizing',
+			],
+			'content.decoration.bodyFont.body.font__capitalization' => [
+				'attrName' => 'content.decoration.bodyFont.body.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'capitalization',
+			],
+			'content.decoration.bodyFont.body.font__lineThickness' => [
+				'attrName' => 'content.decoration.bodyFont.body.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'lineThickness',
+			],
+			'content.decoration.bodyFont.body.font__underlineOffset' => [
+				'attrName' => 'content.decoration.bodyFont.body.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'underlineOffset',
+			],
+			'content.decoration.bodyFont.body.font__textWrap' => [
+				'attrName' => 'content.decoration.bodyFont.body.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'textWrap',
+			],
+			'content.decoration.bodyFont.body.font__writingMode' => [
+				'attrName' => 'content.decoration.bodyFont.body.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'writingMode',
+			],
+			'content.decoration.bodyFont.body.font__hyphens' => [
+				'attrName' => 'content.decoration.bodyFont.body.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'hyphens',
+			],
+			'content.decoration.bodyFont.body.font__columnCount' => [
+				'attrName' => 'content.decoration.bodyFont.body.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnCount',
+			],
+			'content.decoration.bodyFont.body.font__columnGap' => [
+				'attrName' => 'content.decoration.bodyFont.body.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnGap',
+			],
+			'content.decoration.bodyFont.body.list__paragraphSpacing' => [
+				'attrName' => 'content.decoration.bodyFont.body.list',
+				'preset'   => [ 'style' ],
+				'subName'  => 'paragraphSpacing',
+			],
+			'content.decoration.bodyFont.link.font__weightFineTune' => [
+				'attrName' => 'content.decoration.bodyFont.link.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'weightFineTune',
+			],
+			'content.decoration.bodyFont.link.font__opticalSizing' => [
+				'attrName' => 'content.decoration.bodyFont.link.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'opticalSizing',
+			],
+			'content.decoration.bodyFont.link.font__capitalization' => [
+				'attrName' => 'content.decoration.bodyFont.link.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'capitalization',
+			],
+			'content.decoration.bodyFont.link.font__lineThickness' => [
+				'attrName' => 'content.decoration.bodyFont.link.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'lineThickness',
+			],
+			'content.decoration.bodyFont.link.font__underlineOffset' => [
+				'attrName' => 'content.decoration.bodyFont.link.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'underlineOffset',
+			],
+			'content.decoration.bodyFont.link.font__textWrap' => [
+				'attrName' => 'content.decoration.bodyFont.link.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'textWrap',
+			],
+			'content.decoration.bodyFont.link.font__writingMode' => [
+				'attrName' => 'content.decoration.bodyFont.link.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'writingMode',
+			],
+			'content.decoration.bodyFont.link.font__hyphens' => [
+				'attrName' => 'content.decoration.bodyFont.link.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'hyphens',
+			],
+			'content.decoration.bodyFont.link.font__columnCount' => [
+				'attrName' => 'content.decoration.bodyFont.link.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnCount',
+			],
+			'content.decoration.bodyFont.link.font__columnGap' => [
+				'attrName' => 'content.decoration.bodyFont.link.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnGap',
+			],
+			'content.decoration.bodyFont.ol.font__weightFineTune' => [
+				'attrName' => 'content.decoration.bodyFont.ol.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'weightFineTune',
+			],
+			'content.decoration.bodyFont.ol.font__opticalSizing' => [
+				'attrName' => 'content.decoration.bodyFont.ol.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'opticalSizing',
+			],
+			'content.decoration.bodyFont.ol.font__capitalization' => [
+				'attrName' => 'content.decoration.bodyFont.ol.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'capitalization',
+			],
+			'content.decoration.bodyFont.ol.font__lineThickness' => [
+				'attrName' => 'content.decoration.bodyFont.ol.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'lineThickness',
+			],
+			'content.decoration.bodyFont.ol.font__underlineOffset' => [
+				'attrName' => 'content.decoration.bodyFont.ol.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'underlineOffset',
+			],
+			'content.decoration.bodyFont.ol.font__textWrap' => [
+				'attrName' => 'content.decoration.bodyFont.ol.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'textWrap',
+			],
+			'content.decoration.bodyFont.ol.font__writingMode' => [
+				'attrName' => 'content.decoration.bodyFont.ol.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'writingMode',
+			],
+			'content.decoration.bodyFont.ol.font__hyphens' => [
+				'attrName' => 'content.decoration.bodyFont.ol.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'hyphens',
+			],
+			'content.decoration.bodyFont.ol.font__columnCount' => [
+				'attrName' => 'content.decoration.bodyFont.ol.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnCount',
+			],
+			'content.decoration.bodyFont.ol.font__columnGap' => [
+				'attrName' => 'content.decoration.bodyFont.ol.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnGap',
+			],
+			'content.decoration.bodyFont.quote.font__weightFineTune' => [
+				'attrName' => 'content.decoration.bodyFont.quote.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'weightFineTune',
+			],
+			'content.decoration.bodyFont.quote.font__opticalSizing' => [
+				'attrName' => 'content.decoration.bodyFont.quote.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'opticalSizing',
+			],
+			'content.decoration.bodyFont.quote.font__capitalization' => [
+				'attrName' => 'content.decoration.bodyFont.quote.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'capitalization',
+			],
+			'content.decoration.bodyFont.quote.font__lineThickness' => [
+				'attrName' => 'content.decoration.bodyFont.quote.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'lineThickness',
+			],
+			'content.decoration.bodyFont.quote.font__underlineOffset' => [
+				'attrName' => 'content.decoration.bodyFont.quote.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'underlineOffset',
+			],
+			'content.decoration.bodyFont.quote.font__textWrap' => [
+				'attrName' => 'content.decoration.bodyFont.quote.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'textWrap',
+			],
+			'content.decoration.bodyFont.quote.font__writingMode' => [
+				'attrName' => 'content.decoration.bodyFont.quote.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'writingMode',
+			],
+			'content.decoration.bodyFont.quote.font__hyphens' => [
+				'attrName' => 'content.decoration.bodyFont.quote.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'hyphens',
+			],
+			'content.decoration.bodyFont.quote.font__columnCount' => [
+				'attrName' => 'content.decoration.bodyFont.quote.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnCount',
+			],
+			'content.decoration.bodyFont.quote.font__columnGap' => [
+				'attrName' => 'content.decoration.bodyFont.quote.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnGap',
+			],
+			'content.decoration.bodyFont.ul.font__weightFineTune' => [
+				'attrName' => 'content.decoration.bodyFont.ul.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'weightFineTune',
+			],
+			'content.decoration.bodyFont.ul.font__opticalSizing' => [
+				'attrName' => 'content.decoration.bodyFont.ul.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'opticalSizing',
+			],
+			'content.decoration.bodyFont.ul.font__capitalization' => [
+				'attrName' => 'content.decoration.bodyFont.ul.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'capitalization',
+			],
+			'content.decoration.bodyFont.ul.font__lineThickness' => [
+				'attrName' => 'content.decoration.bodyFont.ul.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'lineThickness',
+			],
+			'content.decoration.bodyFont.ul.font__underlineOffset' => [
+				'attrName' => 'content.decoration.bodyFont.ul.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'underlineOffset',
+			],
+			'content.decoration.bodyFont.ul.font__textWrap' => [
+				'attrName' => 'content.decoration.bodyFont.ul.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'textWrap',
+			],
+			'content.decoration.bodyFont.ul.font__writingMode' => [
+				'attrName' => 'content.decoration.bodyFont.ul.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'writingMode',
+			],
+			'content.decoration.bodyFont.ul.font__hyphens' => [
+				'attrName' => 'content.decoration.bodyFont.ul.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'hyphens',
+			],
+			'content.decoration.bodyFont.ul.font__columnCount' => [
+				'attrName' => 'content.decoration.bodyFont.ul.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnCount',
+			],
+			'content.decoration.bodyFont.ul.font__columnGap' => [
+				'attrName' => 'content.decoration.bodyFont.ul.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnGap',
+			],
+			'tab.decoration.font.font__weightFineTune'     => [
+				'attrName' => 'tab.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'weightFineTune',
+			],
+			'tab.decoration.font.font__opticalSizing'      => [
+				'attrName' => 'tab.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'opticalSizing',
+			],
+			'tab.decoration.font.font__capitalization'     => [
+				'attrName' => 'tab.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'capitalization',
+			],
+			'tab.decoration.font.font__lineThickness'      => [
+				'attrName' => 'tab.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'lineThickness',
+			],
+			'tab.decoration.font.font__underlineOffset'    => [
+				'attrName' => 'tab.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'underlineOffset',
+			],
+			'tab.decoration.font.font__textWrap'           => [
+				'attrName' => 'tab.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'textWrap',
+			],
+			'tab.decoration.font.font__writingMode'        => [
+				'attrName' => 'tab.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'writingMode',
+			],
+			'tab.decoration.font.font__hyphens'            => [
+				'attrName' => 'tab.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'hyphens',
+			],
+			'tab.decoration.font.font__columnCount'        => [
+				'attrName' => 'tab.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnCount',
+			],
+			'tab.decoration.font.font__columnGap'          => [
+				'attrName' => 'tab.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnGap',
+			],
+			'content.decoration.bodyFont.ol.list__listSpacing' => [
+				'attrName' => 'content.decoration.bodyFont.ol.list',
+				'preset'   => [ 'style' ],
+				'subName'  => 'listSpacing',
+			],
+			'content.decoration.bodyFont.ul.list__listSpacing' => [
+				'attrName' => 'content.decoration.bodyFont.ul.list',
+				'preset'   => [ 'style' ],
+				'subName'  => 'listSpacing',
+			],
+			'activeTab.decoration.font.textEffects__strokePosition' => [
+				'attrName' => 'activeTab.decoration.font.textEffects',
+				'preset'   => [ 'style' ],
+				'subName'  => 'strokePosition',
+			],
+			'content.decoration.bodyFont.body.textEffects__strokePosition' => [
+				'attrName' => 'content.decoration.bodyFont.body.textEffects',
+				'preset'   => [ 'style' ],
+				'subName'  => 'strokePosition',
+			],
+			'content.decoration.bodyFont.link.textEffects__strokePosition' => [
+				'attrName' => 'content.decoration.bodyFont.link.textEffects',
+				'preset'   => [ 'style' ],
+				'subName'  => 'strokePosition',
+			],
+			'content.decoration.bodyFont.ol.textEffects__strokePosition' => [
+				'attrName' => 'content.decoration.bodyFont.ol.textEffects',
+				'preset'   => [ 'style' ],
+				'subName'  => 'strokePosition',
+			],
+			'content.decoration.bodyFont.quote.textEffects__strokePosition' => [
+				'attrName' => 'content.decoration.bodyFont.quote.textEffects',
+				'preset'   => [ 'style' ],
+				'subName'  => 'strokePosition',
+			],
+			'content.decoration.bodyFont.ul.textEffects__strokePosition' => [
+				'attrName' => 'content.decoration.bodyFont.ul.textEffects',
+				'preset'   => [ 'style' ],
+				'subName'  => 'strokePosition',
+			],
+			'tab.decoration.font.textEffects__strokePosition' => [
+				'attrName' => 'tab.decoration.font.textEffects',
+				'preset'   => [ 'style' ],
+				'subName'  => 'strokePosition',
+			],
+			'content.decoration.bodyFont.dropCap.font__dropCapLineSize' => [
+				'attrName' => 'content.decoration.bodyFont.dropCap.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'dropCapLineSize',
+			],
+			'content.decoration.bodyFont.dropCap.font__dropCapSpacing' => [
+				'attrName' => 'content.decoration.bodyFont.dropCap.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'dropCapSpacing',
+			],
+			'content.decoration.bodyFont.dropCap.font__family' => [
+				'attrName' => 'content.decoration.bodyFont.dropCap.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'family',
+			],
+			'content.decoration.bodyFont.dropCap.font__weight' => [
+				'attrName' => 'content.decoration.bodyFont.dropCap.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'weight',
+			],
+			'content.decoration.bodyFont.dropCap.font__weightFineTune' => [
+				'attrName' => 'content.decoration.bodyFont.dropCap.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'weightFineTune',
+			],
+			'content.decoration.bodyFont.dropCap.font__opticalSizing' => [
+				'attrName' => 'content.decoration.bodyFont.dropCap.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'opticalSizing',
+			],
+			'content.decoration.bodyFont.dropCap.font__color' => [
+				'attrName' => 'content.decoration.bodyFont.dropCap.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'color',
+			],
+			'content.decoration.bodyFont.dropCap.font__capitalization' => [
+				'attrName' => 'content.decoration.bodyFont.dropCap.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'capitalization',
+			],
+			'content.decoration.bodyFont.dropCap.font__style' => [
+				'attrName' => 'content.decoration.bodyFont.dropCap.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'style',
+			],
+			'content.decoration.bodyFont.dropCap.font__lineColor' => [
+				'attrName' => 'content.decoration.bodyFont.dropCap.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'lineColor',
+			],
+			'content.decoration.bodyFont.dropCap.font__lineThickness' => [
+				'attrName' => 'content.decoration.bodyFont.dropCap.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'lineThickness',
+			],
+			'content.decoration.bodyFont.dropCap.font__underlineOffset' => [
+				'attrName' => 'content.decoration.bodyFont.dropCap.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'underlineOffset',
+			],
+			'content.decoration.bodyFont.dropCap.font__lineStyle' => [
+				'attrName' => 'content.decoration.bodyFont.dropCap.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'lineStyle',
+			],
+			'content.decoration.bodyFont.dropCap.textShadow__style' => [
+				'attrName' => 'content.decoration.bodyFont.dropCap.textShadow',
+				'preset'   => [ 'style' ],
+				'subName'  => 'style',
+			],
+			'content.decoration.bodyFont.dropCap.textShadow__horizontal' => [
+				'attrName' => 'content.decoration.bodyFont.dropCap.textShadow',
+				'preset'   => [ 'style' ],
+				'subName'  => 'horizontal',
+			],
+			'content.decoration.bodyFont.dropCap.textShadow__vertical' => [
+				'attrName' => 'content.decoration.bodyFont.dropCap.textShadow',
+				'preset'   => [ 'style' ],
+				'subName'  => 'vertical',
+			],
+			'content.decoration.bodyFont.dropCap.textShadow__blur' => [
+				'attrName' => 'content.decoration.bodyFont.dropCap.textShadow',
+				'preset'   => [ 'style' ],
+				'subName'  => 'blur',
+			],
+			'content.decoration.bodyFont.dropCap.textShadow__color' => [
+				'attrName' => 'content.decoration.bodyFont.dropCap.textShadow',
+				'preset'   => [ 'style' ],
+				'subName'  => 'color',
+			],
+
 			'module.decoration.sizing__width'              => [
 				'attrName' => 'module.decoration.sizing',
 				'preset'   => [ 'style' ],
@@ -1654,7 +2095,7 @@ class TabsPresetAttrsMap {
 				'preset'   => [ 'style' ],
 				'subName'  => 'fillType',
 			],
-			'tab.decoration.font.textEffects__gradient' => [
+			'tab.decoration.font.textEffects__gradient'    => [
 				'attrName' => 'tab.decoration.font.textEffects',
 				'preset'   => [ 'style' ],
 				'subName'  => 'gradient',
@@ -2073,7 +2514,7 @@ class TabsPresetAttrsMap {
 					'preset'   => [ 'style' ],
 					'subName'  => 'color',
 				],
-				'tab.decoration.background__gradient' => [
+				'tab.decoration.background__gradient'      => [
 					'attrName' => 'tab.decoration.background',
 					'preset'   => [ 'style', 'html' ],
 					'subName'  => 'gradient',
@@ -2328,6 +2769,16 @@ class TabsPresetAttrsMap {
 					'preset'   => [ 'style' ],
 					'subName'  => 'weight',
 				],
+				'activeTab.decoration.font.font__weightFineTune' => [
+					'attrName' => 'activeTab.decoration.font.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'weightFineTune',
+				],
+				'activeTab.decoration.font.font__opticalSizing' => [
+					'attrName' => 'activeTab.decoration.font.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'opticalSizing',
+				],
 				'activeTab.decoration.font.font__style'    => [
 					'attrName' => 'activeTab.decoration.font.font',
 					'preset'   => [ 'style' ],
@@ -2338,15 +2789,45 @@ class TabsPresetAttrsMap {
 					'preset'   => [ 'style' ],
 					'subName'  => 'lineColor',
 				],
+				'activeTab.decoration.font.font__lineThickness' => [
+					'attrName' => 'activeTab.decoration.font.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'lineThickness',
+				],
+				'activeTab.decoration.font.font__underlineOffset' => [
+					'attrName' => 'activeTab.decoration.font.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'underlineOffset',
+				],
 				'activeTab.decoration.font.font__lineStyle' => [
 					'attrName' => 'activeTab.decoration.font.font',
 					'preset'   => [ 'style' ],
 					'subName'  => 'lineStyle',
 				],
+				'activeTab.decoration.font.font__textWrap' => [
+					'attrName' => 'activeTab.decoration.font.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'textWrap',
+				],
+				'activeTab.decoration.font.font__writingMode' => [
+					'attrName' => 'activeTab.decoration.font.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'writingMode',
+				],
+				'activeTab.decoration.font.font__hyphens'  => [
+					'attrName' => 'activeTab.decoration.font.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'hyphens',
+				],
 				'activeTab.decoration.font.font__size'     => [
 					'attrName' => 'activeTab.decoration.font.font',
 					'preset'   => [ 'style' ],
 					'subName'  => 'size',
+				],
+				'activeTab.decoration.font.font__capitalization' => [
+					'attrName' => 'activeTab.decoration.font.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'capitalization',
 				],
 				'activeTab.decoration.font.font__letterSpacing' => [
 					'attrName' => 'activeTab.decoration.font.font',
@@ -2357,6 +2838,16 @@ class TabsPresetAttrsMap {
 					'attrName' => 'activeTab.decoration.font.font',
 					'preset'   => [ 'style' ],
 					'subName'  => 'lineHeight',
+				],
+				'activeTab.decoration.font.font__columnCount' => [
+					'attrName' => 'activeTab.decoration.font.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'columnCount',
+				],
+				'activeTab.decoration.font.font__columnGap' => [
+					'attrName' => 'activeTab.decoration.font.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'columnGap',
 				],
 				'activeTab.decoration.font.textShadow__style' => [
 					'attrName' => 'activeTab.decoration.font.textShadow',

@@ -109,10 +109,10 @@ class PageSettings implements DependencyInterface {
 		$has_default_meta         = '' !== $gutter_is_default_meta;
 
 		// If explicitness meta exists, honor it.
-		// Otherwise treat legacy pages as inherited-safe so stale page meta does not pin gutter width.
+		// Otherwise, treat non-empty legacy gutter values as explicit custom overrides.
 		$is_default = $has_default_meta
 			? ( true === filter_var( $gutter_is_default_meta, FILTER_VALIDATE_BOOLEAN ) )
-			: true;
+			: ( '' === $page_custom_gutter );
 
 		if ( $is_default || 0 === $page_custom_gutter_width ) {
 			return [

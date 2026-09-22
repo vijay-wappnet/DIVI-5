@@ -94,6 +94,10 @@ class LayoutStyle {
 
 		$attr_normalized = self::normalize_attr( $attr, $args['defaultPrintedStyleAttr'] ?? [] );
 
+		// Resolve variables before style_statements so string returnType inline child selectors
+		// and array returnType child selector rules both receive var(--gvid-xxx) columnGap values.
+		$attr_normalized = StyleUtils::resolve_dynamic_variables_recursive( $attr_normalized );
+
 		$is_inside_sticky_module   = $args['isInsideStickyModule'] ?? false;
 		$sticky_parent_order_class = $args['stickyParentOrderClass'] ?? null;
 
@@ -161,11 +165,6 @@ class LayoutStyle {
 				'atRules'                 => $args['atRules'],
 			]
 		);
-
-		// Resolve variables in $attr_normalized before child selector loop processes it.
-		// This ensures columnGap values are resolved to CSS variables (var(--gvid-xxx))
-		// instead of raw variable strings ($variable(...)$) in the child selector CSS output.
-		$attr_normalized = StyleUtils::resolve_dynamic_variables_recursive( $attr_normalized );
 
 		// For array return type, we need to generate child selector rules separately to prevent
 		// Style::add() from merging them with parent declarations (CSS corruption).
@@ -308,9 +307,9 @@ class LayoutStyle {
 		 * so seed enabled breakpoint rows after explicit predecessor data,
 		 * allowing use_attr_value to emit CSS for adjacent media query bands.
 		 */
-		$enabled_breakpoints  = array_values( Breakpoint::get_enabled_breakpoint_names() );
-		$base_breakpoint      = Breakpoint::get_base_breakpoint_name();
-		$breakpoint_count     = count( $enabled_breakpoints );
+		$enabled_breakpoints = array_values( Breakpoint::get_enabled_breakpoint_names() );
+		$base_breakpoint     = Breakpoint::get_base_breakpoint_name();
+		$breakpoint_count    = count( $enabled_breakpoints );
 
 		for ( $i = 1; $i < $breakpoint_count; $i++ ) {
 			$breakpoint      = $enabled_breakpoints[ $i ];
@@ -411,10 +410,20 @@ class LayoutStyle {
 						}
 
 						$target_offset = $rule['targetOffset'] ?? '';
-						$offset_rule   = $rule['offsetRule'] ?? '';
-						$offset_value  = $rule['offsetValue'] ?? '';
+						$offset_values = is_array( $rule['offsetValues'] ?? null ) ? $rule['offsetValues'] : [];
+						$declarations  = [];
 
-						if ( empty( $target_offset ) || empty( $offset_rule ) || empty( $offset_value ) ) {
+						foreach ( $offset_values as $offset_rule_key => $offset_rule_value ) {
+							if ( '' === $offset_rule_value || null === $offset_rule_value ) {
+								continue;
+							}
+
+							$css_property   = self::_get_css_property_for_offset_rule( (string) $offset_rule_key );
+							$css_value      = self::_get_css_value_for_offset_rule( (string) $offset_rule_key, (string) $offset_rule_value );
+							$declarations[] = $important ? "{$css_property}: {$css_value} !important;" : "{$css_property}: {$css_value};";
+						}
+
+						if ( empty( $target_offset ) || empty( $declarations ) ) {
 							continue;
 						}
 
@@ -432,18 +441,16 @@ class LayoutStyle {
 							$child_selector            = "> *:nth-of-type({$sanitized_nth_child_value})";
 						}
 
-						// Get CSS property and value for the offset rule.
-						$css_property = self::_get_css_property_for_offset_rule( $offset_rule );
-						$css_value    = self::_get_css_value_for_offset_rule( $offset_rule, $offset_value );
-
-						// Add important flag if needed.
-						$declaration = $important ? "{$css_property}: {$css_value} !important;" : "{$css_property}: {$css_value};";
-
-						// Sanitize the complete CSS declaration for additional security.
-						$sanitized_declaration = SavingUtility::sanitize_css_properties( $declaration );
+						$sanitized_declarations       = array_map(
+							function ( string $declaration ): string {
+								return SavingUtility::sanitize_css_properties( $declaration );
+							},
+							$declarations
+						);
+						$sanitized_declaration_string = implode( ' ', $sanitized_declarations );
 
 						// Create individual CSS rule.
-						$css_rules[] = "} {$selector} {$child_selector} { {$sanitized_declaration}";
+						$css_rules[] = "} {$selector} {$child_selector} { {$sanitized_declaration_string}";
 					}
 
 					// Return the CSS rules as a single string.
@@ -465,13 +472,13 @@ class LayoutStyle {
 	private static function _get_css_property_for_offset_rule( string $offset_rule ): string {
 		switch ( $offset_rule ) {
 			case 'columnSpan':
-				return 'grid-column';
+				return 'grid-column-end';
 			case 'columnStart':
 				return 'grid-column-start';
 			case 'columnEnd':
 				return 'grid-column-end';
 			case 'rowSpan':
-				return 'grid-row';
+				return 'grid-row-end';
 			case 'rowStart':
 				return 'grid-row-start';
 			case 'rowEnd':

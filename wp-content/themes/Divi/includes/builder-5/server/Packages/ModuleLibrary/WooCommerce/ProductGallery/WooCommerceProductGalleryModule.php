@@ -26,6 +26,7 @@ use ET\Builder\Packages\Module\Options\Css\CssStyle;
 use ET\Builder\Packages\ModuleUtils\ModuleUtils;
 use ET\Builder\Packages\Module\Options\BoxShadow\BoxShadowClassnames;
 use ET\Builder\Framework\DependencyManagement\Interfaces\DependencyInterface;
+use ET\Builder\Framework\Breakpoint\Breakpoint;
 use ET\Builder\Packages\ModuleUtils\ImageUtils;
 use ET\Builder\Packages\StyleLibrary\Utils\StyleDeclarations;
 use ET\Builder\Packages\StyleLibrary\Declarations\Declarations;
@@ -86,6 +87,100 @@ class WooCommerceProductGalleryModule implements DependencyInterface {
 		}
 
 		return [ $placeholder_id ];
+	}
+
+	/**
+	 * Build Product Gallery flex item classes from the Image sizing attr.
+	 *
+	 * @since ??
+	 *
+	 * @param array $attrs Module attributes.
+	 *
+	 * @return array
+	 */
+	public static function get_gallery_item_flex_classes( array $attrs ): array {
+		$layout_attr = $attrs['galleryGrid']['decoration']['layout'] ?? [];
+
+		if ( empty( $layout_attr ) ) {
+			return [];
+		}
+
+		$desktop_layout_value = ModuleUtils::use_attr_value(
+			[
+				'attr'       => $layout_attr,
+				'breakpoint' => 'desktop',
+				'state'      => 'value',
+				'mode'       => 'getOrInheritAll',
+			]
+		);
+		$desktop_display      = $desktop_layout_value['display'] ?? 'grid';
+
+		if ( 'flex' !== $desktop_display ) {
+			return [];
+		}
+
+		$flex_classes = [ 'et_flex_column' ];
+
+		foreach ( Breakpoint::get_css_class_suffixes() as $breakpoint => $suffix ) {
+			if ( ! Breakpoint::is_enabled_for_style( $breakpoint ) ) {
+				continue;
+			}
+
+			$flex_type            = self::get_gallery_item_flex_type( $attrs, $breakpoint );
+			$normalized_flex_type = 'none' === $flex_type ? null : ( $flex_type ?: '24_24' );
+
+			if ( $normalized_flex_type ) {
+				$flex_classes[] = "et_flex_column_{$normalized_flex_type}{$suffix}";
+			}
+		}
+
+		return array_values( array_unique( $flex_classes ) );
+	}
+
+	/**
+	 * Resolve gallery item flexType for a breakpoint.
+	 *
+	 * The Image sizing UI owns Column Class, but module sizing can still carry legacy
+	 * flexType values or unrelated width/height data. Prefer an explicit Image value
+	 * before falling back to the module sizing contract.
+	 *
+	 * @since ??
+	 *
+	 * @param array  $attrs      Module attributes.
+	 * @param string $breakpoint Breakpoint name.
+	 *
+	 * @return string|null
+	 */
+	public static function get_gallery_item_flex_type( array $attrs, string $breakpoint ): ?string {
+		$image_sizing_value = ModuleUtils::use_attr_value(
+			[
+				'attr'       => $attrs['image']['decoration']['sizing'] ?? [],
+				'breakpoint' => $breakpoint,
+				'state'      => 'value',
+				'mode'       => 'getOrInheritAll',
+			]
+		);
+		$image_flex_type   = $image_sizing_value['flexType'] ?? null;
+
+		if ( null !== $image_flex_type && '' !== $image_flex_type ) {
+			return $image_flex_type;
+		}
+
+		$module_sizing_value = ModuleUtils::use_attr_value(
+			[
+				'attr'       => $attrs['module']['decoration']['sizing'] ?? [],
+				'breakpoint' => $breakpoint,
+				'state'      => 'value',
+				'mode'       => 'getOrInheritAll',
+			]
+		);
+		$module_flex_type   = $module_sizing_value['flexType'] ?? null;
+
+		if ( null !== $module_flex_type && '' !== $module_flex_type ) {
+			return $module_flex_type;
+		}
+
+		return null;
 	}
 
 	/**
@@ -158,7 +253,8 @@ class WooCommerceProductGalleryModule implements DependencyInterface {
 		);
 
 		// Generate gallery items wrapper with D5 HTMLUtility pattern.
-		$gallery_items = [];
+		$gallery_items            = [];
+		$gallery_item_flex_class = self::get_gallery_item_flex_classes( $attrs );
 
 		// When Grid mode, extract the gallery grid layout type from attrs (default to 'grid').
 		$gallery_grid_layout = $attrs['galleryGrid']['decoration']['layout']['desktop']['value']['display'] ?? 'grid';
@@ -285,8 +381,14 @@ class WooCommerceProductGalleryModule implements DependencyInterface {
 			}
 
 			// Add grid item classes for grid layout (D4 + D5 pattern).
-			if ( 'on' !== $fullwidth ) {
+			if ( 'on' !== $fullwidth && $is_grid_layout ) {
 				$item_classes['et_pb_grid_item'] = true;
+			}
+
+			if ( 'on' !== $fullwidth ) {
+				foreach ( $gallery_item_flex_class as $flex_class ) {
+					$item_classes[ $flex_class ] = true;
+				}
 			}
 
 			// D4 Pattern: Add gallery order and count classes
@@ -477,6 +579,8 @@ class WooCommerceProductGalleryModule implements DependencyInterface {
 			'icon_phone'  => $icon_phone,
 		];
 
+		$module_attrs = $args['attrs'] ?? [];
+
 		// Prepare rendering arguments.
 		$render_args = [
 			'posts_number'           => $args['posts_number'],
@@ -486,11 +590,10 @@ class WooCommerceProductGalleryModule implements DependencyInterface {
 			'show_pagination'        => $args['show_pagination'] ?? 'on',
 			'orientation'            => $args['thumbnail_orientation'] ?? $args['orientation'],
 			'heading_level'          => $args['heading_level'] ?? 'h3',
-			'attrs'                  => $args['attrs'] ?? [], // Pass attrs for flex column classes.
 		];
 
 		// Use the same HTML generation method to ensure consistency.
-		return self::generate_gallery_html( $attachments, $render_args, [], $icon_data, $elements, $attrs );
+		return self::generate_gallery_html( $attachments, $render_args, $module_attrs, $icon_data, $elements, $attrs );
 	}
 
 	/**
@@ -841,20 +944,28 @@ class WooCommerceProductGalleryModule implements DependencyInterface {
 
 		// Since Layout Style (display) is non-responsive, always use the desktop value
 		// to determine which CSS properties to output, regardless of current breakpoint.
-		$desktop_display = $attr['desktop']['value']['display'] ?? $attr_value['display'] ?? $default_attr_value['display'] ?? '';
+		$desktop_layout_value = $attr['desktop']['value'] ?? [];
+		$desktop_display      = $desktop_layout_value['display'] ?? $attr_value['display'] ?? $default_attr_value['display'] ?? '';
 
 		// Use desktop display value to determine CSS branch (non-responsive).
 		$display = $desktop_display;
 
 		// Use current breakpoint/state values for responsive properties.
-		$column_gap = $attr_value['columnGap'] ?? $default_attr_value['columnGap'] ?? '';
-		$row_gap    = $attr_value['rowGap'] ?? $default_attr_value['rowGap'] ?? '';
+		$column_gap     = $attr_value['columnGap'] ?? $default_attr_value['columnGap'] ?? '';
+		$row_gap        = $attr_value['rowGap'] ?? $default_attr_value['rowGap'] ?? '';
+		$flex_direction = $attr_value['flexDirection'] ?? $desktop_layout_value['flexDirection'] ?? $default_attr_value['flexDirection'] ?? 'row';
+		$flex_wrap      = $attr_value['flexWrap'] ?? $desktop_layout_value['flexWrap'] ?? $default_attr_value['flexWrap'] ?? 'nowrap';
 
 		// Only add display and gap properties if display is not 'block'.
 		if ( 'block' !== $display ) {
 			// Add display property (grid or flex).
 			if ( 'grid' === $display || 'flex' === $display ) {
 				$style_declarations->add( 'display', $display );
+			}
+
+			if ( 'flex' === $display ) {
+				$style_declarations->add( 'flex-direction', $flex_direction );
+				$style_declarations->add( 'flex-wrap', $flex_wrap );
 			}
 
 			// Add gap properties using CSS variables set by LayoutStyle component.

@@ -21,6 +21,7 @@ use ET\Builder\Packages\Module\Layout\Components\DynamicContent\DynamicContentOp
 use ET\Builder\Packages\Module\Layout\Components\DynamicContent\DynamicContentOptionPostDate;
 use ET\Builder\Packages\Module\Layout\Components\DynamicContent\DynamicContentOptionPostModifiedDate;
 use ET\Builder\Packages\Module\Layout\Components\DynamicContent\DynamicContentOptionPostCommentCount;
+use ET\Builder\Packages\Module\Layout\Components\DynamicContent\DynamicContentOptionPostID;
 use ET\Builder\Packages\Module\Layout\Components\DynamicContent\DynamicContentOptionPostCategories;
 use ET\Builder\Packages\Module\Layout\Components\DynamicContent\DynamicContentOptionPostTags;
 use ET\Builder\Packages\Module\Layout\Components\DynamicContent\DynamicContentOptionPostLink;
@@ -138,6 +139,7 @@ $dependency_tree->add_dependency( new DynamicContentOptionPostExcerpt() );
 $dependency_tree->add_dependency( new DynamicContentOptionPostDate() );
 $dependency_tree->add_dependency( new DynamicContentOptionPostModifiedDate() );
 $dependency_tree->add_dependency( new DynamicContentOptionPostCommentCount() );
+$dependency_tree->add_dependency( new DynamicContentOptionPostID() );
 $dependency_tree->add_dependency( new DynamicContentOptionPostCategories() );
 $dependency_tree->add_dependency( new DynamicContentOptionPostTags() );
 $dependency_tree->add_dependency( new DynamicContentOptionPostLink() );

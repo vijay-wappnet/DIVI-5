@@ -25,11 +25,11 @@
     "imageIcon": {
       "type": "object",
       "label": "Image or Icon",
-      "selector": "{{selector}} .et_pb_main_blurb_image .et-pb-icon, {{selector}} .et_pb_main_blurb_image img",
+      "selector": "{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et-pb-icon, {{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image img",
       "supportsCustomAttributes": true,
       "scriptDataProps": {
         "animation": {
-          "selector": "{{selector}} .et_pb_main_blurb_image"
+          "selector": "{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image"
         }
       },
       "settings": {
@@ -213,52 +213,52 @@
         }
       },
       "styleProps": {
-        "selector": "{{selector}} .et-pb-icon, {{selector}} .et_pb_image_wrap",
+        "selector": "{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et-pb-icon, {{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et_pb_image_wrap",
         "fit": {
-          "selector": "{{selector}} .et_pb_main_blurb_image img"
+          "selector": "{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image img"
         },
         "spacing": {
-          "selector": "{{selector}} .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}} .et_pb_main_blurb_image .et-pb-icon",
+          "selector": "{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et-pb-icon",
           "important": true
         },
         "boxShadow": {
-          "selector": "{{selector}} .et_pb_main_blurb_image .et_pb_image_wrap.et_pb_only_image_mode_wrap",
+          "selector": "{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et_pb_image_wrap.et_pb_only_image_mode_wrap",
           "useOverlay": true
         },
         "filters": {
-          "selector": "{{selector}} .et_pb_main_blurb_image",
+          "selector": "{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image",
           "selectors": {
             "desktop": {
-              "value": "{{selector}} .et_pb_main_blurb_image",
-              "hover": "{{selector}}{{:hover}} .et_pb_main_blurb_image"
+              "value": "{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image",
+              "hover": "{{selector}}{{:hover}} > .et_pb_blurb_content > .et_pb_main_blurb_image"
             }
           }
         },
         "border": {
-          "selector": "{{selector}} .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}} .et_pb_main_blurb_image .et-pb-icon",
+          "selector": "{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et-pb-icon",
           "selectors": {
             "desktop": {
-              "value": "{{selector}} .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}} .et_pb_main_blurb_image .et-pb-icon",
-              "hover": "{{selector}}{{:hover}} .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}}{{:hover}} .et_pb_main_blurb_image .et-pb-icon"
+              "value": "{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et-pb-icon",
+              "hover": "{{selector}}{{:hover}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}}{{:hover}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et-pb-icon"
             }
           }
         },
         "background": {
-          "selector": "{{selector}} .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}} .et_pb_main_blurb_image .et-pb-icon",
+          "selector": "{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et-pb-icon",
           "selectors": {
             "desktop": {
-              "value": "{{selector}} .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}} .et_pb_main_blurb_image .et-pb-icon",
-              "hover": "{{selector}}{{:hover}} .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}}{{:hover}} .et_pb_main_blurb_image .et-pb-icon"
+              "value": "{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et-pb-icon",
+              "hover": "{{selector}}{{:hover}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}}{{:hover}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et-pb-icon"
             }
           }
         },
         "sizing": {
-          "selector": "{{selector}} .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}} .et_pb_main_blurb_image .et-pb-icon",
+          "selector": "{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et-pb-icon",
           "disableAlignmentStyles": true,
           "propertySelectors": {
             "desktop": {
               "value": {
-                "aspect-ratio": "{{selector}} .et_pb_main_blurb_image img"
+                "aspect-ratio": "{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image img"
               }
             }
           }

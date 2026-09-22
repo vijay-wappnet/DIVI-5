@@ -36,6 +36,7 @@ use ET\Builder\Packages\ModuleLibrary\ModuleRegistration;
 use ET\Builder\Packages\ModuleLibrary\RadioFieldAndIconAttrs;
 use ET\Builder\Packages\ModuleLibrary\Signup\SignupHandler;
 use ET\Builder\Packages\ModuleUtils\ChildrenUtils;
+use ET\Builder\Packages\StyleLibrary\Declarations\Background\Utils\BackgroundStyleUtils;
 use ET\Builder\Packages\StyleLibrary\Declarations\Declarations;
 use ET\Builder\Packages\StyleLibrary\Utils\StyleDeclarations;
 use ET\Builder\Packages\GlobalData\GlobalData;
@@ -111,8 +112,9 @@ class SignupModule implements DependencyInterface {
 		}
 
 		// Add background specific class.
-		$background_color = $attrs['module']['decoration']['background']['desktop']['value']['color'] ?? '';
-		if ( empty( $background_color ) ) {
+		$background_value = $attrs['module']['decoration']['background']['desktop']['value'] ?? [];
+
+		if ( ! BackgroundStyleUtils::has_active_background( $background_value ) ) {
 			$classnames_instance->add( 'et_pb_no_bg', true );
 		}
 
@@ -303,6 +305,7 @@ class SignupModule implements DependencyInterface {
 			'text-decoration-color',
 			'text-decoration-style',
 			'font-variant',
+			'font-variant-caps',
 		];
 		$field_label_targets         = "{$order_class} .et_pb_newsletter_form p .et_pb_contact_field_options_title";
 		$field_label_targets_hover   = "{$order_class} .et_pb_newsletter_form p .et_pb_contact_field_options_title:hover";

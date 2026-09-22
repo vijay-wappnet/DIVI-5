@@ -75,6 +75,7 @@ use ET\Builder\VisualBuilder\SettingsData\SettingsDataController;
 use ET\Builder\VisualBuilder\REST\ModuleRender\ModuleRenderController;
 use ET\Builder\VisualBuilder\REST\PageManager\PageManagerController;
 use ET\Builder\VisualBuilder\REST\RecentPosts\RecentPostsController;
+use ET\Builder\VisualBuilder\REST\Announcements\AnnouncementsController;
 use ET\Builder\Packages\ModuleLibrary\WooCommerce\Breadcrumb\WooCommerceBreadcrumbController;
 use ET\Builder\Packages\ModuleLibrary\WooCommerce\CartNotice\WooCommerceCartNoticeController;
 use ET\Builder\Packages\ModuleLibrary\WooCommerce\ProductAddToCart\WooCommerceProductAddToCartController;
@@ -1282,6 +1283,18 @@ class RESTRegistration implements DependencyInterface {
 		 * Recent Posts endpoint.
 		 */
 		$route->get( '/recent-posts', RecentPostsController::class );
+
+		/**
+		 * Announcements endpoints.
+		 */
+		$route->post(
+			'/announcements/mark-read',
+			[
+				'args'                => [ AnnouncementsController::class, 'mark_read_args' ],
+				'callback'            => [ AnnouncementsController::class, 'mark_read' ],
+				'permission_callback' => [ AnnouncementsController::class, 'mark_read_permission' ],
+			]
+		);
 
 		/**
 		 * Page Manager endpoints.

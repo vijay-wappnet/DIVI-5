@@ -879,6 +879,19 @@ return [
                 ]
             ]
         ],
+        'button' => [
+            'decoration' => [
+                'button' => [
+                    'desktop' => [
+                        'value' => [
+                            'icon' => [
+                                'enable' => 'on'
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        ],
         'form' => []
     ],
     'countdown-timer' => [
@@ -4371,6 +4384,36 @@ return [
             ]
         ]
     ],
+    'tooltip' => [
+        'module' => [
+            'meta' => [
+                'adminLabel' => [
+                    'desktop' => [
+                        'value' => 'Tooltip'
+                    ]
+                ]
+            ],
+            'advanced' => [
+                'tooltip' => [
+                    'desktop' => [
+                        'value' => [
+                            'trigger' => 'hover',
+                            'positionMode' => 'anchored',
+                            'placement' => 'outside top center',
+                            'skid' => '0px',
+                            'distance' => '8px',
+                            'openDelay' => 0,
+                            'closeDelay' => 0,
+                            'showArrow' => 'off',
+                            'arrowPlacement' => 'outside bottom center',
+                            'arrowOffset' => '0px',
+                            'arrowSize' => '6px'
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ],
     'video' => [
         'module' => [
             'meta' => [
@@ -5667,6 +5710,22 @@ return [
                 'product' => [
                     'desktop' => [
                         'value' => 'dynamic'
+                    ]
+                ]
+            ]
+        ],
+        'image' => [
+            'decoration' => [
+                'border' => [
+                    'desktop' => [
+                        'value' => [
+                            'styles' => [
+                                'all' => [
+                                    'style' => 'solid',
+                                    'width' => '0px'
+                                ]
+                            ]
+                        ]
                     ]
                 ]
             ]

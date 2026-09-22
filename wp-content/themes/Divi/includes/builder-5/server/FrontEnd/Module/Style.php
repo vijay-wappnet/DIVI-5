@@ -92,13 +92,51 @@ class Style {
 
 	/**
 	 * Cache for style key to avoid repeated function calls.
-	 * The style key remains constant during a single page render.
+	 * The style key remains constant only within a single render context.
 	 *
 	 * @since ??
 	 *
 	 * @var int|string|null
 	 */
 	private static $_style_key_cache = null;
+
+	/**
+	 * Signature of the render context used for style key cache.
+	 *
+	 * @since ??
+	 *
+	 * @var string|null
+	 */
+	private static $_style_key_cache_context = null;
+
+	/**
+	 * Build style key cache context signature.
+	 *
+	 * @since ??
+	 *
+	 * @return string
+	 */
+	private static function _get_style_key_cache_context_signature(): string {
+		if ( true === ET_Theme_Builder_Layout::is_theme_builder_layout() ) {
+			$theme_builder_layout_id = ET_Theme_Builder_Layout::get_theme_builder_layout_id();
+			if ( ! empty( $theme_builder_layout_id ) ) {
+				return 'tb:' . (string) $theme_builder_layout_id;
+			}
+
+			return 'tb';
+		}
+
+		if ( true === StaticCSS::is_wp_editor_template() ) {
+			$wp_editor_template_id = StaticCSS::get_wp_editor_template_id();
+			if ( ! empty( $wp_editor_template_id ) ) {
+				return 'wp:' . (string) $wp_editor_template_id;
+			}
+
+			return 'wp';
+		}
+
+		return 'post';
+	}
 
 	/**
 	 * Counter for generating unique keys without calling uniqid().
@@ -320,10 +358,14 @@ class Style {
 	 * @return int|string
 	 */
 	public static function get_style_key() {
-		// Cache the style key since it remains constant during a single page render.
-		// This avoids repeated calls to expensive functions like get_layout_id(),
-		// get_theme_builder_layout_id(), get_wp_editor_template_id(), etc.
-		if ( null !== self::$_style_key_cache ) {
+		$current_context_signature = self::_get_style_key_cache_context_signature();
+
+		// Cache the style key per render context (post/TB/WP template).
+		// A request can legitimately switch contexts while rendering and each context needs its own key.
+		if (
+			null !== self::$_style_key_cache
+			&& $current_context_signature === self::$_style_key_cache_context
+		) {
 			return self::$_style_key_cache;
 		}
 
@@ -335,6 +377,8 @@ class Style {
 			// need to group that CSS under the same key.
 			self::$_style_key_cache = 'post';
 		}
+
+		self::$_style_key_cache_context = $current_context_signature;
 
 		return self::$_style_key_cache;
 	}
@@ -1061,6 +1105,7 @@ class Style {
 		self::$_preset_selector_processed                  = [];
 		self::$_ancestor_ids_cache                         = [];
 		self::$_style_key_cache                            = null;
+		self::$_style_key_cache_context                    = null;
 		self::$_unique_counter                             = 0;
 		self::$_detected_module_types_for_inner_content    = [];
 		self::$_is_theme_builder_context_for_inner_content = false;

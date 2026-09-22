@@ -38,6 +38,22 @@
       }
     }
   },
+  "image": {
+    "decoration": {
+      "border": {
+        "desktop": {
+          "value": {
+            "styles": {
+              "all": {
+                "style": "solid",
+                "width": "0px"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   "elements": {
     "advanced": {
       "showImage": {

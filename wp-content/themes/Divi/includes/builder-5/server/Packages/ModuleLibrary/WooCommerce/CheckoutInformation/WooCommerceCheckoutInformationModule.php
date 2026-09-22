@@ -31,6 +31,7 @@ use ET\Builder\Packages\Module\Options\FormField\FormFieldStyle;
 use ET\Builder\Packages\Module\Options\Text\TextClassnames;
 use ET\Builder\Packages\ModuleLibrary\ModuleRegistration;
 use ET\Builder\Framework\Utility\Conditions;
+use ET\Builder\Packages\StyleLibrary\Utils\StyleDeclarations;
 use ET\Builder\Packages\WooCommerce\WooCommerceHooks;
 use ET\Builder\Packages\WooCommerce\WooCommerceUtils;
 use WP_Block_Type_Registry;
@@ -378,6 +379,68 @@ class WooCommerceCheckoutInformationModule implements DependencyInterface {
 											'attr'     => $attrs['module']['advanced']['text'] ?? [],
 										],
 									],
+								[
+									'componentName' => 'divi/common',
+									'props'         => [
+										'selector'            => "{$order_class} .et_pb_wc_checkout_section .form-row",
+										'attr'                => [
+											'desktop' => [
+												'value' => 'enabled',
+											],
+										],
+										'declarationFunction' => static function (): string {
+											return self::static_style_declaration(
+												[
+													'padding'       => '0',
+													'margin-bottom' => '12px',
+												]
+											);
+										},
+									],
+								],
+								[
+									'componentName' => 'divi/common',
+									'props'         => [
+										'selector'            => "{$order_class} .et_pb_wc_checkout_section .form-row input.input-text, {$order_class} .et_pb_wc_checkout_section .form-row textarea.input-text",
+										'attr'                => [
+											'desktop' => [
+												'value' => 'enabled',
+											],
+										],
+										'declarationFunction' => static function (): string {
+											return self::static_style_declaration(
+												[
+													'width'            => '100%',
+													'box-sizing'       => 'border-box',
+													'background-color' => '#eee',
+													'border'           => '0',
+													'padding'          => '16px',
+													'font-size'        => '14px',
+													'line-height'      => '1.7em',
+												]
+											);
+										},
+									],
+								],
+								[
+									'componentName' => 'divi/common',
+									'props'         => [
+										'selector'            => "{$order_class} .et_pb_wc_checkout_section .col2-set .col-1, {$order_class} .et_pb_wc_checkout_section .col2-set .col-2",
+										'attr'                => [
+											'desktop' => [
+												'value' => 'enabled',
+											],
+										],
+										'declarationFunction' => static function (): string {
+											return self::static_style_declaration(
+												[
+													'width' => '100%',
+													'float' => 'none',
+												]
+											);
+										},
+									],
+								],
 								],
 							],
 						]
@@ -391,7 +454,7 @@ class WooCommerceCheckoutInformationModule implements DependencyInterface {
 					// Field.
 					FormFieldStyle::style(
 						[
-							'selector'               => "{$order_class} form .form-row input.input-text, {$order_class} form .form-row textarea.input-text",
+							'selector'               => "{$order_class} .checkout .form-row input.input-text, {$order_class} .checkout .form-row textarea.input-text",
 							'attr'                   => $attrs['field'] ?? [],
 							'orderClass'             => $order_class,
 							'isInsideStickyModule'   => $is_inside_sticky_module,
@@ -401,8 +464,8 @@ class WooCommerceCheckoutInformationModule implements DependencyInterface {
 									'border' => [
 										'desktop' => [
 											'value' => [
-												'border-radius' => "{$order_class} form .form-row textarea.input-text",
-												'border-style'  => "{$order_class} form .form-row textarea.input-text",
+												'border-radius' => "{$order_class} .checkout .form-row textarea.input-text",
+												'border-style'  => "{$order_class} .checkout .form-row textarea.input-text",
 											],
 										],
 									],
@@ -424,7 +487,7 @@ class WooCommerceCheckoutInformationModule implements DependencyInterface {
 														'text-decoration',
 														'text-transform',
 													],
-													"{$order_class} form .form-row label"
+													"{$order_class} .checkout .form-row label"
 												),
 												'hover' => array_fill_keys(
 													[
@@ -439,17 +502,17 @@ class WooCommerceCheckoutInformationModule implements DependencyInterface {
 														'text-decoration',
 														'text-transform',
 													],
-													"{$order_class} form .form-row label:hover"
+													"{$order_class} .checkout .form-row label:hover"
 												),
 											],
 										],
 										'textShadow' => [
 											'desktop' => [
 												'value' => [
-													'text-shadow' => "{$order_class} form .form-row label",
+													'text-shadow' => "{$order_class} .checkout .form-row label",
 												],
 												'hover' => [
-													'text-shadow' => "{$order_class} form .form-row label:hover",
+													'text-shadow' => "{$order_class} .checkout .form-row label:hover",
 												],
 											],
 										],
@@ -477,8 +540,8 @@ class WooCommerceCheckoutInformationModule implements DependencyInterface {
 							'selector'               => implode(
 								', ',
 								[
-									"{$order_class} form .form-row input.input-text",
-									"{$order_class} form .form-row textarea.input-text",
+									"{$order_class} .checkout .form-row input.input-text",
+									"{$order_class} .checkout .form-row textarea.input-text",
 								]
 							),
 							'attrs'                  => [
@@ -515,6 +578,31 @@ class WooCommerceCheckoutInformationModule implements DependencyInterface {
 				],
 			]
 		);
+	}
+
+	/**
+	 * Build static style declarations for isolated checkout section compatibility styles.
+	 *
+	 * @since ??
+	 *
+	 * @param array $declarations CSS declaration map.
+	 * @param bool  $important    Whether declarations should be important.
+	 *
+	 * @return string
+	 */
+	private static function static_style_declaration( array $declarations, bool $important = false ): string {
+		$style_declarations = new StyleDeclarations(
+			[
+				'returnType' => 'string',
+				'important'  => $important,
+			]
+		);
+
+		foreach ( $declarations as $property => $value ) {
+			$style_declarations->add( $property, $value );
+		}
+
+		return $style_declarations->value();
 	}
 
 	/**
@@ -753,11 +841,22 @@ class WooCommerceCheckoutInformationModule implements DependencyInterface {
 			[ self::class, 'modify_order_comments_rows' ]
 		);
 
+		WooCommerceUtils::start_isolated_checkout_section_render();
+
+		$initial_buffer_level = ob_get_level();
 		ob_start();
 
-		WC_Shortcode_Checkout::output( [] );
+		try {
+			WC_Shortcode_Checkout::output( [] );
 
-		$markup = ob_get_clean();
+			$markup = ob_get_clean();
+		} finally {
+			if ( ob_get_level() > $initial_buffer_level ) {
+				ob_end_clean();
+			}
+
+			WooCommerceUtils::stop_isolated_checkout_section_render();
+		}
 
 		remove_filter(
 			'woocommerce_checkout_fields',

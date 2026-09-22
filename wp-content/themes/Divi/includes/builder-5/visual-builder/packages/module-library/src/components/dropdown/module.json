@@ -82,6 +82,43 @@
                   }
                 }
               },
+              "horizontalMode": {
+                "groupSlug": "designDropdown",
+                "priority": 6,
+                "render": true,
+                "visible": "isVisibleFields",
+                "attrName": "module.advanced.dropdown",
+                "subName": "horizontalMode",
+                "label": "Horizontal Position Mode",
+                "description": "Choose whether floating dropdown alignment should follow the parent module, parent row, or the viewport.",
+                "category": "basic_option",
+                "features": {
+                  "responsive": true,
+                  "hover": false,
+                  "sticky": false,
+                  "preset": [
+                    "script"
+                  ]
+                },
+                "component": {
+                  "type": "field",
+                  "name": "divi/select",
+                  "props": {
+                    "defaultValue": "trigger",
+                    "options": {
+                      "trigger": {
+                        "label": "Parent Module"
+                      },
+                      "row": {
+                        "label": "Parent Row"
+                      },
+                      "viewport": {
+                        "label": "Viewport"
+                      }
+                    }
+                  }
+                }
+              },
               "showOn": {
                 "groupSlug": "designDropdown",
                 "priority": 10,

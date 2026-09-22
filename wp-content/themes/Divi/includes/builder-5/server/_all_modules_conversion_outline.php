@@ -289,7 +289,7 @@ return [
             'include_categories' => 'post.advanced.categories.*',
             'meta_date' => 'post.advanced.dateFormat.*',
             'show_thumbnail' => 'image.advanced.enable.*',
-            'show_content' => 'content.advanced.enable.*',
+            'show_content' => 'post.advanced.excerptContent.*',
             'use_manual_excerpt' => 'post.advanced.excerptManual.*',
             'excerpt_length' => 'post.advanced.excerptLength.*',
             'show_more' => 'readMore.advanced.enable.*',
@@ -4820,7 +4820,6 @@ return [
         'module' => [
             'content' => 'content.innerContent.*',
             'facebook_url' => 'social.innerContent.*.facebookUrl',
-            'google_url' => 'social.innerContent.*.googleUrl',
             'icon_color' => 'social.decoration.icon.*.color',
             'linkedin_url' => 'social.innerContent.*.linkedinUrl',
             'name' => 'name.innerContent.*',
@@ -4835,7 +4834,8 @@ return [
         ],
         'valueExpansionFunctionMap' => [
             'inline_fonts' => 'convertInlineFont'
-        ]
+        ],
+        'deprecatedMap' => ['google_url']
     ],
     'testimonial' => [
         'advanced' => [

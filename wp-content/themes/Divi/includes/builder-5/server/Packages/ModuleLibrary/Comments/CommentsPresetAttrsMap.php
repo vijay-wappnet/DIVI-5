@@ -183,6 +183,17 @@ class CommentsPresetAttrsMap {
 			'button.decoration.button.decoration.font.textEffects__imageFill.width',
 			'button.decoration.button.decoration.font.textEffects__strokeColor',
 			'button.decoration.button.decoration.font.textEffects__strokeWidth',
+			'button.decoration.button.decoration.font.font__weightFineTune',
+			'button.decoration.button.decoration.font.font__opticalSizing',
+			'button.decoration.button.decoration.font.font__lineThickness',
+			'button.decoration.button.decoration.font.font__underlineOffset',
+			'button.decoration.button.decoration.font.font__textWrap',
+			'button.decoration.button.decoration.font.font__writingMode',
+			'button.decoration.button.decoration.font.font__hyphens',
+			'button.decoration.button.decoration.font.font__columnCount',
+			'button.decoration.button.decoration.font.font__columnGap',
+			'button.decoration.button.decoration.font.font__capitalization',
+			'button.decoration.button.decoration.font.textEffects__strokePosition',
 		];
 
 		// Unset the keys.

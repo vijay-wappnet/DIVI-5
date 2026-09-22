@@ -224,6 +224,7 @@ return array(
 	'Copy'                                   => esc_html__( 'Copy', 'Divi' ),
 	'Move'                                   => esc_html__( 'Move', 'Divi' ),
 	'$itemDownloadFailureNotice'             => esc_html__( "The Item couldn't be downloaded. Please try after a while.", 'Divi' ),
+	'$emptyCloudItemContentError'            => esc_html__( 'Unable to load layout content. Please ensure the layout is saved correctly, then try again.', 'Divi' ),
 	'$itemActionFailureNotice'               => esc_html__( 'The action failed in the following clouds.', 'Divi' ),
 
 	'$upsellCTATitle'                        => esc_html__( 'Access Your %s From Any Website', 'Divi' ),

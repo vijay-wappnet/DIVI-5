@@ -49,6 +49,21 @@ class BlurbPresetAttrsMap {
 					'preset'   => [ 'style' ],
 					'subName'  => 'iconFontSize',
 				],
+				'content.decoration.bodyFont.dropCap.textShadow__horizontal' => [
+					'attrName' => 'content.decoration.bodyFont.dropCap.textShadow',
+					'preset'   => [ 'style' ],
+					'subName'  => 'horizontal',
+				],
+				'content.decoration.bodyFont.dropCap.textShadow__vertical' => [
+					'attrName' => 'content.decoration.bodyFont.dropCap.textShadow',
+					'preset'   => [ 'style' ],
+					'subName'  => 'vertical',
+				],
+				'content.decoration.bodyFont.dropCap.textShadow__blur' => [
+					'attrName' => 'content.decoration.bodyFont.dropCap.textShadow',
+					'preset'   => [ 'style' ],
+					'subName'  => 'blur',
+				],
 			],
 			BorderPresetAttrsMap::get_map( 'imageIcon.decoration.border' ),
 			BoxShadowPresetAttrsMap::get_map( 'imageIcon.decoration.boxShadow' ),

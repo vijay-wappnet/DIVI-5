@@ -15,6 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 use ET\Builder\Framework\Controllers\RESTController;
 use ET\Builder\Framework\Utility\HTMLUtility;
 use ET\Builder\Framework\UserRole\UserRole;
+use ET\Builder\Packages\IconLibrary\IconFont\Utils;
 use WP_REST_Request;
 use WP_REST_Response;
 
@@ -219,6 +220,136 @@ class ContactForm7Controller extends RESTController {
 	}
 
 	/**
+	 * Sanitize button module attrs from REST request.
+	 *
+	 * @since ??
+	 *
+	 * @param mixed $button_attrs Raw button attrs from REST request.
+	 *
+	 * @return array<string, mixed>
+	 */
+	public static function sanitize_button_attrs( $button_attrs ): array {
+		if ( ! is_array( $button_attrs ) ) {
+			return [];
+		}
+
+		return $button_attrs;
+	}
+
+	/**
+	 * Resolve custom button icon HTML attributes from module button attrs.
+	 *
+	 * @since ??
+	 *
+	 * @param array<string, mixed> $button_attrs Module `button` attribute subtree.
+	 *
+	 * @return array<string, string>
+	 */
+	public static function get_custom_button_icon_html_attributes( array $button_attrs ): array {
+		static $cache = [];
+
+		$button_decoration = $button_attrs['decoration']['button'] ?? [];
+		$cache_key         = md5( wp_json_encode( $button_decoration ) );
+
+		if ( isset( $cache[ $cache_key ] ) ) {
+			return $cache[ $cache_key ];
+		}
+
+		$desktop_value = $button_decoration['desktop']['value'] ?? [];
+		// Match module default `icon.enable` and ButtonIcon fallback when enable is unset.
+		$enable = $desktop_value['icon']['enable'] ?? 'on';
+
+		if ( 'on' !== $enable ) {
+			$cache[ $cache_key ] = [];
+
+			return [];
+		}
+
+		$icon_desktop = $button_decoration['desktop']['value']['icon']['settings'] ?? [];
+		$icon_tablet  = $button_decoration['tablet']['value']['icon']['settings'] ?? [];
+		$icon_phone   = $button_decoration['phone']['value']['icon']['settings'] ?? [];
+
+		$has_icon_settings = ! empty( $icon_desktop ) || ! empty( $icon_tablet ) || ! empty( $icon_phone );
+
+		if ( ! $has_icon_settings ) {
+			$cache[ $cache_key ] = [];
+
+			return [];
+		}
+
+		$html_attrs = [];
+
+		if ( ! empty( $icon_desktop ) ) {
+			$processed_icon_desktop = Utils::process_font_icon( $icon_desktop );
+
+			if ( ! empty( $processed_icon_desktop ) ) {
+				$html_attrs['data-icon'] = esc_attr( $processed_icon_desktop );
+			}
+		}
+
+		if ( ! empty( $icon_tablet ) ) {
+			$processed_icon_tablet = Utils::process_font_icon( $icon_tablet );
+
+			if ( ! empty( $processed_icon_tablet ) ) {
+				$html_attrs['data-icon-tablet'] = esc_attr( $processed_icon_tablet );
+			}
+		}
+
+		if ( ! empty( $icon_phone ) ) {
+			$processed_icon_phone = Utils::process_font_icon( $icon_phone );
+
+			if ( ! empty( $processed_icon_phone ) ) {
+				$html_attrs['data-icon-phone'] = esc_attr( $processed_icon_phone );
+			}
+		}
+
+		$cache[ $cache_key ] = $html_attrs;
+
+		return $html_attrs;
+	}
+
+	/**
+	 * Inject custom button icon data attributes onto CF7 submit controls.
+	 *
+	 * @since ??
+	 *
+	 * @param string               $html       Form HTML output.
+	 * @param array<string, string> $html_attrs Icon-related HTML attributes.
+	 *
+	 * @return string
+	 */
+	public static function inject_custom_button_icon_attributes( string $html, array $html_attrs ): string {
+		if ( '' === $html || [] === $html_attrs ) {
+			return $html;
+		}
+
+		$attributes_to_inject = '';
+
+		foreach ( $html_attrs as $attr_name => $attr_value ) {
+			if ( '' !== $attr_value ) {
+				$attributes_to_inject .= sprintf( ' %s="%s"', esc_attr( $attr_name ), esc_attr( $attr_value ) );
+			}
+		}
+
+		if ( '' === $attributes_to_inject ) {
+			return $html;
+		}
+
+		// Regex test: https://regex101.com/r/8vJqYx/1.
+		$updated_html = preg_replace(
+			'/(<button\b(?![^>]*\bdata-icon=)[^>]*\bclass=(["\'])[^"\']*\bwpcf7-submit\b[^"\']*\2[^>]*)(>)/i',
+			"$1{$attributes_to_inject}$3",
+			$html
+		);
+
+		if ( is_string( $updated_html ) && $updated_html !== $html ) {
+			return $updated_html;
+		}
+
+		return $html;
+	}
+
+	/**
 	 * Adds Divi layout utility class to the first CF7 form element.
 	 *
 	 * @since ??
@@ -294,12 +425,14 @@ class ContactForm7Controller extends RESTController {
 		$form_id        = sanitize_text_field( (string) $request->get_param( 'formId' ) );
 		$include_forms  = rest_sanitize_boolean( $request->get_param( 'includeForms' ) );
 		$layout_display = sanitize_text_field( (string) $request->get_param( 'layoutDisplay' ) );
+		$button_attrs   = self::sanitize_button_attrs( $request->get_param( 'button' ) );
 
 		$response = [
 			'html' => self::render_form_preview(
 				[
 					'formId'        => $form_id,
 					'layoutDisplay' => $layout_display,
+					'button'        => $button_attrs,
 				]
 			),
 		];
@@ -334,6 +467,12 @@ class ContactForm7Controller extends RESTController {
 				'type'              => 'string',
 				'default'           => 'flex',
 				'sanitize_callback' => 'sanitize_text_field',
+			],
+			'button'        => [
+				'type'              => 'object',
+				'default'           => [],
+				'required'          => false,
+				'sanitize_callback' => [ self::class, 'sanitize_button_attrs' ],
 			],
 		];
 	}
@@ -440,6 +579,7 @@ class ContactForm7Controller extends RESTController {
 	public static function render_form_preview( array $args ): string {
 		$form_id        = sanitize_text_field( (string) ( $args['formId'] ?? '' ) );
 		$layout_display = sanitize_text_field( (string) ( $args['layoutDisplay'] ?? 'flex' ) );
+		$button_attrs   = self::sanitize_button_attrs( $args['button'] ?? [] );
 
 		if ( '' === $form_id ) {
 			$form_id = self::_get_default_form_id();
@@ -461,6 +601,10 @@ class ContactForm7Controller extends RESTController {
 
 			$rendered = do_shortcode( sprintf( '[contact-form-7 id="%s"]', esc_attr( $form_id ) ) );
 			$rendered = self::add_divi_button_class_to_submit( $rendered );
+			$rendered = self::inject_custom_button_icon_attributes(
+				$rendered,
+				self::get_custom_button_icon_html_attributes( $button_attrs )
+			);
 			$rendered = self::add_divi_layout_class_to_form( $rendered, $layout_display );
 
 			if ( self::_is_usable_cf7_preview_markup( $rendered ) ) {
@@ -476,9 +620,12 @@ class ContactForm7Controller extends RESTController {
 			esc_html( $form_id )
 		);
 
-		return self::add_divi_layout_class_to_form(
-			self::add_divi_button_class_to_submit( $fallback_markup ),
-			$layout_display
+		$fallback_markup = self::add_divi_button_class_to_submit( $fallback_markup );
+		$fallback_markup = self::inject_custom_button_icon_attributes(
+			$fallback_markup,
+			self::get_custom_button_icon_html_attributes( $button_attrs )
 		);
+
+		return self::add_divi_layout_class_to_form( $fallback_markup, $layout_display );
 	}
 }

@@ -159,18 +159,36 @@
           "galleryCaptions": {}
         },
         "decoration": {
+          "sizing": {
+            "groupType": "group-item",
+            "item": {
+              "groupSlug": "designImage",
+              "attrName": "image.decoration.sizing",
+              "priority": 10,
+              "render": true,
+              "component": {
+                "type": "group",
+                "name": "divi/sizing",
+                "props": {
+                  "grouped": true,
+                  "fieldLabel": "Image",
+                  "dynamicSubgroupHostLayoutStyle": "moduleLayout"
+                }
+              }
+            }
+          },
           "border": {
             "groupType": "group-item",
             "item": {
               "groupSlug": "designImage",
               "attrName": "image.decoration.border",
-              "priority": 10,
+              "priority": 20,
               "render": true,
               "component": {
                 "type": "group",
                 "name": "divi/border",
                 "props": {
-                  "grouped": false,
+                  "grouped": true,
                   "fieldLabel": "Image"
                 }
               }
@@ -181,13 +199,13 @@
             "item": {
               "groupSlug": "designImage",
               "attrName": "image.decoration.border",
-              "priority": 20,
+              "priority": 30,
               "render": true,
               "component": {
                 "type": "group",
                 "name": "divi/box-shadow",
                 "props": {
-                  "grouped": false,
+                  "grouped": true,
                   "fieldLabel": "Image"
                 }
               }
@@ -198,7 +216,7 @@
             "item": {
               "groupSlug": "designImage",
               "attrName": "image.decoration.border",
-              "priority": 30,
+              "priority": 40,
               "render": true,
               "component": {
                 "type": "group",
@@ -623,7 +641,8 @@
           "name": "divi/composite",
           "props": {
             "groupLabel": "Image",
-            "dynamicSubgroupHost": true
+            "dynamicSubgroupHost": true,
+            "dynamicSubgroupHostLayoutStyle": "moduleLayout"
           }
         }
       },

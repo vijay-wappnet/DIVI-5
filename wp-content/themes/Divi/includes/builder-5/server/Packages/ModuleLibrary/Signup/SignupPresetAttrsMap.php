@@ -182,6 +182,17 @@ class SignupPresetAttrsMap {
 		unset( $map['button.decoration.button.decoration.font.textEffects__imageFill.width'] );
 		unset( $map['button.decoration.button.decoration.font.textEffects__strokeColor'] );
 		unset( $map['button.decoration.button.decoration.font.textEffects__strokeWidth'] );
+		unset( $map['button.decoration.button.decoration.font.font__weightFineTune'] );
+		unset( $map['button.decoration.button.decoration.font.font__opticalSizing'] );
+		unset( $map['button.decoration.button.decoration.font.font__lineThickness'] );
+		unset( $map['button.decoration.button.decoration.font.font__underlineOffset'] );
+		unset( $map['button.decoration.button.decoration.font.font__textWrap'] );
+		unset( $map['button.decoration.button.decoration.font.font__writingMode'] );
+		unset( $map['button.decoration.button.decoration.font.font__hyphens'] );
+		unset( $map['button.decoration.button.decoration.font.font__columnCount'] );
+		unset( $map['button.decoration.button.decoration.font.font__columnGap'] );
+		unset( $map['button.decoration.button.decoration.font.font__capitalization'] );
+		unset( $map['button.decoration.button.decoration.font.textEffects__strokePosition'] );
 		unset( $map['button.decoration.font.font__lineHeight'] );
 		unset( $map['customFields.advanced.fields'] );
 		unset( $map['customFields.advanced.notice'] );
@@ -242,6 +253,21 @@ class SignupPresetAttrsMap {
 					'attrName' => 'field.advanced.focus.font.font',
 					'preset'   => [ 'style' ],
 					'subName'  => 'color',
+				],
+				'content.decoration.bodyFont.dropCap.textShadow__horizontal' => [
+					'attrName' => 'content.decoration.bodyFont.dropCap.textShadow',
+					'preset'   => [ 'style' ],
+					'subName'  => 'horizontal',
+				],
+				'content.decoration.bodyFont.dropCap.textShadow__vertical' => [
+					'attrName' => 'content.decoration.bodyFont.dropCap.textShadow',
+					'preset'   => [ 'style' ],
+					'subName'  => 'vertical',
+				],
+				'content.decoration.bodyFont.dropCap.textShadow__blur' => [
+					'attrName' => 'content.decoration.bodyFont.dropCap.textShadow',
+					'preset'   => [ 'style' ],
+					'subName'  => 'blur',
 				],
 				'button.decoration.button__icon.enable'    => [
 					'attrName' => 'button.decoration.button',
@@ -494,7 +520,7 @@ class SignupPresetAttrsMap {
 				'preset'   => [ 'style' ],
 				'subName'  => 'fillType',
 			],
-			'field.decoration.font.textEffects__gradient' => [
+			'field.decoration.font.textEffects__gradient'  => [
 				'attrName' => 'field.decoration.font.textEffects',
 				'preset'   => [ 'style' ],
 				'subName'  => 'gradient',
@@ -854,7 +880,7 @@ class SignupPresetAttrsMap {
 				'preset'   => [ 'style' ],
 				'subName'  => 'fillType',
 			],
-			'radio.decoration.font.textEffects__gradient' => [
+			'radio.decoration.font.textEffects__gradient'  => [
 				'attrName' => 'radio.decoration.font.textEffects',
 				'preset'   => [ 'style' ],
 				'subName'  => 'gradient',
@@ -944,7 +970,7 @@ class SignupPresetAttrsMap {
 				'preset'   => [ 'style' ],
 				'subName'  => 'fillType',
 			],
-			'title.decoration.font.textEffects__gradient' => [
+			'title.decoration.font.textEffects__gradient'  => [
 				'attrName' => 'title.decoration.font.textEffects',
 				'preset'   => [ 'style' ],
 				'subName'  => 'gradient',

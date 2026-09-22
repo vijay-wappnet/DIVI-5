@@ -27,6 +27,7 @@ use ET\Builder\Packages\Module\Options\Loop\LoopUtils;
 use ET\Builder\Packages\Module\Options\Text\TextClassnames;
 use ET\Builder\Packages\ModuleLibrary\Blog\BlogModule;
 use ET\Builder\Packages\ModuleLibrary\PostSlider\PostSliderBackgroundStyles;
+use ET\Builder\Packages\ModuleLibrary\PostSlider\PostSliderModule;
 use ET\Builder\Packages\ModuleLibrary\ModuleRegistration;
 use ET\Builder\Packages\ModuleUtils\ModuleUtils;
 use ET\Builder\Packages\StyleLibrary\Utils\StyleDeclarations;
@@ -417,6 +418,24 @@ class FullwidthPostSliderModule implements DependencyInterface {
 											],
 										],
 									],
+									[
+										'componentName' => 'divi/common',
+										'props'         => [
+											'selector'            => "{$order_class} .et_pb_slide .et_pb_slide_description",
+											'attr'                => $attrs['module']['advanced']['text']['textShadow'] ?? [],
+											'declarationFunction' => [ ModuleUtils::class, 'remove_text_shadow_style_declaration' ],
+										],
+									],
+									[
+										'componentName' => 'divi/common',
+										'props'         => [
+											'selector'            => "{$order_class} .et_pb_slide .et_pb_slide_description",
+											'attr'                => $attrs['module']['advanced']['text']['text'] ?? [],
+											'declarationFunction' => function ( array $params ) use ( $attrs ) {
+												return PostSliderModule::slide_description_text_shadow_style_declaration( $params, $attrs );
+											},
+										],
+									],
 								],
 							],
 						]
@@ -624,8 +643,15 @@ class FullwidthPostSliderModule implements DependencyInterface {
 
 		$query = new \WP_Query( $query_args );
 
-		$slides   = [];
-		$post_ids = [];
+		$slides                             = [];
+		$post_ids                           = [];
+		$slide_background_layout_classnames = TextClassnames::get_background_layout_classnames( $attrs['module']['advanced']['text'] ?? [] );
+
+		// Compute slide-level background layout classnames once — all slides share the same
+		// module-level text color setting. The slider JS script reads these classes from the
+		// active slide after each transition to update the module wrapper's layout class, so
+		// every slide must carry them to prevent the JS from defaulting to et_pb_bg_layout_dark.
+		$slide_background_layout_classnames = TextClassnames::get_background_layout_classnames( $attrs['module']['advanced']['text'] ?? [] );
 
 		if ( $query->have_posts() ) {
 			while ( $query->have_posts() ) {
@@ -642,6 +668,9 @@ class FullwidthPostSliderModule implements DependencyInterface {
 				$slide_classnames->add( 'et_pb_media_alignment_center', $has_image_at_left_or_right );
 				$slide_classnames->add( 'et_pb_slide_with_no_image', ! has_post_thumbnail() || $show_image );
 				$slide_classnames->add( 'et_pb_post_slide-' . get_the_ID(), true );
+				$slide_classnames->add( $slide_background_layout_classnames, ! empty( $slide_background_layout_classnames ) );
+
+				$slide_classnames_value = $slide_classnames->value();
 
 				// Slide/Background Overlay.
 				$slide_overlay = 'on' === $show_slide_overlay ? HTMLUtility::render(
@@ -880,7 +909,7 @@ class FullwidthPostSliderModule implements DependencyInterface {
 					[
 						'tagName'           => 'div',
 						'attributes'        => [
-							'class' => $slide_classnames->value(),
+							'class' => $slide_classnames_value,
 							'style' => ! empty( $slide_style ) ? $slide_style : null,
 						],
 						'children'          => [

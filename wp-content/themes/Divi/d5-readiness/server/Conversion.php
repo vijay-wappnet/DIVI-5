@@ -58,6 +58,13 @@ class Conversion {
 		// e.g., flexType from module.advanced.flexType to module.decoration.sizing.flexType.
 		$converted_content = apply_filters( 'divi_framework_portability_import_migrated_post_content', $converted_content );
 
+		$normalized_custom_css = null;
+		if ( ! $is_d5_post ) {
+			$normalized_conversion = self::maybe_normalize_legacy_search_page_custom_css( $post_id, $converted_content );
+			$converted_content     = $normalized_conversion['postContent'];
+			$normalized_custom_css = $normalized_conversion['pageCustomCss'];
+		}
+
 		$d5_content = $converted_content;
 
 		$conversion_status = [
@@ -116,6 +123,14 @@ class Conversion {
 			} else {
 				// Store original D4 content for first-time conversions.
 				update_post_meta( $post_id, '_et_pb_divi_4_content', $post_content );
+
+				if ( is_string( $normalized_custom_css ) ) {
+					if ( '' === trim( $normalized_custom_css ) ) {
+						delete_post_meta( $post_id, '_et_pb_custom_css' );
+					} else {
+						update_post_meta( $post_id, '_et_pb_custom_css', wp_slash( $normalized_custom_css ) );
+					}
+				}
 			}
 
 			// Clear the modules conversation cache so the UI refreshes.
@@ -154,6 +169,210 @@ class Conversion {
 				'status'     => 'error',
 			];
 		}
+	}
+
+	/**
+	 * Move legacy Search page-level custom CSS into the matching converted Search block.
+	 *
+	 * Only simple top-level rules with a standalone `.et_pb_search_<n>` token are normalized here.
+	 * This keeps the fix scoped to the known legacy Search portability gap without rewriting generic
+	 * page-level custom CSS.
+	 *
+	 * @since ??
+	 *
+	 * @param int    $post_id      The post ID.
+	 * @param string $post_content Converted D5 post content.
+	 *
+	 * @return array{postContent:string,pageCustomCss:?string}
+	 */
+	private static function maybe_normalize_legacy_search_page_custom_css( int $post_id, string $post_content ): array {
+		$page_custom_css = get_post_meta( $post_id, '_et_pb_custom_css', true );
+
+		if ( ! is_string( $page_custom_css ) || '' === trim( $page_custom_css ) || false === strpos( $page_custom_css, '.et_pb_search_' ) ) {
+			return [
+				'postContent'   => $post_content,
+				'pageCustomCss' => is_string( $page_custom_css ) ? $page_custom_css : null,
+			];
+		}
+
+		$legacy_rules_by_index = self::get_legacy_search_page_custom_css_rules_by_index( $page_custom_css );
+		if ( empty( $legacy_rules_by_index ) ) {
+			return [
+				'postContent'   => $post_content,
+				'pageCustomCss' => $page_custom_css,
+			];
+		}
+
+		$blocks           = parse_blocks( $post_content );
+		$search_index     = -1;
+		$moved_rule_spans = [];
+		$updated_blocks   = self::move_legacy_search_page_custom_css_to_blocks( $blocks, $legacy_rules_by_index, $search_index, $moved_rule_spans );
+
+		if ( empty( $moved_rule_spans ) ) {
+			return [
+				'postContent'   => $post_content,
+				'pageCustomCss' => $page_custom_css,
+			];
+		}
+
+		return [
+			'postContent'   => serialize_blocks( $updated_blocks ),
+			'pageCustomCss' => self::remove_legacy_search_page_custom_css_rules( $page_custom_css, $moved_rule_spans ),
+		];
+	}
+
+	/**
+	 * Collect simple top-level Search page-level CSS rules keyed by their legacy Search index.
+	 *
+	 * @since ??
+	 *
+	 * @param string $page_custom_css Page-level custom CSS.
+	 *
+	 * @return array<int, array{css:array<int,string>,spans:array<int,array{offset:int,length:int}>}>
+	 */
+	private static function get_legacy_search_page_custom_css_rules_by_index( string $page_custom_css ): array {
+		$rules_by_index = [];
+		$matches        = [];
+
+		// Regex test: https://regex101.com/r/5rx166/1.
+		$pattern = '/(?P<rule>(?P<selectors>[^{}]+)\{(?P<body>[^{}]*)\})/m';
+
+		preg_match_all( $pattern, $page_custom_css, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE );
+
+		foreach ( $matches as $match ) {
+			$rule       = $match['rule'][0];
+			$offset     = $match['rule'][1];
+			$selectors  = trim( $match['selectors'][0] );
+			$body       = $match['body'][0];
+			$rule_index = [];
+
+			if ( '' === $selectors || '@' === $selectors[0] ) {
+				continue;
+			}
+
+			if ( 0 !== self::get_css_nesting_depth( $page_custom_css, $offset ) ) {
+				continue;
+			}
+
+			if ( false === strpos( $selectors, '.et_pb_search_' ) ) {
+				continue;
+			}
+
+			// Regex test: https://regex101.com/r/rd3ghF/1.
+			preg_match_all(
+				'/(?<![A-Za-z0-9_-])\.et_pb_search_(\d+)(?![A-Za-z0-9_-])/',
+				$selectors,
+				$rule_index
+			);
+
+			$matching_indexes = array_values( array_unique( $rule_index[1] ?? [] ) );
+
+			if ( 1 !== count( $matching_indexes ) || '' === trim( $body ) ) {
+				continue;
+			}
+
+			$search_index    = (int) $matching_indexes[0];
+			$normalized_rule = D5BuilderConversion::valueSanitization( trim( $rule ), 'custom_css_free_form', 'divi/search' );
+
+			if ( '' === trim( $normalized_rule ) ) {
+				continue;
+			}
+
+			if ( ! isset( $rules_by_index[ $search_index ] ) ) {
+				$rules_by_index[ $search_index ] = [
+					'css'   => [],
+					'spans' => [],
+				];
+			}
+
+			$rules_by_index[ $search_index ]['css'][]   = $normalized_rule;
+			$rules_by_index[ $search_index ]['spans'][] = [
+				'offset' => $offset,
+				'length' => strlen( $rule ),
+			];
+		}
+
+		return $rules_by_index;
+	}
+
+	/**
+	 * Count top-level brace depth before the given CSS offset.
+	 *
+	 * @since ??
+	 *
+	 * @param string $css    CSS to inspect.
+	 * @param int    $offset Offset to inspect up to.
+	 *
+	 * @return int
+	 */
+	private static function get_css_nesting_depth( string $css, int $offset ): int {
+		$prefix = substr( $css, 0, $offset );
+
+		return substr_count( $prefix, '{' ) - substr_count( $prefix, '}' );
+	}
+
+	/**
+	 * Move indexed Search rules into the matching Search block free-form CSS field.
+	 *
+	 * @since ??
+	 *
+	 * @param array $blocks                Parsed block tree.
+	 * @param array $legacy_rules_by_index Indexed Search CSS rules.
+	 * @param int   $search_index          Running Search module index.
+	 * @param array $moved_rule_spans      Collected spans that were moved.
+	 *
+	 * @return array
+	 */
+	private static function move_legacy_search_page_custom_css_to_blocks( array $blocks, array $legacy_rules_by_index, int &$search_index, array &$moved_rule_spans ): array {
+		foreach ( $blocks as &$block ) {
+			if ( 'divi/search' === ( $block['blockName'] ?? null ) ) {
+				++$search_index;
+
+				if ( isset( $legacy_rules_by_index[ $search_index ] ) ) {
+					$existing_free_form_css = $block['attrs']['css']['desktop']['value']['freeForm'] ?? '';
+					$legacy_free_form_css   = implode( "\n\n", $legacy_rules_by_index[ $search_index ]['css'] );
+					$combined_free_form_css = trim( implode( "\n\n", array_filter( [ $existing_free_form_css, $legacy_free_form_css ] ) ) );
+
+					$block['attrs']['css']['desktop']['value']['freeForm'] = $combined_free_form_css;
+					$moved_rule_spans                                       = array_merge( $moved_rule_spans, $legacy_rules_by_index[ $search_index ]['spans'] );
+				}
+			}
+
+			if ( ! empty( $block['innerBlocks'] ) ) {
+				$block['innerBlocks'] = self::move_legacy_search_page_custom_css_to_blocks( $block['innerBlocks'], $legacy_rules_by_index, $search_index, $moved_rule_spans );
+			}
+		}
+		unset( $block );
+
+		return $blocks;
+	}
+
+	/**
+	 * Remove CSS rules that were moved into Search block free-form CSS.
+	 *
+	 * @since ??
+	 *
+	 * @param string $page_custom_css Page-level custom CSS.
+	 * @param array  $moved_rule_spans Moved CSS spans.
+	 *
+	 * @return string
+	 */
+	private static function remove_legacy_search_page_custom_css_rules( string $page_custom_css, array $moved_rule_spans ): string {
+		usort(
+			$moved_rule_spans,
+			static function ( array $left, array $right ): int {
+				return $right['offset'] <=> $left['offset'];
+			}
+		);
+
+		foreach ( $moved_rule_spans as $span ) {
+			$page_custom_css = substr_replace( $page_custom_css, '', $span['offset'], $span['length'] );
+		}
+
+		// Regex test: https://regex101.com/r/RdhWFG/1.
+		$page_custom_css = preg_replace( "/(\r?\n[ \t]*){3,}/", "\n\n", $page_custom_css );
+
+		return is_string( $page_custom_css ) ? trim( $page_custom_css ) : '';
 	}
 
 

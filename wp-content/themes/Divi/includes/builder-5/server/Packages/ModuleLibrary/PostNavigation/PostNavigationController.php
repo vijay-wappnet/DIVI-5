@@ -131,9 +131,24 @@ class PostNavigationController extends RESTController {
 	 *
 	 * Endpoint permission callback as used in `register_rest_route()`.
 	 *
+	 * @param \WP_REST_Request $request REST request object.
+	 *
 	 * @return bool
 	 */
-	public static function index_permission(): bool {
-		return UserRole::can_current_user_use_visual_builder();
+	public static function index_permission( \WP_REST_Request $request ): bool {
+		if ( ! UserRole::can_current_user_use_visual_builder() ) {
+			return false;
+		}
+
+		$target_loop = sanitize_text_field( (string) $request->get_param( 'targetLoop' ) );
+
+		if ( '' !== $target_loop && 'main_query' !== $target_loop ) {
+			return true;
+		}
+
+		$post_id = (int) $request->get_param( 'postId' );
+
+		return 0 < $post_id
+			&& current_user_can( 'read_post', $post_id );
 	}
 }

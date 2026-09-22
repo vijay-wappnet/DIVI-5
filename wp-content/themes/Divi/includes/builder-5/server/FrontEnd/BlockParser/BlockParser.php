@@ -177,6 +177,7 @@ class BlockParser extends \WP_Block_Parser {
 			'divi/timeline-item'               => $base_namespace . 'TimelineItem\TimelineItemModule',
 			'divi/text'                        => $base_namespace . 'Text\TextModule',
 			'divi/toggle'                      => $base_namespace . 'Toggle\ToggleModule',
+			'divi/tooltip'                     => $base_namespace . 'Tooltip\TooltipModule',
 			'divi/video-slider-item'           => $base_namespace . 'VideoSliderItem\VideoSliderItemModule',
 			'divi/video-slider'                => $base_namespace . 'VideoSlider\VideoSliderModule',
 			'divi/video'                       => $base_namespace . 'Video\VideoModule',

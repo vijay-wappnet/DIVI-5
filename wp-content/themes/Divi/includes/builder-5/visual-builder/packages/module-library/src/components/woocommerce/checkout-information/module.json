@@ -159,14 +159,14 @@
           "propertySelectors": {
             "desktop": {
               "value": {
-                "border-radius": "{{selector}} form .form-row textarea.input-text:focus",
-                "border-style": "{{selector}} form .form-row textarea.input-text:focus"
+                "border-radius": "{{selector}} .checkout .form-row textarea.input-text:focus",
+                "border-style": "{{selector}} .checkout .form-row textarea.input-text:focus"
               }
             }
           }
         },
         "font": {
-          "selector": "{{selector}} form .form-row .input-text, {{selector}} form .form-row .input-text::placeholder, {{selector}} form .form-row .input-text::-webkit-input-placeholder, {{selector}} form .form-row .input-text::-moz-placeholder, {{selector}} form .form-row .input-text:-ms-input-placeholder",
+          "selector": "{{selector}} .checkout .form-row .input-text, {{selector}} .checkout .form-row .input-text::placeholder, {{selector}} .checkout .form-row .input-text::-webkit-input-placeholder, {{selector}} .checkout .form-row .input-text::-moz-placeholder, {{selector}} .checkout .form-row .input-text:-ms-input-placeholder",
           "important": {
             "desktop": {
               "value": {
@@ -178,7 +178,7 @@
           },
           "selectors": {
             "desktop": {
-              "hover": "{{selector}} form .input-text, {{selector}} form .input-text:hover::placeholder, {{selector}} form .input-text:hover::-webkit-input-placeholder, {{selector}} form .input-text:hover::-moz-placeholder, {{selector}} form .input-text:hover:-ms-input-placeholder"
+              "hover": "{{selector}} .checkout .input-text, {{selector}} .checkout .input-text:hover::placeholder, {{selector}} .checkout .input-text:hover::-webkit-input-placeholder, {{selector}} .checkout .input-text:hover::-moz-placeholder, {{selector}} .checkout .input-text:hover:-ms-input-placeholder"
             }
           }
         }
@@ -194,17 +194,17 @@
     "fieldLabel": {
       "label": "Field Label",
       "subName": "fieldLabel",
-      "selectorSuffix": " form .form-row label"
+      "selectorSuffix": " .checkout .form-row label"
     },
     "fields": {
       "label": "Fields",
       "subName": "fields",
-      "selectorSuffix": " form .input-text"
+      "selectorSuffix": " .checkout .input-text"
     },
     "fieldsPlaceholder": {
       "label": "Fields Placeholder",
       "subName": "fieldsPlaceholder",
-      "selectorSuffix": " form .form-row .input-text::placeholder, form .form-row .input-text::-webkit-input-placeholder, form .form-row .input-text::-moz-placeholder, form .form-row .input-text:-ms-input-placeholder"
+      "selectorSuffix": " .checkout .form-row .input-text::placeholder, .checkout .form-row .input-text::-webkit-input-placeholder, .checkout .form-row .input-text::-moz-placeholder, .checkout .form-row .input-text:-ms-input-placeholder"
     }
   },
   "settings": {

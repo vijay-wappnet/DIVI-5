@@ -769,18 +769,18 @@ function et_builder_sanitize_dynamic_content_fields( $data ) {
 	// get the post content, and unslash it.
 	$post_content_being_saved = wp_unslash( $data['post_content'] );
 
+	// if the current user can save unfiltered html, we can bail,
+	// because they can save whatever they want.
+	if ( current_user_can( 'unfiltered_html' ) ) {
+		return $data;
+	}
+
 	// get the dynamic content items.
 	$dynamic_content_items = et_builder_get_dynamic_contents( $post_content_being_saved );
 
 	// if there are no dynamic content items, we can bail.
 	if ( empty( $dynamic_content_items ) ) {
-		return $data;
-	}
-
-	// if the current user can save unfiltered html, we can bail,
-	// because they can save whatever they want.
-	if ( current_user_can( 'unfiltered_html' ) ) {
-		return $data;
+		return et_builder_disable_legacy_dynamic_content_html( $data );
 	}
 
 	// loop through the dynamic content items.
@@ -804,6 +804,30 @@ function et_builder_sanitize_dynamic_content_fields( $data ) {
 
 	// update the post content, and re-slash it.
 	$data['post_content'] = wp_slash( $post_content_being_saved );
+
+	return et_builder_disable_legacy_dynamic_content_html( $data );
+}
+
+/**
+ * Disable enable_html in legacy raw JSON dynamic payloads.
+ *
+ * @since 4.23.2
+ *
+ * @param array $data An array of slashed post data.
+ *
+ * @return array
+ */
+function et_builder_disable_legacy_dynamic_content_html( $data ) {
+	// Test Regex: https://regex101.com/r/ogR9t2/1.
+	$legacy_json_pattern = '/"enable_html"\s*:\s*"on"/';
+	$content             = wp_unslash( $data['post_content'] );
+	$has_legacy_json     = 1 === preg_match( $legacy_json_pattern, $content );
+
+	// Replace legacy enable_html flag.
+	if ( $has_legacy_json ) {
+		$content              = preg_replace( '/"enable_html"\s*:\s*"on"/', '"enable_html":"off"', $content );
+		$data['post_content'] = wp_slash( $content );
+	}
 
 	return $data;
 }

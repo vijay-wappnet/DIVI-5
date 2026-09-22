@@ -1,6 +1,7 @@
 <?php
 // phpcs:disable Generic.WhiteSpace.ScopeIndent.Incorrect, Generic.WhiteSpace.ScopeIndent.IncorrectExact -- Until we reformat this entire file, this rule makes reviewing PRs very difficult.
 
+use ET\Builder\Framework\Settings\PageSettings;
 use ET\Builder\FrontEnd\Assets\DynamicAssetsUtils;
 use ET\Builder\Packages\StyleLibrary\Utils\Utils;
 
@@ -8525,8 +8526,14 @@ function et_layout_body_class( $classes ) {
 		}
 	}
 
-	$page_custom_gutter = get_post_meta( get_the_ID(), '_et_pb_gutter_width', true );
-	$gutter_width = ! empty( $page_custom_gutter ) && is_singular() ? $page_custom_gutter :  (string) et_get_option( 'gutter_width', '3' );
+	if ( et_builder_d5_enabled() && is_singular() && class_exists( PageSettings::class ) ) {
+		$resolved_gutter = PageSettings::resolve_page_gutter_width( get_the_ID() );
+		$gutter_width    = (string) $resolved_gutter['value'];
+	} else {
+		$page_custom_gutter = get_post_meta( get_the_ID(), '_et_pb_gutter_width', true );
+		$gutter_width       = ! empty( $page_custom_gutter ) && is_singular() ? $page_custom_gutter : (string) et_get_option( 'gutter_width', '3' );
+	}
+
 	$classes[] = esc_attr( "et_pb_gutters{$gutter_width}" );
 
 	// Add the page builder class.

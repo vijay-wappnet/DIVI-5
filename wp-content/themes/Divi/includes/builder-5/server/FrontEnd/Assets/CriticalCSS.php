@@ -85,6 +85,13 @@ class CriticalCSS implements DependencyInterface {
 	private static $_above_the_fold = true;
 
 	/**
+	 * Last constructed instance for measurement-state reset.
+	 *
+	 * @var CriticalCSS|null
+	 */
+	private static $_instance = null;
+
+	/**
 	 * (current) section's horizontal offset.
 	 * This value is accumulated based on accumulation of previous sections' offset + current section's height.
 	 *
@@ -186,6 +193,74 @@ class CriticalCSS implements DependencyInterface {
 		'above_the_fold' => [],
 		'below_the_fold' => [],
 	];
+
+	/**
+	 * Constructor.
+	 *
+	 * @since ??
+	 */
+	public function __construct() {
+		self::$_instance = $this;
+	}
+
+	/**
+	 * Reset Critical CSS measurement state for test isolation.
+	 *
+	 * @since ??
+	 *
+	 * @return void
+	 */
+	public static function reset(): void {
+		if ( null !== self::$_instance ) {
+			self::$_instance->reset_measurement_state();
+			self::$_instance->reset_dynamic_assets_state();
+		} else {
+			self::$_above_the_fold = true;
+		}
+	}
+
+	/**
+	 * Reset accumulated measurement state without touching WordPress filters.
+	 *
+	 * @since ??
+	 *
+	 * @return void
+	 */
+	private function reset_measurement_state(): void {
+		self::$_above_the_fold                 = true;
+		$this->_section_horizontal_offset      = 0;
+		$this->_module_defaults                = [];
+		$this->_current_section                = '';
+		$this->_current_section_type           = 'regular';
+		$this->_current_row                    = '';
+		$this->_current_column                 = '';
+		$this->_current_row_inner              = '';
+		$this->_current_column_inner           = '';
+		$this->_layout_data                    = [];
+		$this->_rendered_modules               = [
+			'all'            => [],
+			'above_the_fold' => [],
+			'below_the_fold' => [],
+		];
+		$this->_above_the_fold_section_counter = 0;
+	}
+
+	/**
+	 * Reset dynamic-assets scratch state to defaults.
+	 *
+	 * Not part of reset_measurement_state() because get_above_the_fold_modules_for_dynamic_assets()
+	 * must retain _dynamic_assets after measurement reset until the deferred filter callback runs.
+	 *
+	 * @since ??
+	 *
+	 * @return void
+	 */
+	private function reset_dynamic_assets_state(): void {
+		$this->_dynamic_assets = [
+			'parsed_blocks'                  => [],
+			'above_the_fold_section_counter' => 0,
+		];
+	}
 
 	/**
 	 * Load Critical CSS class.
@@ -1217,22 +1292,7 @@ class CriticalCSS implements DependencyInterface {
 		BlockParserBlock::reset_order_index();
 
 		// Reset class' properties Dynamic Assets calculation so it doesn't affect the actual parse / render of the layout.
-		self::$_above_the_fold                 = true;
-		$this->_section_horizontal_offset      = 0;
-		$this->_module_defaults                = [];
-		$this->_current_section                = '';
-		$this->_current_section_type           = 'regular';
-		$this->_current_row                    = '';
-		$this->_current_column                 = '';
-		$this->_current_row_inner              = '';
-		$this->_current_column_inner           = '';
-		$this->_layout_data                    = [];
-		$this->_rendered_modules               = [
-			'all'            => [],
-			'above_the_fold' => [],
-			'below_the_fold' => [],
-		];
-		$this->_above_the_fold_section_counter = 0;
+		$this->reset_measurement_state();
 
 		if ( ! empty( $above_the_fold_modules ) ) {
 			// Register callback to return above and below the fold modules (in form of blocks) for dynamic assets.
@@ -1265,10 +1325,7 @@ class CriticalCSS implements DependencyInterface {
 		$below_the_fold_parsed_blocks = array_slice( $this->_dynamic_assets['parsed_blocks'], $this->_dynamic_assets['above_the_fold_section_counter'] );
 
 		// Once splitting is done, reset the value.
-		$this->_dynamic_assets = [
-			'parsed_blocks'                  => [],
-			'above_the_fold_section_counter' => 0,
-		];
+		$this->reset_dynamic_assets_state();
 
 		return (object) [
 			'atf' => serialize_blocks( $above_the_fold_parsed_blocks ),

@@ -152,25 +152,25 @@
         "decoration": {}
       },
       "styleProps": {
-        "selector": ".woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} form .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} form .form-row .input-text",
+        "selector": ".woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} .checkout .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} .checkout .form-row .input-text",
         "background": {
-          "selector": ".woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} form .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} form .form-row .input-text"
+          "selector": ".woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} .checkout .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} .checkout .form-row .input-text"
         },
         "border": {
           "propertySelectors": {
             "desktop": {
               "value": {
-                "border-radius": ".woocommerce {{selector}} .select2-container--default.select2-container--open .select2-selection--single,.woocommerce {{selector}} form .form-row input.input-text:focus, {{selector}} .select2-container--default.select2-container--open .select2-selection--single:focus, {{selector}} form .form-row .input-text:focus",
-                "border-style": ".woocommerce {{selector}} .select2-container--default.select2-container--open .select2-selection--single,.woocommerce {{selector}} form .form-row .input-text:focus, {{selector}} .select2-container--default.select2-container--open .select2-selection--single:focus, {{selector}} form .form-row .input-text:focus"
+                "border-radius": ".woocommerce {{selector}} .select2-container--default.select2-container--open .select2-selection--single,.woocommerce {{selector}} .checkout .form-row input.input-text:focus, {{selector}} .select2-container--default.select2-container--open .select2-selection--single:focus, {{selector}} .checkout .form-row .input-text:focus",
+                "border-style": ".woocommerce {{selector}} .select2-container--default.select2-container--open .select2-selection--single,.woocommerce {{selector}} .checkout .form-row .input-text:focus, {{selector}} .select2-container--default.select2-container--open .select2-selection--single:focus, {{selector}} .checkout .form-row .input-text:focus"
               }
             }
           }
         },
         "boxShadow": {
-          "selector": "{{selector}} .select2-container--default .select2-selection--single,{{selector}} form .form-row input.input-text"
+          "selector": "{{selector}} .select2-container--default .select2-selection--single,{{selector}} .checkout .form-row input.input-text"
         },
         "font": {
-          "selector": ".woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} form .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} form .form-row .input-text",
+          "selector": ".woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} .checkout .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} .checkout .form-row .input-text",
           "important": {
             "desktop": {
               "value": {
@@ -185,13 +185,13 @@
           "propertySelectors": {
             "desktop": {
               "value": {
-                "color": ".woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} form .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} form .form-row .input-text"
+                "color": ".woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} .checkout .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} .checkout .form-row .input-text"
               }
             }
           }
         },
         "spacing": {
-          "selector": ".woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} form .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} form .form-row .input-text",
+          "selector": ".woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} .checkout .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} .checkout .form-row .input-text",
           "important": {
             "desktop": {
               "value": {
@@ -203,8 +203,8 @@
           "propertySelectors": {
             "desktop": {
               "value": {
-                "margin": ".woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} form .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} form .form-row .input-text",
-                "padding": ".woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} form .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} form .form-row .input-text"
+                "margin": ".woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} .checkout .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} .checkout .form-row .input-text",
+                "padding": ".woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} .checkout .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} .checkout .form-row .input-text"
               }
             }
           }
@@ -416,12 +416,12 @@
     "fieldLabel": {
       "label": "Field Label",
       "subName": "fieldLabel",
-      "selectorSuffix": " form .form-row label"
+      "selectorSuffix": " .checkout .form-row label"
     },
     "formField": {
       "label": "Fields",
       "subName": "formField",
-      "selectorSuffix": " .select2-container--default .select2-selection--single, form .form-row .input-text"
+      "selectorSuffix": " .select2-container--default .select2-selection--single, .checkout .form-row .input-text"
     },
     "formNotice": {
       "label": "Form Notice",

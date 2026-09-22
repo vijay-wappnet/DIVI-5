@@ -42,8 +42,8 @@
       "sizing": {
         "desktop": {
           "value": {
-            "width": "max-content",
-            "maxWidth": "80vw"
+            "width": "auto",
+            "maxWidth": "none"
           }
         }
       },

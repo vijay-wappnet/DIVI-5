@@ -103,6 +103,7 @@ class ScriptData {
 			'diviModuleSignupData'              => 'divi-module-library-script-signup',
 			'diviModuleLottieData'              => 'divi-module-library-script-lottie',
 			'diviModuleGroupCarouselData'       => 'divi-module-library-script-group-carousel',
+			'diviModuleTooltipData'             => 'divi-module-library-script-tooltip',
 			'diviElementBackgroundParallaxData' => 'divi-module-script-background-parallax',
 			'diviElementBackgroundVideoData'    => 'divi-module-script-background-video',
 			'diviElementMultiViewData'          => MultiViewAssets::script_handle(),
@@ -169,6 +170,7 @@ class ScriptData {
 		'signup'              => 'diviModuleSignupData',
 		'lottie'              => 'diviModuleLottieData',
 		'group_carousel'      => 'diviModuleGroupCarouselData',
+		'tooltip'             => 'diviModuleTooltipData',
 	];
 
 	/**

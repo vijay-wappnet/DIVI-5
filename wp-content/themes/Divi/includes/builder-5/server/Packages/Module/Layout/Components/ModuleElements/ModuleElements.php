@@ -1006,12 +1006,24 @@ class ModuleElements {
 		switch ( $element_type ) {
 			case 'heading':
 				// `heading` tagName changes based on the selected heading level on `decoration.font.font` attribute.
-				$tag_name = tag_escape( $element_attr['decoration']['font']['font']['desktop']['value']['headingLevel'] ?? $tag_name );
+				// Use runtime attrs for HTML structure; style attrs may have headingLevel stripped for CSS (#48678).
+				$runtime_element_attr = $this->runtime_module_attrs[ $attr_name ] ?? [];
+				$tag_name             = tag_escape(
+					$runtime_element_attr['decoration']['font']['font']['desktop']['value']['headingLevel']
+					?? $element_attr['decoration']['font']['font']['desktop']['value']['headingLevel']
+					?? $tag_name
+				);
 				break;
 
 			case 'headingLink':
 				// `headingLink` tagName changes based on the selected heading level on `decoration.font.font` attribute.
-				$tag_name = tag_escape( $element_attr['decoration']['font']['font']['desktop']['value']['headingLevel'] ?? $tag_name );
+				// Use runtime attrs for HTML structure; style attrs may have headingLevel stripped for CSS (#48678).
+				$runtime_element_attr = $this->runtime_module_attrs[ $attr_name ] ?? [];
+				$tag_name             = tag_escape(
+					$runtime_element_attr['decoration']['font']['font']['desktop']['value']['headingLevel']
+					?? $element_attr['decoration']['font']['font']['desktop']['value']['headingLevel']
+					?? $tag_name
+				);
 
 				// $attr_sub_name is automatically set for `headingLink` type element.
 				$attr_sub_name = 'text';

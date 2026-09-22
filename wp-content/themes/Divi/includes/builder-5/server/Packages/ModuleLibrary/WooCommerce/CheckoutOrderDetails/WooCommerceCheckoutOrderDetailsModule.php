@@ -185,12 +185,23 @@ class WooCommerceCheckoutOrderDetailsModule implements DependencyInterface {
 			);
 		}
 
+		WooCommerceUtils::start_isolated_checkout_section_render();
+
+		$initial_buffer_level = ob_get_level();
 		ob_start();
 
-		// Render the WooCommerce checkout order details.
-		\WC_Shortcode_Checkout::output( [] );
+		try {
+			// Render the WooCommerce checkout order details.
+			\WC_Shortcode_Checkout::output( [] );
 
-		$markup = ob_get_clean();
+			$markup = ob_get_clean();
+		} finally {
+			if ( ob_get_level() > $initial_buffer_level ) {
+				ob_end_clean();
+			}
+
+			WooCommerceUtils::stop_isolated_checkout_section_render();
+		}
 
 		// Remove dummy cart contents filter.
 		if ( $is_cart_empty && $is_preview_context ) {

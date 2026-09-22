@@ -80,6 +80,133 @@ class ListFontStyle {
 	}
 
 	/**
+	 * Get List item spacing CSS declaration based on given attributes value.
+	 *
+	 * @since ??
+	 *
+	 * @param array $args {
+	 *     Optional. An array of arguments for customizing the list spacing declaration.
+	 *
+	 *     @type string     $attrValue    The attribute value (breakpoint > state > value) for list spacing.
+	 *     @type bool|array $important    Optional. Whether to apply "!important" flag to style declarations. Default `false`.
+	 *     @type string     $returnType   Optional. The return type of the function. Default `'string'`.
+	 * }
+	 *
+	 * @return array|string The generated list item spacing declaration.
+	 */
+	public static function list_item_spacing_declaration( array $args ) {
+		$args = wp_parse_args(
+			$args,
+			[
+				'important'  => false,
+				'returnType' => 'string',
+			]
+		);
+
+		$attr_value  = $args['attrValue'];
+		$important   = $args['important'];
+		$return_type = $args['returnType'];
+
+		$style_declarations = new StyleDeclarations(
+			[
+				'important'  => $important,
+				'returnType' => $return_type,
+			]
+		);
+
+		if ( isset( $attr_value['listSpacing'] ) ) {
+			$style_declarations->add( 'margin-block-end', $attr_value['listSpacing'] );
+		}
+
+		return $style_declarations->value();
+	}
+
+	/**
+	 * Get paragraph spacing CSS declaration based on given attributes value.
+	 *
+	 * @since ??
+	 *
+	 * @param array $args {
+	 *     Optional. An array of arguments for customizing the paragraph spacing declaration.
+	 *
+	 *     @type string     $attrValue    The attribute value (breakpoint > state > value) for paragraph spacing.
+	 *     @type bool|array $important    Optional. Whether to apply "!important" flag to style declarations. Default `false`.
+	 *     @type string     $returnType   Optional. The return type of the function. Default `'string'`.
+	 * }
+	 *
+	 * @return array|string The generated paragraph spacing declaration.
+	 */
+	public static function paragraph_spacing_declaration( array $args ) {
+		$args = wp_parse_args(
+			$args,
+			[
+				'important'  => false,
+				'returnType' => 'string',
+			]
+		);
+
+		$attr_value  = $args['attrValue'];
+		$important   = $args['important'];
+		$return_type = $args['returnType'];
+
+		$style_declarations = new StyleDeclarations(
+			[
+				'important'  => $important,
+				'returnType' => $return_type,
+			]
+		);
+
+		if ( isset( $attr_value['paragraphSpacing'] ) ) {
+			$style_declarations->add( 'margin-block-end', $attr_value['paragraphSpacing'] );
+			$style_declarations->add( 'padding-bottom', 'unset' );
+		}
+
+		return $style_declarations->value();
+	}
+
+	/**
+	 * Get paragraph spacing reset CSS declaration for the last paragraph.
+	 *
+	 * @since ??
+	 *
+	 * @param array $args {
+	 *     Optional. An array of arguments for customizing the paragraph spacing reset declaration.
+	 *
+	 *     @type string     $attrValue    The attribute value (breakpoint > state > value) for paragraph spacing.
+	 *     @type bool|array $important    Optional. Whether to apply "!important" flag to style declarations. Default `false`.
+	 *     @type string     $returnType   Optional. The return type of the function. Default `'string'`.
+	 * }
+	 *
+	 * @return array|string The generated paragraph spacing reset declaration.
+	 */
+	public static function paragraph_spacing_last_paragraph_reset_declaration( array $args ) {
+		$args = wp_parse_args(
+			$args,
+			[
+				'important'  => false,
+				'returnType' => 'string',
+			]
+		);
+
+		$attr_value  = $args['attrValue'];
+		$important   = $args['important'];
+		$return_type = $args['returnType'];
+
+		$style_declarations = new StyleDeclarations(
+			[
+				'important'  => $important,
+				'returnType' => $return_type,
+			]
+		);
+
+		if ( isset( $attr_value['paragraphSpacing'] ) ) {
+			$style_declarations->add( 'margin-block-end', '0' );
+		}
+
+		return $style_declarations->value();
+	}
+
+	/**
 	 * Generate CSS style declaration for list items.
 	 *
 	 * @since ??
@@ -266,6 +393,45 @@ class ListFontStyle {
 				array_push( $children, ...$children_list );
 			} elseif ( $children_list ) {
 				$children .= $children_list;
+			}
+
+			$children_list_item_spacing = Utils::style_statements(
+				[
+					'selectors'              => ! empty( $selectors ) ? $selectors : [ 'desktop' => [ 'value' => $selector ] ],
+					'selectorFunction'       => function ( $params ) use ( $selector_function, $selector ) {
+						$base_selector = $selector_function
+							? call_user_func( $selector_function, $params )
+							: ( $params['selector'] ?? $selector );
+
+						// Handle comma-separated selectors by splitting and appending ' > *' to each.
+						$individual_selectors = array_map( 'trim', explode( ',', $base_selector ?? '' ) );
+						$combined_selectors   = array_map(
+							function ( $sel ) {
+								return $sel . ' > *';
+							},
+							$individual_selectors
+						);
+
+						return implode( ', ', $combined_selectors );
+					},
+					'propertySelectors'      => $property_selectors['list'] ?? [],
+					'declarationFunction'    => function ( $params ) {
+						return self::list_item_spacing_declaration( $params );
+					},
+					'attr'                   => $attr['list'],
+					'important'              => is_bool( $important ) ? $important : ( $important['list'] ?? [] ),
+					'orderClass'             => $order_class,
+					'isInsideStickyModule'   => $is_inside_sticky_module,
+					'stickyParentOrderClass' => $sticky_parent_order_class,
+					'returnType'             => $args['returnType'],
+					'atRules'                => $at_rules,
+				]
+			);
+
+			if ( $children_list_item_spacing && $return_as_array ) {
+				array_push( $children, ...$children_list_item_spacing );
+			} elseif ( $children_list_item_spacing ) {
+				$children .= $children_list_item_spacing;
 			}
 
 			$children_lis_item = Utils::style_statements(

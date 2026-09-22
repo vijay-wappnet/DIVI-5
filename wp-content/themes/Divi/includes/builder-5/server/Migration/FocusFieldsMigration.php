@@ -177,9 +177,7 @@ class FocusFieldsMigration extends MigrationContentBase {
 			add_filter(
 				'the_content',
 				function ( $the_content ) {
-					$new_content = self::_migrate_block_content( $the_content );
-					remove_filter( 'the_content', __FUNCTION__ );
-					return $new_content;
+					return self::_migrate_block_content( $the_content );
 				},
 				8 // BEFORE do_blocks().
 			);

@@ -116,6 +116,11 @@ class TextEffectsPresetAttrsMap {
 				'preset'   => [ 'style' ],
 				'subName'  => 'strokeColor',
 			],
+			"{$attr_name}.textEffects__strokePosition"     => [
+				'attrName' => "{$attr_name}.textEffects",
+				'preset'   => [ 'style' ],
+				'subName'  => 'strokePosition',
+			],
 			"{$attr_name}.textEffects__strokeWidth"        => [
 				'attrName' => "{$attr_name}.textEffects",
 				'preset'   => [ 'style' ],

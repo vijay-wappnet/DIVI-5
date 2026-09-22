@@ -413,7 +413,12 @@ class DynamicAssetsListBuilder {
 		$specialty_used = $this->_is_feature_detected( 'specialty_section' );
 
 		// Check for custom gutter widths.
-		$page_custom_gutter = is_singular()
+		// Use cache-state ownership instead of template conditionals (e.g. is_singular())
+		// so gutter asset selection stays aligned with the resolver in generation contexts.
+		// Require a positive post ID; -1 is the placeholder used when no post is resolved
+		// (set in DynamicAssets::pre_initial_setup), and 0 is WordPress's default invalid ID.
+		// Both would produce a wrong gutter lookup, so they must be excluded.
+		$page_custom_gutter = $this->cache_state->post_id > 0
 			? [ $this->_get_effective_page_gutter_width( $this->cache_state->post_id ) ]
 			: [];
 

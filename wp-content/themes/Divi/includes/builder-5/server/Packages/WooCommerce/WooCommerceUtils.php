@@ -12,6 +12,7 @@
 
 namespace ET\Builder\Packages\WooCommerce;
 
+use ET\Builder\Framework\UserRole\UserRole;
 use ET\Builder\Framework\Utility\ArrayUtility;
 use ET\Builder\Framework\Utility\Conditions;
 use ET\Builder\FrontEnd\Assets\DetectFeature;
@@ -132,6 +133,64 @@ class WooCommerceUtils {
 	 * @var array|null
 	 */
 	private static $_current_rest_request_query_params = [];
+
+	/**
+	 * Nesting depth for isolated checkout section renders.
+	 *
+	 * When greater than zero, checkout modules should reuse the shared
+	 * checkout template without emitting a real outer checkout form.
+	 *
+	 * @since ??
+	 *
+	 * @var int
+	 */
+	private static $_isolated_checkout_section_render_depth = 0;
+
+	/**
+	 * Mark the current checkout render as an isolated section render.
+	 *
+	 * @since ??
+	 *
+	 * @return void
+	 */
+	public static function start_isolated_checkout_section_render(): void {
+		++self::$_isolated_checkout_section_render_depth;
+	}
+
+	/**
+	 * Clear the current isolated checkout section render marker.
+	 *
+	 * @since ??
+	 *
+	 * @return void
+	 */
+	public static function stop_isolated_checkout_section_render(): void {
+		if ( 0 < self::$_isolated_checkout_section_render_depth ) {
+			--self::$_isolated_checkout_section_render_depth;
+		}
+	}
+
+	/**
+	 * Reset the isolated checkout section render marker.
+	 *
+	 * @since ??
+	 *
+	 * @return void
+	 */
+	public static function reset_isolated_checkout_section_render(): void {
+		self::$_isolated_checkout_section_render_depth = 0;
+	}
+
+	/**
+	 * Determine whether the current checkout render is section-only.
+	 *
+	 * @since ??
+	 *
+	 * @return bool
+	 */
+	public static function is_isolated_checkout_section_render(): bool {
+		return 0 < self::$_isolated_checkout_section_render_depth;
+	}
 
 	/**
 	 * Check if current global $post uses builder / layout block, not `product` CPT, and contains
@@ -2233,6 +2292,36 @@ class WooCommerceUtils {
 	 */
 	public static function validate_product_id( $param, $request = null ): bool { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter -- WordPress REST API callback signature requirement.
 		return 'current' === $param || 'latest' === $param || ( is_numeric( $param ) && absint( $param ) > 0 );
+	}
+
+	/**
+	 * Determine whether the current user can render the requested product.
+	 *
+	 * Published products are public. Non-published products require the object-level
+	 * capability WordPress maps for reading that product.
+	 *
+	 * @since ??
+	 *
+	 * @param mixed $product_id Product ID or the `current`/`latest` selector.
+	 *
+	 * @return bool True when the requested product may be rendered.
+	 */
+	public static function can_current_user_render_product( $product_id ): bool {
+		if ( ! UserRole::can_current_user_use_visual_builder() ) {
+			return false;
+		}
+
+		$product = self::get_product( (string) $product_id );
+
+		// Leave invalid and missing products to argument validation and the controller's response.
+		if ( ! $product ) {
+			return true;
+		}
+
+		$product_id     = $product->get_id();
+		$product_status = get_post_status( $product_id );
+
+		return 'publish' === $product_status || current_user_can( 'read_post', $product_id );
 	}
 
 	/**

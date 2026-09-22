@@ -67,7 +67,7 @@
     "include_categories": "post.advanced.categories.*",
     "meta_date": "post.advanced.dateFormat.*",
     "show_thumbnail": "image.advanced.enable.*",
-    "show_content": "content.advanced.enable.*",
+    "show_content": "post.advanced.excerptContent.*",
     "use_manual_excerpt": "post.advanced.excerptManual.*",
     "excerpt_length": "post.advanced.excerptLength.*",
     "show_more": "readMore.advanced.enable.*",

@@ -70,7 +70,7 @@ class PostNavigationPresetAttrsMap {
 				'preset'   => [ 'style' ],
 				'subName'  => 'color',
 			],
-			'links.decoration.background__gradient'  => [
+			'links.decoration.background__gradient'        => [
 				'attrName' => 'links.decoration.background',
 				'preset'   => [ 'style', 'html' ],
 				'subName'  => 'gradient',
@@ -323,7 +323,7 @@ class PostNavigationPresetAttrsMap {
 				'attrName' => 'module.meta.meta.forceVisible',
 				'preset'   => 'meta',
 			],
-			'module.meta.meta.tocListHeading'                => [
+			'module.meta.meta.tocListHeading'              => [
 				'attrName' => 'module.meta.meta.tocListHeading',
 				'preset'   => 'meta',
 			],
@@ -337,6 +337,16 @@ class PostNavigationPresetAttrsMap {
 				'preset'   => [ 'style' ],
 				'subName'  => 'weight',
 			],
+			'links.decoration.font.font__weightFineTune'   => [
+				'attrName' => 'links.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'weightFineTune',
+			],
+			'links.decoration.font.font__opticalSizing'    => [
+				'attrName' => 'links.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'opticalSizing',
+			],
 			'links.decoration.font.font__style'            => [
 				'attrName' => 'links.decoration.font.font',
 				'preset'   => [ 'style' ],
@@ -346,6 +356,16 @@ class PostNavigationPresetAttrsMap {
 				'attrName' => 'links.decoration.font.font',
 				'preset'   => [ 'style' ],
 				'subName'  => 'lineColor',
+			],
+			'links.decoration.font.font__lineThickness'    => [
+				'attrName' => 'links.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'lineThickness',
+			],
+			'links.decoration.font.font__underlineOffset'  => [
+				'attrName' => 'links.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'underlineOffset',
 			],
 			'links.decoration.font.font__lineStyle'        => [
 				'attrName' => 'links.decoration.font.font',
@@ -371,6 +391,36 @@ class PostNavigationPresetAttrsMap {
 				'attrName' => 'links.decoration.font.font',
 				'preset'   => [ 'style' ],
 				'subName'  => 'lineHeight',
+			],
+			'links.decoration.font.font__capitalization'   => [
+				'attrName' => 'links.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'capitalization',
+			],
+			'links.decoration.font.font__textWrap'         => [
+				'attrName' => 'links.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'textWrap',
+			],
+			'links.decoration.font.font__writingMode'      => [
+				'attrName' => 'links.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'writingMode',
+			],
+			'links.decoration.font.font__hyphens'          => [
+				'attrName' => 'links.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'hyphens',
+			],
+			'links.decoration.font.font__columnCount'      => [
+				'attrName' => 'links.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnCount',
+			],
+			'links.decoration.font.font__columnGap'        => [
+				'attrName' => 'links.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnGap',
 			],
 			'links.decoration.font.textShadow__style'      => [
 				'attrName' => 'links.decoration.font.textShadow',
@@ -803,7 +853,7 @@ class PostNavigationPresetAttrsMap {
 				'preset'   => [ 'style' ],
 				'subName'  => 'fillType',
 			],
-			'links.decoration.font.textEffects__gradient' => [
+			'links.decoration.font.textEffects__gradient'  => [
 				'attrName' => 'links.decoration.font.textEffects',
 				'preset'   => [ 'style' ],
 				'subName'  => 'gradient',
@@ -887,6 +937,11 @@ class PostNavigationPresetAttrsMap {
 				'attrName' => 'links.decoration.font.textEffects',
 				'preset'   => [ 'style' ],
 				'subName'  => 'strokeWidth',
+			],
+			'links.decoration.font.textEffects__strokePosition' => [
+				'attrName' => 'links.decoration.font.textEffects',
+				'preset'   => [ 'style' ],
+				'subName'  => 'strokePosition',
 			],
 			'module.advanced.htmlAttributes__class'        => [
 				'attrName' => 'module.advanced.htmlAttributes',

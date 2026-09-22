@@ -409,6 +409,15 @@
               "hover": "{{selector}}.et_pb_menu .et_pb_menu__menu > nav > ul > li > a"
             }
           }
+        },
+        "border": {
+          "selectors": {
+            "desktop": {
+              "value": "{{selector}}.et_pb_menu .et_pb_menu__menu > nav > ul > li > a",
+              "hover": "{{selector}}.et_pb_menu .et_pb_menu__menu > nav > ul > li > a",
+              "active": "{{selector}}.et_pb_menu .et_pb_menu__menu > nav > ul > li > a"
+            }
+          }
         }
       },
       "settings": {

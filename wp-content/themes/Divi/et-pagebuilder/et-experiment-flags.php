@@ -89,6 +89,9 @@ function et_get_experiment_flag( string $flag = '' ) {
 
 		// Flag to display debugging information for user activity tracking.
 		'userActivity'             => false,
+		
+		// Flag to enable the AI Agent debug features.
+		'aiAgent'                  => false,
 	];
 
 	/**

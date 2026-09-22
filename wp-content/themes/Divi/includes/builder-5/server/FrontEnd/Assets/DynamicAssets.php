@@ -445,7 +445,7 @@ class DynamicAssets implements DependencyInterface {
 
 			$this->_store->detection()->early_blocks     = $used_modules['blocks'] ?? [];
 			$this->_store->detection()->early_shortcodes = $used_modules['shortcodes'] ?? [];
-		} else {
+		} elseif ( DynamicAssetsUtils::should_run_detection() ) {
 			// If there are no cached modules, parse the post content to retrieve used blocks.
 			$used_modules = $this->_detection->get_early_modules( $this->_content->get_all_content() );
 
@@ -483,11 +483,13 @@ class DynamicAssets implements DependencyInterface {
 		// Cache has_excerpt_content_on early so StaticCSS can use it.
 		// Check cached features first to avoid unnecessary detection when cached.
 		// The result is automatically cached in detection_state->early_attributes by get_cached_or_detect_feature().
-		$this->_detection->get_cached_or_detect_feature(
-			'excerpt_content_on',
-			[ DetectFeature::class, 'has_excerpt_content_on' ],
-			[ $this->_content->get_all_content(), $this->_store->detection()->options ]
-		);
+		if ( DynamicAssetsUtils::should_run_detection() ) {
+			$this->_detection->get_cached_or_detect_feature(
+				'excerpt_content_on',
+				[ DetectFeature::class, 'has_excerpt_content_on' ],
+				[ $this->_content->get_all_content(), $this->_store->detection()->options ]
+			);
+		}
 	}
 
 	/**
@@ -706,6 +708,10 @@ class DynamicAssets implements DependencyInterface {
 	public function process_late_detection_and_output() {
 		// Skip processing for non-content requests (static files, etc.).
 		if ( ! DynamicAssetsUtils::is_dynamic_front_end_request() ) {
+			return;
+		}
+
+		if ( ! DynamicAssetsUtils::should_run_detection() ) {
 			return;
 		}
 

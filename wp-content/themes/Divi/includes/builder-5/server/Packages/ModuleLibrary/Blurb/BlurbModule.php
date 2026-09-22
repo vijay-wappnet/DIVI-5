@@ -407,6 +407,32 @@ class BlurbModule implements DependencyInterface {
 	}
 
 	/**
+	 * Map D5 sizing alignSelf values to legacy alignment values used by Blurb declarations.
+	 *
+	 * @since ??
+	 *
+	 * @param string $align_self The alignSelf value.
+	 *
+	 * @return string The alignment value, or empty string when unsupported.
+	 */
+	private static function align_self_to_alignment( string $align_self ): string {
+		switch ( $align_self ) {
+			case 'flex-start':
+				return 'left';
+
+			case 'end':
+				return 'right';
+
+			case 'center':
+			case 'stretch':
+				return 'center';
+
+			default:
+				return '';
+		}
+	}
+
+	/**
 	 * Declare icon-mode sizing alignment styles for Blurb module.
 	 *
 	 * @since ??
@@ -414,15 +440,21 @@ class BlurbModule implements DependencyInterface {
 	 * @param array $params {
 	 *     An array of arguments.
 	 *
-	 *     @type array $attrValue The sizing value that may include `alignment`.
+	 *     @type array $attrValue The sizing value that may include `alignSelf`.
 	 * }
 	 *
 	 * @return string The icon-mode sizing alignment declaration.
 	 */
 	public static function icon_sizing_alignment_style_declaration( array $params ): string {
-		$alignment = $params['attrValue']['alignment'] ?? '';
+		$align_self = $params['attrValue']['alignSelf'] ?? '';
 
-		if ( ! is_string( $alignment ) || '' === $alignment ) {
+		if ( ! is_string( $align_self ) || '' === $align_self ) {
+			return '';
+		}
+
+		$alignment = self::align_self_to_alignment( $align_self );
+
+		if ( '' === $alignment ) {
 			return '';
 		}
 
@@ -441,15 +473,21 @@ class BlurbModule implements DependencyInterface {
 	 * @param array $params {
 	 *     An array of arguments.
 	 *
-	 *     @type array $attrValue The sizing value that may include `alignment`.
+	 *     @type array $attrValue The sizing value that may include `alignSelf`.
 	 * }
 	 *
 	 * @return string The image-mode sizing alignment declaration.
 	 */
 	public static function image_sizing_alignment_style_declaration( array $params ): string {
-		$alignment = $params['attrValue']['alignment'] ?? '';
+		$align_self = $params['attrValue']['alignSelf'] ?? '';
 
-		if ( ! is_string( $alignment ) || '' === $alignment ) {
+		if ( ! is_string( $align_self ) || '' === $align_self ) {
+			return '';
+		}
+
+		$alignment = self::align_self_to_alignment( $align_self );
+
+		if ( '' === $alignment ) {
 			return '';
 		}
 
@@ -606,6 +644,10 @@ class BlurbModule implements DependencyInterface {
 			// Get src from innerContent.
 			$src = $attr_value['src'] ?? '';
 
+			if ( ! is_string( $src ) ) {
+				$src = '';
+			}
+
 			// Check if image is SVG using utility that handles query params and fragments.
 			// Skip utility call if src is empty for performance.
 			$is_src_svg = ! empty( $src ) && ImageUtils::is_file_extension( $src, 'svg' );
@@ -678,6 +720,11 @@ class BlurbModule implements DependencyInterface {
 		$style_group = $args['styleGroup'] ?? 'module';
 		$use_icon    = 'on' === ( $attrs['imageIcon']['innerContent']['desktop']['value']['useIcon'] ?? 'off' );
 
+		$blurb_image_container_selector = "{$args['orderClass']} > .et_pb_blurb_content > .et_pb_main_blurb_image";
+		$blurb_image_wrap_selector      = "{$blurb_image_container_selector} .et_pb_image_wrap";
+		$blurb_image_only_mode_selector = "{$blurb_image_wrap_selector}.et_pb_only_image_mode_wrap";
+		$blurb_icon_selector            = "{$blurb_image_container_selector} .et-pb-icon";
+
 		// Default SizingStyle uses the imageIcon selector that includes `.et-pb-icon` and `img`. Strip width from that
 		// pass when rendering preset/group styles (useIcon is not in preset attrs) or when the module uses icon mode.
 		// Keep width in module + image mode, while always stripping maxWidth/minWidth so icon font-size data never
@@ -736,7 +783,7 @@ class BlurbModule implements DependencyInterface {
 
 		// Create icon width style props if icon width styles should be rendered.
 		$render_icon_width_props = $render_icon_width_style_declaration ? [
-			'selector'            => "{$args['orderClass']} .et-pb-icon",
+			'selector'            => $blurb_icon_selector,
 			'attr'                => $attrs['imageIcon']['decoration']['sizing'] ?? [],
 			'declarationFunction' => [ self::class, 'icon_width_style_declaration' ],
 		] : [];
@@ -745,8 +792,11 @@ class BlurbModule implements DependencyInterface {
 		// Apply selector to both parent and wrapper only for fixed px widths.
 		// Relative units (%, em, rem, etc.) must target wrapper only to avoid compounded max-width.
 		$image_width_selector = ( $is_placement_top && $is_image_svg && ! $has_relative_image_width )
-			? "{$args['orderClass']} .et_pb_main_blurb_image, {$args['orderClass']} .et_pb_main_blurb_image .et_pb_image_wrap.et_pb_only_image_mode_wrap"
-			: "{$args['orderClass']} .et_pb_main_blurb_image .et_pb_image_wrap.et_pb_only_image_mode_wrap";
+			? "{$blurb_image_container_selector}, {$blurb_image_only_mode_selector}"
+			: $blurb_image_only_mode_selector;
+		$image_sizing_alignment_selector = $is_image_svg
+			? ( $has_relative_image_width ? $blurb_image_only_mode_selector : $blurb_image_container_selector )
+			: $blurb_image_wrap_selector;
 
 		// Create image width style props if image width styles should be rendered.
 		$render_image_width_props = $render_image_width_style_declaration ? [
@@ -757,8 +807,8 @@ class BlurbModule implements DependencyInterface {
 
 		// Route image height and aspect-ratio sizing styles to the img element.
 		$render_image_height_props = ( $render_image_width_style_declaration && ! empty( $image_sizing_height_attr ) ) ? [
-			'selector'      => "{$args['orderClass']} .et_pb_main_blurb_image .et_pb_image_wrap.et_pb_only_image_mode_wrap",
-			'imageSelector' => "{$args['orderClass']} .et_pb_main_blurb_image .et_pb_image_wrap img",
+			'selector'      => $blurb_image_only_mode_selector,
+			'imageSelector' => "{$blurb_image_wrap_selector} img",
 			'attr'          => $image_sizing_height_attr,
 		] : [];
 
@@ -774,16 +824,14 @@ class BlurbModule implements DependencyInterface {
 
 		// Create icon sizing alignment style props.
 		$render_icon_sizing_alignment_props = $render_icon_sizing_alignment_style_declaration ? [
-			'selector'            => "{$args['orderClass']} .et_pb_main_blurb_image",
+			'selector'            => $blurb_image_container_selector,
 			'attr'                => $attrs['imageIcon']['decoration']['sizing'] ?? [],
 			'declarationFunction' => [ self::class, 'icon_sizing_alignment_style_declaration' ],
 		] : [];
 
 		// Create image sizing alignment style props. Match D4 behavior and only use image alignment when placement is top.
 		$render_image_sizing_alignment_props = ( $is_placement_top && $render_image_sizing_alignment_style_declaration ) ? [
-			'selector'            => $is_image_svg
-				? "{$args['orderClass']} .et_pb_main_blurb_image"
-				: "{$args['orderClass']} .et_pb_main_blurb_image .et_pb_image_wrap",
+			'selector'            => $image_sizing_alignment_selector,
 			'attr'                => $attrs['imageIcon']['decoration']['sizing'] ?? [],
 			'declarationFunction' => [ self::class, 'image_sizing_alignment_style_declaration' ],
 		] : [];
@@ -831,7 +879,7 @@ class BlurbModule implements DependencyInterface {
 										[
 											'componentName' => 'divi/common',
 											'props' => [
-												'selector' => "{$order_class} .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {$order_class} .et_pb_main_blurb_image .et-pb-icon",
+												'selector' => "{$blurb_image_only_mode_selector}, {$blurb_icon_selector}",
 												'attr'     => $attrs['imageIcon']['decoration']['border'] ?? [],
 												'declarationFunction' => [ Declarations::class, 'overflow_for_border_radius_style_declaration' ],
 											],
@@ -904,11 +952,11 @@ class BlurbModule implements DependencyInterface {
 									[
 										'componentName' => 'divi/common',
 										'props'         => [
-											'selector'   => "{$args['orderClass']} .et-pb-icon",
+											'selector'   => $blurb_icon_selector,
 											'selectors'  => [
 												'desktop' => [
-													'value' => "{$args['orderClass']} .et-pb-icon",
-													'hover' => "{$args['orderClass']}{{:hover}} .et-pb-icon",
+													'value' => $blurb_icon_selector,
+													'hover' => "{$args['orderClass']}{{:hover}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et-pb-icon",
 												],
 											],
 											'orderClass' => $args['orderClass'],
@@ -919,7 +967,7 @@ class BlurbModule implements DependencyInterface {
 									[
 										'componentName' => 'divi/common',
 										'props'         => [
-											'selector' => "{$args['orderClass']} .et-pb-icon",
+											'selector' => $blurb_icon_selector,
 											'attr'     => $attrs['imageIcon']['innerContent'] ?? [],
 											'declarationFunction' => [ self::class, 'icon_style_declaration' ],
 										],
@@ -947,7 +995,7 @@ class BlurbModule implements DependencyInterface {
 									[
 										'componentName' => 'divi/common',
 										'props'         => [
-											'selector' => "{$args['orderClass']}.et_pb_blurb_position_left .et_pb_main_blurb_image .et_pb_image_wrap.et_pb_only_image_mode_wrap, {$args['orderClass']}.et_pb_blurb_position_right .et_pb_main_blurb_image .et_pb_image_wrap.et_pb_only_image_mode_wrap",
+											'selector' => "{$args['orderClass']}.et_pb_blurb_position_left > .et_pb_blurb_content > .et_pb_main_blurb_image .et_pb_image_wrap.et_pb_only_image_mode_wrap, {$args['orderClass']}.et_pb_blurb_position_right > .et_pb_blurb_content > .et_pb_main_blurb_image .et_pb_image_wrap.et_pb_only_image_mode_wrap",
 											'attr'     => $attrs['imageIcon']['decoration']['sizing'] ?? [],
 											'declarationFunction' => [ self::class, 'image_max_width_style_declaration' ],
 										],
@@ -955,7 +1003,7 @@ class BlurbModule implements DependencyInterface {
 									[
 										'componentName' => 'divi/common',
 										'props'         => [
-											'selector' => "{$args['orderClass']} .et_pb_main_blurb_image .et_pb_image_wrap img",
+											'selector' => "{$blurb_image_wrap_selector} img",
 											'attr'     => array_replace_recursive( [], $attrs['imageIcon']['innerContent'] ?? [], $attrs['imageIcon']['decoration']['sizing'] ?? [] ),
 											'declarationFunction' => [ self::class, 'svg_style_declaration' ],
 										],

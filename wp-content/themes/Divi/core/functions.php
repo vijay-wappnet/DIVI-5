@@ -1909,10 +1909,43 @@ if ( ! function_exists( 'et_core_parse_google_fonts_json' ) ) :
 				continue;
 			}
 
+			$axes = array();
+
+			if ( isset( $font_item['axes'] ) && is_array( $font_item['axes'] ) ) {
+				foreach ( $font_item['axes'] as $axis ) {
+					if ( ! is_array( $axis ) ) {
+						continue;
+					}
+
+					$axis_tag     = isset( $axis['tag'] ) ? strtoupper( (string) $axis['tag'] ) : '';
+					$axis_min_raw = $axis['min'] ?? $axis['start'] ?? null;
+					$axis_max_raw = $axis['max'] ?? $axis['end'] ?? null;
+
+					if ( '' === $axis_tag || ! is_numeric( $axis_min_raw ) || ! is_numeric( $axis_max_raw ) ) {
+						continue;
+					}
+
+					$parsed_axis = array(
+						'tag' => $axis_tag,
+						'min' => floatval( $axis_min_raw ),
+						'max' => floatval( $axis_max_raw ),
+					);
+
+					$axis_default_raw = $axis['default'] ?? $axis['defaultValue'] ?? null;
+					if ( is_numeric( $axis_default_raw ) ) {
+						$parsed_axis['default'] = floatval( $axis_default_raw );
+					}
+
+					$axes[] = $parsed_axis;
+				}
+			}
+
 			$fonts[ $font_item['family'] ] = array(
 				'styles'        => implode( ',', $font_item['variants'] ),
 				'character_set' => implode( ',', $font_item['subsets'] ),
 				'type'          => $font_item['category'],
+				'is_variable'   => ! empty( $axes ),
+				'axes'          => $axes,
 			);
 		}
 
@@ -2172,6 +2205,32 @@ if ( ! function_exists( 'et_enqueue_block_css' ) ) :
 			// Re-enqueue the deferred stylesheet.
 			wp_enqueue_style( 'wp-block-library' );
 		}
+	}
+endif;
+
+if ( ! function_exists( 'et_prioritize_deferred_block_css_for_theme_builder' ) ) :
+	/**
+	 * Reprioritize deferred block CSS re-enqueue to run before Theme Builder's
+	 * get_footer:10 override, which calls wp_footer() early (see #26053).
+	 *
+	 * Default registration is get_footer:100, which runs after TB's early wp_footer()
+	 * on header/footer override pages. Reprioritize to 9 only when TB registers its
+	 * override hooks so non-TB pages keep the original hook order.
+	 *
+	 * @since 5.8.1
+	 *
+	 * @return void
+	 */
+	function et_prioritize_deferred_block_css_for_theme_builder() {
+		static $reprioritized = false;
+
+		if ( $reprioritized ) {
+			return;
+		}
+
+		remove_action( 'get_footer', 'et_enqueue_block_css', 100 );
+		add_action( 'get_footer', 'et_enqueue_block_css', 9 );
+		$reprioritized = true;
 	}
 endif;
 
@@ -2473,3 +2532,28 @@ function et_core_get_current_post_id() {
 	return et_core_get_main_post_id();
 	// phpcs:enable
 }
+
+if ( ! function_exists( 'et_core_maybe_add_divi5_api_parameter' ) ) :
+/**
+ * Adds the divi_5 parameter to API request data if Divi 5 updates are enabled or user is on Divi 5.
+ *
+ * @since 4.27.7
+ *
+ * @param array $api_data The API request data array to modify.
+ * @return array Modified API data with divi_5 parameter added if applicable.
+ */
+function et_core_maybe_add_divi5_api_parameter( $api_data ) {
+	// Check if user is on Divi 5.
+	$is_divi5             = defined( 'ET_BUILDER_PRODUCT_VERSION' ) && version_compare( ET_BUILDER_PRODUCT_VERSION, '5.0', '>=' );
+	$enable_divi5_updates = et_get_option( 'et_enable_divi5_updates', 'off' );
+
+	// Add divi_5 parameter if Divi 5 updates are enabled or user is already on Divi 5.
+	// Not on Divi 5: The setting controls opt-in to Divi 5 updates.
+	// Already on Divi 5: No opt-out allowed (you can't "downgrade" by toggling a setting).
+	if ( true === $is_divi5 || 'on' === $enable_divi5_updates ) {
+		$api_data['divi_5'] = 'on';
+	}
+
+	return $api_data;
+}
+endif;

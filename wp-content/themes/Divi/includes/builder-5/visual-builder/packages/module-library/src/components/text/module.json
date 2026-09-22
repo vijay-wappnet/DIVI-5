@@ -236,6 +236,36 @@
                   },
                   "fields": {
                     "body": {
+                      "size": {
+                        "priority": 40
+                      },
+                      "color": {
+                        "priority": 50
+                      },
+                      "lineHeight": {
+                        "priority": 60
+                      },
+                      "letterSpacing": {
+                        "priority": 70
+                      },
+                      "capitalization": {
+                        "priority": 71
+                      },
+                      "style": {
+                        "priority": 72
+                      },
+                      "lineColor": {
+                        "priority": 73
+                      },
+                      "lineThickness": {
+                        "priority": 74
+                      },
+                      "underlineOffset": {
+                        "priority": 75
+                      },
+                      "lineStyle": {
+                        "priority": 76
+                      },
                       "textAlign": {
                         "render": false
                       }

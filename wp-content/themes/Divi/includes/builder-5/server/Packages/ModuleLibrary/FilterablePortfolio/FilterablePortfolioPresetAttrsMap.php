@@ -204,7 +204,7 @@ class FilterablePortfolioPresetAttrsMap {
 				'preset'   => [ 'style' ],
 				'subName'  => 'color',
 			],
-			'module.decoration.background__gradient' => [
+			'module.decoration.background__gradient'       => [
 				'attrName' => 'module.decoration.background',
 				'preset'   => [ 'style', 'html' ],
 				'subName'  => 'gradient',
@@ -457,7 +457,7 @@ class FilterablePortfolioPresetAttrsMap {
 				'attrName' => 'module.meta.meta.forceVisible',
 				'preset'   => 'meta',
 			],
-			'module.meta.meta.tocListHeading'                => [
+			'module.meta.meta.tocListHeading'              => [
 				'attrName' => 'module.meta.meta.tocListHeading',
 				'preset'   => 'meta',
 			],
@@ -1386,7 +1386,7 @@ class FilterablePortfolioPresetAttrsMap {
 				'preset'   => [ 'style' ],
 				'subName'  => 'fillType',
 			],
-			'title.decoration.font.textEffects__gradient' => [
+			'title.decoration.font.textEffects__gradient'  => [
 				'attrName' => 'title.decoration.font.textEffects',
 				'preset'   => [ 'style' ],
 				'subName'  => 'gradient',
@@ -1566,7 +1566,7 @@ class FilterablePortfolioPresetAttrsMap {
 				'preset'   => [ 'style' ],
 				'subName'  => 'fillType',
 			],
-			'meta.decoration.font.textEffects__gradient' => [
+			'meta.decoration.font.textEffects__gradient'   => [
 				'attrName' => 'meta.decoration.font.textEffects',
 				'preset'   => [ 'style' ],
 				'subName'  => 'gradient',
@@ -2009,6 +2009,226 @@ class FilterablePortfolioPresetAttrsMap {
 			'module.decoration.attributes'                 => [
 				'attrName' => 'module.decoration.attributes',
 				'preset'   => [ 'html' ],
+			],
+			'filter.decoration.font.font__capitalization'  => [
+				'attrName' => 'filter.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'capitalization',
+			],
+			'filter.decoration.font.font__columnCount'     => [
+				'attrName' => 'filter.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnCount',
+			],
+			'filter.decoration.font.font__columnGap'       => [
+				'attrName' => 'filter.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnGap',
+			],
+			'filter.decoration.font.font__hyphens'         => [
+				'attrName' => 'filter.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'hyphens',
+			],
+			'filter.decoration.font.font__lineThickness'   => [
+				'attrName' => 'filter.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'lineThickness',
+			],
+			'filter.decoration.font.font__opticalSizing'   => [
+				'attrName' => 'filter.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'opticalSizing',
+			],
+			'filter.decoration.font.font__textWrap'        => [
+				'attrName' => 'filter.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'textWrap',
+			],
+			'filter.decoration.font.font__underlineOffset' => [
+				'attrName' => 'filter.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'underlineOffset',
+			],
+			'filter.decoration.font.font__weightFineTune'  => [
+				'attrName' => 'filter.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'weightFineTune',
+			],
+			'filter.decoration.font.font__writingMode'     => [
+				'attrName' => 'filter.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'writingMode',
+			],
+			'filter.decoration.font.textEffects__strokePosition' => [
+				'attrName' => 'filter.decoration.font.textEffects',
+				'preset'   => [ 'style' ],
+				'subName'  => 'strokePosition',
+			],
+			'meta.decoration.font.font__capitalization'    => [
+				'attrName' => 'meta.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'capitalization',
+			],
+			'meta.decoration.font.font__columnCount'       => [
+				'attrName' => 'meta.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnCount',
+			],
+			'meta.decoration.font.font__columnGap'         => [
+				'attrName' => 'meta.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnGap',
+			],
+			'meta.decoration.font.font__hyphens'           => [
+				'attrName' => 'meta.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'hyphens',
+			],
+			'meta.decoration.font.font__lineThickness'     => [
+				'attrName' => 'meta.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'lineThickness',
+			],
+			'meta.decoration.font.font__opticalSizing'     => [
+				'attrName' => 'meta.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'opticalSizing',
+			],
+			'meta.decoration.font.font__textWrap'          => [
+				'attrName' => 'meta.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'textWrap',
+			],
+			'meta.decoration.font.font__underlineOffset'   => [
+				'attrName' => 'meta.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'underlineOffset',
+			],
+			'meta.decoration.font.font__weightFineTune'    => [
+				'attrName' => 'meta.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'weightFineTune',
+			],
+			'meta.decoration.font.font__writingMode'       => [
+				'attrName' => 'meta.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'writingMode',
+			],
+			'meta.decoration.font.textEffects__strokePosition' => [
+				'attrName' => 'meta.decoration.font.textEffects',
+				'preset'   => [ 'style' ],
+				'subName'  => 'strokePosition',
+			],
+			'pagination.decoration.font.font__capitalization' => [
+				'attrName' => 'pagination.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'capitalization',
+			],
+			'pagination.decoration.font.font__columnCount' => [
+				'attrName' => 'pagination.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnCount',
+			],
+			'pagination.decoration.font.font__columnGap'   => [
+				'attrName' => 'pagination.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnGap',
+			],
+			'pagination.decoration.font.font__hyphens'     => [
+				'attrName' => 'pagination.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'hyphens',
+			],
+			'pagination.decoration.font.font__lineThickness' => [
+				'attrName' => 'pagination.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'lineThickness',
+			],
+			'pagination.decoration.font.font__opticalSizing' => [
+				'attrName' => 'pagination.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'opticalSizing',
+			],
+			'pagination.decoration.font.font__textWrap'    => [
+				'attrName' => 'pagination.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'textWrap',
+			],
+			'pagination.decoration.font.font__underlineOffset' => [
+				'attrName' => 'pagination.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'underlineOffset',
+			],
+			'pagination.decoration.font.font__weightFineTune' => [
+				'attrName' => 'pagination.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'weightFineTune',
+			],
+			'pagination.decoration.font.font__writingMode' => [
+				'attrName' => 'pagination.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'writingMode',
+			],
+			'pagination.decoration.font.textEffects__strokePosition' => [
+				'attrName' => 'pagination.decoration.font.textEffects',
+				'preset'   => [ 'style' ],
+				'subName'  => 'strokePosition',
+			],
+			'title.decoration.font.font__capitalization'   => [
+				'attrName' => 'title.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'capitalization',
+			],
+			'title.decoration.font.font__columnCount'      => [
+				'attrName' => 'title.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnCount',
+			],
+			'title.decoration.font.font__columnGap'        => [
+				'attrName' => 'title.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnGap',
+			],
+			'title.decoration.font.font__hyphens'          => [
+				'attrName' => 'title.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'hyphens',
+			],
+			'title.decoration.font.font__lineThickness'    => [
+				'attrName' => 'title.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'lineThickness',
+			],
+			'title.decoration.font.font__opticalSizing'    => [
+				'attrName' => 'title.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'opticalSizing',
+			],
+			'title.decoration.font.font__textWrap'         => [
+				'attrName' => 'title.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'textWrap',
+			],
+			'title.decoration.font.font__underlineOffset'  => [
+				'attrName' => 'title.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'underlineOffset',
+			],
+			'title.decoration.font.font__weightFineTune'   => [
+				'attrName' => 'title.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'weightFineTune',
+			],
+			'title.decoration.font.font__writingMode'      => [
+				'attrName' => 'title.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'writingMode',
+			],
+			'title.decoration.font.textEffects__strokePosition' => [
+				'attrName' => 'title.decoration.font.textEffects',
+				'preset'   => [ 'style' ],
+				'subName'  => 'strokePosition',
 			],
 		];
 

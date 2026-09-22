@@ -175,10 +175,10 @@ class LoopHooks {
 			return;
 		}
 
-		// Compare post content — archive pages (e.g. Blog module "Show Content") cache
-		// dynamic CSS independently; content changes must invalidate those caches.
-		if ( $post_before->post_content !== $post_after->post_content ) {
-			self::_invalidate_cache();
+		// Content changes on posts/CPTs: taxonomy archive CSS (Blog "Show Content") is not
+		// cleared by save_post_cb (#49189). Pages are skipped — save_post_cb is enough (#47215).
+		if ( $post_before->post_content !== $post_after->post_content && 'page' !== $post_after->post_type ) {
+			self::_invalidate_archive_caches_for_post();
 		}
 	}
 
@@ -268,6 +268,24 @@ class LoopHooks {
 
 		LoopQueryRegistry::clear();
 		ET_Core_PageResource::remove_static_resources( 'all', 'all' );
+	}
+
+	/**
+	 * Invalidate taxonomy archive Divi caches when post/CPT content changes (#49189).
+	 *
+	 * Stale-marks all taxonomy archive CSS and purges dynamic-assets detection metadata.
+	 * Does not call remove_static_resources( 'all' ) or et_core_clear_wp_cache() (#47215).
+	 *
+	 * @since ??
+	 *
+	 * @return void
+	 */
+	private static function _invalidate_archive_caches_for_post(): void {
+		ET_Core_PageResource::remove_all_taxonomy_archive_resources();
+
+		if ( class_exists( \ET_Builder_Dynamic_Assets_Feature::class ) ) {
+			\ET_Builder_Dynamic_Assets_Feature::purge_cache();
+		}
 	}
 
 	/**

@@ -151,9 +151,7 @@ class FullwidthPortfolioMigration extends MigrationContentBase {
 				'the_content',
 				function ( $content ) {
 					// FE only processes block content with _migrate_block_content. Shortcode will be processed by D4.
-					$new_content = self::_migrate_block_content( $content );
-					remove_filter( 'the_content', __FUNCTION__ );
-					return $new_content;
+					return self::_migrate_block_content( $content );
 				},
 				8 // BEFORE do_blocks().
 			);

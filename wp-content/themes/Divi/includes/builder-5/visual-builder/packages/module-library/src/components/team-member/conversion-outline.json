@@ -61,7 +61,6 @@
   "module": {
     "content": "content.innerContent.*",
     "facebook_url": "social.innerContent.*.facebookUrl",
-    "google_url": "social.innerContent.*.googleUrl",
     "icon_color": "social.decoration.icon.*.color",
     "linkedin_url": "social.innerContent.*.linkedinUrl",
     "name": "name.innerContent.*",
@@ -76,5 +75,8 @@
   },
   "valueExpansionFunctionMap": {
     "inline_fonts": "convertInlineFont"
-  }
+  },
+  "deprecatedMap": [
+    "google_url"
+  ]
 }

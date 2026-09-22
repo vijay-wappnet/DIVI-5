@@ -245,6 +245,7 @@ class SignupCustomFieldModule implements DependencyInterface {
 			'text-decoration-color',
 			'text-decoration-style',
 			'font-variant',
+			'font-variant-caps',
 		];
 		$field_label_targets         = implode(
 			', ',

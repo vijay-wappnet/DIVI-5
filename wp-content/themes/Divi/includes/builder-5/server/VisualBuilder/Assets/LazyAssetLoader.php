@@ -22,6 +22,56 @@ use ET\Builder\Framework\Utility\TextTransform;
  */
 class LazyAssetLoader {
 	/**
+	 * Ensure a package script (and its package-script dependencies) is registered.
+	 *
+	 * @since ??
+	 *
+	 * @param string $handle    Script handle.
+	 * @param array  $resolving Stack of currently resolving handles.
+	 *
+	 * @return void
+	 */
+	private static function _maybe_register_package_script( string $handle, array &$resolving = [] ): void {
+		if ( '' === $handle || wp_script_is( $handle, 'registered' ) ) {
+			return;
+		}
+
+		if ( in_array( $handle, $resolving, true ) ) {
+			return;
+		}
+
+		$package = PackageBuildManager::get_package_build( $handle );
+		$script  = $package['script'] ?? [];
+		$src     = $script['src'] ?? '';
+
+		if ( '' === $src ) {
+			return;
+		}
+
+		$resolving[] = $handle;
+
+		$deps = $script['deps'] ?? [];
+
+		if ( is_array( $deps ) ) {
+			foreach ( $deps as $dep ) {
+				if ( is_string( $dep ) && '' !== $dep ) {
+					self::_maybe_register_package_script( $dep, $resolving );
+				}
+			}
+		}
+
+		wp_register_script(
+			$handle,
+			$src,
+			$deps,
+			$package['version'] ?? '',
+			$script['args'] ?? [ 'in_footer' => true ]
+		);
+
+		array_pop( $resolving );
+	}
+
+	/**
 	 * Runtime script handle.
 	 *
 	 * @var string
@@ -36,25 +86,8 @@ class LazyAssetLoader {
 	 * @return void
 	 */
 	private static function _maybe_register_runtime_script(): void {
-		if ( wp_script_is( self::RUNTIME_SCRIPT_HANDLE, 'registered' ) ) {
-			return;
-		}
-
-		$runtime_package = PackageBuildManager::get_package_build( self::RUNTIME_SCRIPT_HANDLE );
-		$runtime_script  = $runtime_package['script'] ?? [];
-		$runtime_src     = $runtime_script['src'] ?? '';
-
-		if ( '' === $runtime_src ) {
-			return;
-		}
-
-		wp_register_script(
-			self::RUNTIME_SCRIPT_HANDLE,
-			$runtime_src,
-			$runtime_script['deps'] ?? [],
-			$runtime_package['version'] ?? '',
-			$runtime_script['args'] ?? [ 'in_footer' => true ]
-		);
+		$package_dependencies = [];
+		self::_maybe_register_package_script( self::RUNTIME_SCRIPT_HANDLE, $package_dependencies );
 	}
 
 	/**

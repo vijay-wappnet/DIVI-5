@@ -262,6 +262,34 @@ class WooCommerceHooks implements DependencyInterface {
 		// the default function and replace its output with Theme Builder rendered content.
 		// The Terms & Conditions content is displayed inline above the checkbox when the link is clicked.
 		add_action( 'woocommerce_checkout_terms_and_conditions', [ self::class, 'render_terms_and_conditions_with_theme_builder_action' ], 20 );
+
+		// Reuse the Divi checkout template whenever a checkout module renders an isolated section.
+		add_filter( 'wc_get_template', [ self::class, 'maybe_swap_isolated_checkout_form_template' ], 10, 5 );
+	}
+
+	/**
+	 * Swap the checkout form template for isolated checkout section renders.
+	 *
+	 * @since ??
+	 *
+	 * @param string $template      Template.
+	 * @param string $template_name Template name.
+	 * @param array  $args          Arguments.
+	 * @param string $template_path Template path.
+	 * @param string $default_path  Default path.
+	 *
+	 * @return string
+	 */
+	public static function maybe_swap_isolated_checkout_form_template( string $template, string $template_name, array $args, string $template_path, string $default_path ): string { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter -- Filter signature requires all parameters.
+		if ( 'checkout/form-checkout.php' !== $template_name ) {
+			return $template;
+		}
+
+		if ( ! WooCommerceUtils::is_isolated_checkout_section_render() ) {
+			return $template;
+		}
+
+		return trailingslashit( ET_BUILDER_5_DIR ) . 'server/Packages/WooCommerce/Templates/' . $template_name;
 	}
 
 	/**

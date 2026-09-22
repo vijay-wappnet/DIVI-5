@@ -377,20 +377,20 @@ class WooCommerceCheckoutBillingModule implements DependencyInterface {
 		$field_select_selectors    = [
 			".woocommerce {$order_class} .select2-container--default .select2-selection--single",
 			"{$order_class} .select2-container--default .select2-selection--single",
-			".woocommerce {$order_class} form .form-row.woocommerce-validated .select2-container--default .select2-selection--single",
-			"{$order_class} form .form-row.woocommerce-validated .select2-container--default .select2-selection--single",
+			".woocommerce {$order_class} .checkout .form-row.woocommerce-validated .select2-container--default .select2-selection--single",
+			"{$order_class} .checkout .form-row.woocommerce-validated .select2-container--default .select2-selection--single",
 		];
 		$field_input_selectors     = [
-			".woocommerce {$order_class} form .form-row .input-text",
-			"{$order_class} form .form-row .input-text",
-			".woocommerce {$order_class} form .form-row.woocommerce-validated .input-text",
-			"{$order_class} form .form-row.woocommerce-validated .input-text",
+			".woocommerce {$order_class} .checkout .form-row .input-text",
+			"{$order_class} .checkout .form-row .input-text",
+			".woocommerce {$order_class} .checkout .form-row.woocommerce-validated .input-text",
+			"{$order_class} .checkout .form-row.woocommerce-validated .input-text",
 		];
 		$field_input_text_selectors = [
-			".woocommerce {$order_class} form .form-row input.input-text",
-			"{$order_class} form .form-row input.input-text",
-			".woocommerce {$order_class} form .form-row.woocommerce-validated input.input-text",
-			"{$order_class} form .form-row.woocommerce-validated input.input-text",
+			".woocommerce {$order_class} .checkout .form-row input.input-text",
+			"{$order_class} .checkout .form-row input.input-text",
+			".woocommerce {$order_class} .checkout .form-row.woocommerce-validated input.input-text",
+			"{$order_class} .checkout .form-row.woocommerce-validated input.input-text",
 		];
 		$select_rendered_text_selectors = [
 			".woocommerce {$order_class} .select2-container--default .select2-selection--single .select2-selection__rendered",
@@ -454,6 +454,207 @@ class WooCommerceCheckoutBillingModule implements DependencyInterface {
 											},
 										],
 									],
+									[
+										'componentName' => 'divi/common',
+										'props'         => [
+											'selector'            => "{$order_class} .et_pb_wc_checkout_section .form-row",
+											'attr'                => [
+												'desktop' => [
+													'value' => 'enabled',
+												],
+											],
+											'declarationFunction' => static function (): string {
+												return self::static_style_declaration(
+													[
+														'padding'       => '0',
+														'margin-bottom' => '12px',
+													]
+												);
+											},
+										],
+									],
+									[
+										'componentName' => 'divi/common',
+										'props'         => [
+											'selector'            => "{$order_class} .et_pb_wc_checkout_section .form-row input.input-text, {$order_class} .et_pb_wc_checkout_section .form-row textarea",
+											'attr'                => [
+												'desktop' => [
+													'value' => 'enabled',
+												],
+											],
+											'declarationFunction' => static function (): string {
+												return self::static_style_declaration(
+													[
+														'width'            => '100%',
+														'box-sizing'       => 'border-box',
+														'background-color' => '#eee',
+														'border'           => '0',
+														'padding'          => '16px',
+														'font-size'        => '14px',
+														'line-height'      => '1.7em',
+													]
+												);
+											},
+										],
+									],
+									[
+										'componentName' => 'divi/common',
+										'props'         => [
+											'selector'            => "{$order_class} .et_pb_wc_checkout_section .col2-set .col-1, {$order_class} .et_pb_wc_checkout_section .col2-set .col-2",
+											'attr'                => [
+												'desktop' => [
+													'value' => 'enabled',
+												],
+											],
+											'declarationFunction' => static function (): string {
+												return self::static_style_declaration(
+													[
+														'width' => '100%',
+														'float' => 'none',
+													]
+												);
+											},
+										],
+									],
+									[
+										'componentName' => 'divi/common',
+										'props'         => [
+											'selector'            => "{$order_class}.et_pb_fields_layout_default .et_pb_wc_checkout_section .form-row-first",
+											'attr'                => [
+												'desktop' => [
+													'value' => 'enabled',
+												],
+											],
+											'declarationFunction' => static function (): string {
+												return self::static_style_declaration(
+													[
+														'float'    => 'left',
+														'width'    => '47%',
+														'overflow' => 'visible',
+														'clear'    => 'left',
+													]
+												);
+											},
+										],
+									],
+									[
+										'componentName' => 'divi/common',
+										'props'         => [
+											'selector'            => "{$order_class}.et_pb_fields_layout_default .et_pb_wc_checkout_section .form-row-last",
+											'attr'                => [
+												'desktop' => [
+													'value' => 'enabled',
+												],
+											],
+											'declarationFunction' => static function (): string {
+												return self::static_style_declaration(
+													[
+														'float'    => 'right',
+														'width'    => '47%',
+														'overflow' => 'visible',
+														'clear'    => 'right',
+													]
+												);
+											},
+										],
+									],
+									[
+										'componentName' => 'divi/common',
+										'props'         => [
+											'selector'            => "{$order_class}.et_pb_fields_layout_fullwidth .et_pb_wc_checkout_section .form-row-first, {$order_class}.et_pb_fields_layout_fullwidth .et_pb_wc_checkout_section .form-row-last",
+											'attr'                => [
+												'desktop' => [
+													'value' => 'enabled',
+												],
+											],
+											'declarationFunction' => static function (): string {
+												return self::static_style_declaration(
+													[
+														'float' => 'none',
+														'width' => 'inherit',
+													]
+												);
+											},
+										],
+									],
+									[
+										'componentName' => 'divi/common',
+										'props'         => [
+											'selector'            => "{$order_class} .et_pb_wc_checkout_section .form-row-wide",
+											'attr'                => [
+												'desktop' => [
+													'value' => 'enabled',
+												],
+											],
+											'declarationFunction' => static function (): string {
+												return self::static_style_declaration(
+													[
+														'clear' => 'both',
+													]
+												);
+											},
+										],
+									],
+									[
+										'componentName' => 'divi/common',
+										'props'         => [
+											'selector'            => "{$order_class}.et_pb_fields_layout_2_column .et_pb_wc_checkout_section .form-row:nth-child(odd)",
+											'attr'                => [
+												'desktop' => [
+													'value' => 'enabled',
+												],
+											],
+											'declarationFunction' => static function (): string {
+												return self::static_style_declaration(
+													[
+														'float'    => 'left',
+														'width'    => '47%',
+														'overflow' => 'visible',
+														'clear'    => 'left',
+													]
+												);
+											},
+										],
+									],
+									[
+										'componentName' => 'divi/common',
+										'props'         => [
+											'selector'            => "{$order_class}.et_pb_fields_layout_2_column .et_pb_wc_checkout_section .form-row:nth-child(even)",
+											'attr'                => [
+												'desktop' => [
+													'value' => 'enabled',
+												],
+											],
+											'declarationFunction' => static function (): string {
+												return self::static_style_declaration(
+													[
+														'float'    => 'right',
+														'width'    => '47%',
+														'overflow' => 'visible',
+														'clear'    => 'right',
+													]
+												);
+											},
+										],
+									],
+									[
+										'componentName' => 'divi/common',
+										'props'         => [
+											'selector'            => "{$order_class}.et_pb_fields_layout_2_column .et_pb_wc_checkout_section .form-row-wide",
+											'attr'                => [
+												'desktop' => [
+													'value' => 'enabled',
+												],
+											],
+											'declarationFunction' => static function (): string {
+												return self::static_style_declaration(
+													[
+														'clear' => 'none',
+													]
+												);
+											},
+										],
+									],
 								],
 							],
 						]
@@ -495,11 +696,11 @@ class WooCommerceCheckoutBillingModule implements DependencyInterface {
 										'props'         => [
 											'attr'      => $attrs['field']['advanced']['requiredFieldIndicatorColor'] ?? [],
 											'declarationFunction' => [ self::class, 'required_field_indicator_color_style_declaration' ],
-											'selector'  => "{$order_class} form .form-row .required",
+											'selector'  => "{$order_class} .checkout .form-row .required",
 											'selectors' => [
 												'desktop' => [
-													'value' => "{$order_class} form .form-row .required",
-													'hover' => "{$order_class} form .form-row:hover .required",
+													'value' => "{$order_class} .checkout .form-row .required",
+													'hover' => "{$order_class} .checkout .form-row:hover .required",
 												],
 											],
 										],
@@ -566,14 +767,14 @@ class WooCommerceCheckoutBillingModule implements DependencyInterface {
 											'margin'  => implode(
 												', ',
 												[
-													"{$order_class} form .form-row input.input-text",
+													"{$order_class} .checkout .form-row input.input-text",
 													"{$order_class} .select2-container--default .select2-selection--single",
 												]
 											),
 											'padding' => implode(
 												', ',
 												[
-													"{$order_class} form .form-row input.input-text",
+													"{$order_class} .checkout .form-row input.input-text",
 													"{$order_class} .select2-container--default .select2-selection--single",
 												]
 											),
@@ -587,7 +788,7 @@ class WooCommerceCheckoutBillingModule implements DependencyInterface {
 												', ',
 												[
 													"{$order_class} .select2-container--default .select2-selection--single:hover",
-													".woocommerce {$order_class} form .form-row .input-text:hover",
+													".woocommerce {$order_class} .checkout .form-row .input-text:hover",
 												]
 											),
 										],
@@ -601,7 +802,7 @@ class WooCommerceCheckoutBillingModule implements DependencyInterface {
 													', ',
 													[
 														".woocommerce {$order_class} .select2-container--open .select2-selection",
-														".woocommerce {$order_class} form .input-text",
+														".woocommerce {$order_class} .checkout .input-text",
 													]
 												),
 											],
@@ -610,7 +811,7 @@ class WooCommerceCheckoutBillingModule implements DependencyInterface {
 													', ',
 													[
 														".woocommerce {$order_class} .select2-container--open:hover .select2-selection",
-														".woocommerce {$order_class} form .input-text:hover",
+														".woocommerce {$order_class} .checkout .input-text:hover",
 													]
 												),
 											],
@@ -674,8 +875,8 @@ class WooCommerceCheckoutBillingModule implements DependencyInterface {
 												'color'       => implode(
 													', ',
 													[
-														".woocommerce {$order_class} form .form-row .input-text",
-														"{$order_class} form .form-row .input-text",
+														".woocommerce {$order_class} .checkout .form-row .input-text",
+														"{$order_class} .checkout .form-row .input-text",
 													]
 												),
 											],
@@ -684,8 +885,8 @@ class WooCommerceCheckoutBillingModule implements DependencyInterface {
 													', ',
 													[
 														...$select_rendered_text_hover_selectors,
-														".woocommerce {$order_class} form .form-row .input-text:hover",
-														"{$order_class} form .form-row .input-text:hover",
+														".woocommerce {$order_class} .checkout .form-row .input-text:hover",
+														"{$order_class} .checkout .form-row .input-text:hover",
 													]
 												),
 												'font-weight' => implode( ', ', $select_rendered_text_hover_selectors ),
@@ -710,7 +911,7 @@ class WooCommerceCheckoutBillingModule implements DependencyInterface {
 														'text-decoration',
 														'text-transform',
 													],
-													"{$order_class} form .form-row label"
+													"{$order_class} .checkout .form-row label"
 												),
 												'hover' => array_fill_keys(
 													[
@@ -725,17 +926,17 @@ class WooCommerceCheckoutBillingModule implements DependencyInterface {
 														'text-decoration',
 														'text-transform',
 													],
-													"{$order_class} form .form-row label:hover"
+													"{$order_class} .checkout .form-row label:hover"
 												),
 											],
 										],
 										'textShadow' => [
 											'desktop' => [
 												'value' => [
-													'text-shadow' => "{$order_class} form .form-row label",
+													'text-shadow' => "{$order_class} .checkout .form-row label",
 												],
 												'hover' => [
-													'text-shadow' => "{$order_class} form .form-row label:hover",
+													'text-shadow' => "{$order_class} .checkout .form-row label:hover",
 												],
 											],
 										],
@@ -796,8 +997,8 @@ class WooCommerceCheckoutBillingModule implements DependencyInterface {
 							'selector'               => implode(
 								', ',
 								[
-									".woocommerce {$order_class} form .form-row input.input-text",
-									".woocommerce {$order_class} form .form-row textarea",
+									".woocommerce {$order_class} .checkout .form-row input.input-text",
+									".woocommerce {$order_class} .checkout .form-row textarea",
 								]
 							),
 							'attrs'                  => [
@@ -924,6 +1125,31 @@ class WooCommerceCheckoutBillingModule implements DependencyInterface {
 		return [
 			'font' => $value_font,
 		];
+	}
+
+	/**
+	 * Build static style declarations for isolated checkout section compatibility styles.
+	 *
+	 * @since ??
+	 *
+	 * @param array $declarations CSS declaration map.
+	 * @param bool  $important    Whether declarations should be important.
+	 *
+	 * @return string
+	 */
+	private static function static_style_declaration( array $declarations, bool $important = false ): string {
+		$style_declarations = new StyleDeclarations(
+			[
+				'returnType' => 'string',
+				'important'  => $important,
+			]
+		);
+
+		foreach ( $declarations as $property => $value ) {
+			$style_declarations->add( $property, $value );
+		}
+
+		return $style_declarations->value();
 	}
 
 	/**
@@ -1071,11 +1297,22 @@ class WooCommerceCheckoutBillingModule implements DependencyInterface {
 			);
 		}
 
+		WooCommerceUtils::start_isolated_checkout_section_render();
+
+		$initial_buffer_level = ob_get_level();
 		ob_start();
 
-		WC_Shortcode_Checkout::output( [] );
+		try {
+			WC_Shortcode_Checkout::output( [] );
 
-		$markup = ob_get_clean();
+			$markup = ob_get_clean();
+		} finally {
+			if ( ob_get_level() > $initial_buffer_level ) {
+				ob_end_clean();
+			}
+
+			WooCommerceUtils::stop_isolated_checkout_section_render();
+		}
 
 		if ( ( $is_cart_empty && $is_visual_builder ) || $is_use_placeholder ) {
 			remove_filter(

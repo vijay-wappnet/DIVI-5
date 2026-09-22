@@ -97,6 +97,7 @@ class TextEffects {
 
 		$stroke_width         = $merged_attr_value['strokeWidth'] ?? '';
 		$stroke_color         = $merged_attr_value['strokeColor'] ?? '';
+		$stroke_position      = $merged_attr_value['strokePosition'] ?? '';
 		$fill_type            = $merged_attr_value['fillType'] ?? null;
 		$has_explicit_fill    = array_key_exists( 'fillType', $attr_value );
 		$raw_current_gradient = is_array( $attr_value['gradient'] ?? null ) ? $attr_value['gradient'] : [];
@@ -128,6 +129,17 @@ class TextEffects {
 
 		if ( '' !== $stroke_color ) {
 			$style_declarations->add( '-webkit-text-stroke-color', $stroke_color );
+		}
+
+		if ( '' !== $stroke_position ) {
+			$style_declarations->add( 'paint-order', 'stroke-fill' === $stroke_position ? 'stroke' : 'fill' );
+		} elseif ( '' !== $stroke_width ) {
+			$normalized_stroke_width = strtolower( trim( (string) $stroke_width ) );
+			$parsed_stroke_width     = floatval( $normalized_stroke_width );
+
+			if ( $parsed_stroke_width > 1 ) {
+				$style_declarations->add( 'paint-order', 'stroke' );
+			}
 		}
 
 		if ( 'transparent' === $fill_type ) {

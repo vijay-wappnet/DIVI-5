@@ -74,6 +74,10 @@ class QueryOrderByController extends RESTController {
 				$order_by_options = self::_get_menus_order_by_options();
 				break;
 
+			case 'current_page':
+				$order_by_options = self::_get_current_page_order_by_options();
+				break;
+
 			default:
 				return rest_ensure_response( self::response_error( 'Invalid query_type specified' ) );
 		}
@@ -111,6 +115,26 @@ class QueryOrderByController extends RESTController {
 			default:
 				return $query_type;
 		}
+	}
+
+	/**
+	 * Get order by options for current_page (Posts for Current Page) queries.
+	 *
+	 * Includes Relevance first for search-template parity with the main query, plus standard post options.
+	 *
+	 * @since ??
+	 *
+	 * @return array Order by options for current_page queries.
+	 */
+	private static function _get_current_page_order_by_options(): array {
+		$relevance_option = [
+			[
+				'value' => 'relevance',
+				'label' => esc_html__( 'Relevance', 'et_builder_5' ),
+			],
+		];
+
+		return array_merge( $relevance_option, self::_get_post_type_order_by_options( 'post' ) );
 	}
 
 	/**
@@ -400,12 +424,13 @@ class QueryOrderByController extends RESTController {
 			'query_type'      => [
 				'required'    => true,
 				'type'        => 'string',
-				'description' => 'Type of query to get order by options for (post_type, post_taxonomies, user_roles, menus)',
+				'description' => 'Type of query to get order by options for (post_type, post_taxonomies, user_roles, menus, current_page)',
 				'enum'        => [
 					'post_types',
 					'post_taxonomies',
 					'user_roles',
 					'menus',
+					'current_page',
 					'repeater',
 				],
 			],

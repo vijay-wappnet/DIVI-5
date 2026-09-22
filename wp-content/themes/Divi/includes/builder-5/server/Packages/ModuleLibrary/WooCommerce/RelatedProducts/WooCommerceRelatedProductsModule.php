@@ -605,11 +605,25 @@ class WooCommerceRelatedProductsModule implements DependencyInterface {
 						[
 							'attrName'   => 'image',
 							'styleProps' => [
+								'border'         => [
+									'propertySelectors' => [
+										'desktop' => [
+											'hover' => [
+												'border-radius' => "{$order_class}.et_pb_module .et_shop_image > img{{:hover}}, {$order_class}.et_pb_module .et_shop_image .et_overlay",
+											],
+											'value' => [
+												'border-radius' => "{$order_class}.et_pb_module .et_shop_image > img, {$order_class}.et_pb_module .et_shop_image .et_overlay",
+												'border-style'  => "{$order_class}.et_pb_module .et_shop_image > img, {$order_class}.et_pb_module .et_shop_image .et_overlay",
+											],
+										],
+									],
+									'important'         => true,
+								],
 								'advancedStyles' => [
 									[
 										'componentName' => 'divi/common',
 										'props'         => [
-											'selector' => "{$order_class}.et_pb_module .et_shop_image",
+											'selector' => "{$order_class}.et_pb_module .et_shop_image > img, {$order_class}.et_pb_module .et_shop_image .et_overlay",
 											'attr'     => $attrs['image']['decoration']['border'] ?? [],
 											'declarationFunction' => [ Declarations::class, 'overflow_for_border_radius_style_declaration' ],
 										],

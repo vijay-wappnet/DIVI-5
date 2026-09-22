@@ -1,1 +1,1 @@
-<?php return array('dependencies' => array('divi-script-library'), 'version' => '7ce6e9adc995b9afe684');
+<?php return array('dependencies' => array('divi-script-library'), 'version' => '930d44a123fea74c7d66');

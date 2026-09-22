@@ -3711,15 +3711,8 @@ class ModuleUtils {
 			]
 		);
 
-		$group_render_attrs = [];
-		foreach ( $group_presets as $group_id => $group_preset_item ) {
-			if ( $group_preset_item instanceof GlobalPresetItem ) {
-				$group_render_attrs = array_replace_recursive(
-					$group_render_attrs,
-					$group_preset_item->get_data_render_attrs()
-				);
-			}
-		}
+		$merged_group_preset_attrs = GlobalPreset::merge_selected_group_presets_by_priority( $group_presets );
+		$group_render_attrs        = $merged_group_preset_attrs['renderAttrs'];
 
 		// Get preset attributes for this module.
 		$item_preset = GlobalPreset::get_selected_preset(

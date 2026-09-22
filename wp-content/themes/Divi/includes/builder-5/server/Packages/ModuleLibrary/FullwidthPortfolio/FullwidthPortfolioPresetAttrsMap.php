@@ -86,7 +86,7 @@ class FullwidthPortfolioPresetAttrsMap {
 				'preset'   => [ 'style' ],
 				'subName'  => 'color',
 			],
-			'module.decoration.background__gradient' => [
+			'module.decoration.background__gradient'       => [
 				'attrName' => 'module.decoration.background',
 				'preset'   => [ 'style', 'html' ],
 				'subName'  => 'gradient',
@@ -339,7 +339,7 @@ class FullwidthPortfolioPresetAttrsMap {
 				'attrName' => 'module.meta.meta.forceVisible',
 				'preset'   => 'meta',
 			],
-			'module.meta.meta.tocListHeading'                => [
+			'module.meta.meta.tocListHeading'              => [
 				'attrName' => 'module.meta.meta.tocListHeading',
 				'preset'   => 'meta',
 			],
@@ -1590,7 +1590,7 @@ class FullwidthPortfolioPresetAttrsMap {
 				'preset'   => [ 'style' ],
 				'subName'  => 'fillType',
 			],
-			'title.decoration.font.textEffects__gradient' => [
+			'title.decoration.font.textEffects__gradient'  => [
 				'attrName' => 'title.decoration.font.textEffects',
 				'preset'   => [ 'style' ],
 				'subName'  => 'gradient',
@@ -1770,7 +1770,7 @@ class FullwidthPortfolioPresetAttrsMap {
 				'preset'   => [ 'style' ],
 				'subName'  => 'fillType',
 			],
-			'meta.decoration.font.textEffects__gradient' => [
+			'meta.decoration.font.textEffects__gradient'   => [
 				'attrName' => 'meta.decoration.font.textEffects',
 				'preset'   => [ 'style' ],
 				'subName'  => 'gradient',
@@ -1854,6 +1854,171 @@ class FullwidthPortfolioPresetAttrsMap {
 				'attrName' => 'meta.decoration.font.textEffects',
 				'preset'   => [ 'style' ],
 				'subName'  => 'strokeWidth',
+			],
+			'meta.decoration.font.font__capitalization'    => [
+				'attrName' => 'meta.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'capitalization',
+			],
+			'meta.decoration.font.font__columnCount'       => [
+				'attrName' => 'meta.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnCount',
+			],
+			'meta.decoration.font.font__columnGap'         => [
+				'attrName' => 'meta.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnGap',
+			],
+			'meta.decoration.font.font__hyphens'           => [
+				'attrName' => 'meta.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'hyphens',
+			],
+			'meta.decoration.font.font__lineThickness'     => [
+				'attrName' => 'meta.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'lineThickness',
+			],
+			'meta.decoration.font.font__opticalSizing'     => [
+				'attrName' => 'meta.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'opticalSizing',
+			],
+			'meta.decoration.font.font__textWrap'          => [
+				'attrName' => 'meta.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'textWrap',
+			],
+			'meta.decoration.font.font__underlineOffset'   => [
+				'attrName' => 'meta.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'underlineOffset',
+			],
+			'meta.decoration.font.font__weightFineTune'    => [
+				'attrName' => 'meta.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'weightFineTune',
+			],
+			'meta.decoration.font.font__writingMode'       => [
+				'attrName' => 'meta.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'writingMode',
+			],
+			'meta.decoration.font.textEffects__strokePosition' => [
+				'attrName' => 'meta.decoration.font.textEffects',
+				'preset'   => [ 'style' ],
+				'subName'  => 'strokePosition',
+			],
+			'portfolio.decoration.font.font__capitalization' => [
+				'attrName' => 'portfolio.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'capitalization',
+			],
+			'portfolio.decoration.font.font__columnCount'  => [
+				'attrName' => 'portfolio.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnCount',
+			],
+			'portfolio.decoration.font.font__columnGap'    => [
+				'attrName' => 'portfolio.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnGap',
+			],
+			'portfolio.decoration.font.font__hyphens'      => [
+				'attrName' => 'portfolio.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'hyphens',
+			],
+			'portfolio.decoration.font.font__lineThickness' => [
+				'attrName' => 'portfolio.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'lineThickness',
+			],
+			'portfolio.decoration.font.font__opticalSizing' => [
+				'attrName' => 'portfolio.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'opticalSizing',
+			],
+			'portfolio.decoration.font.font__textWrap'     => [
+				'attrName' => 'portfolio.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'textWrap',
+			],
+			'portfolio.decoration.font.font__underlineOffset' => [
+				'attrName' => 'portfolio.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'underlineOffset',
+			],
+			'portfolio.decoration.font.font__weightFineTune' => [
+				'attrName' => 'portfolio.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'weightFineTune',
+			],
+			'portfolio.decoration.font.font__writingMode'  => [
+				'attrName' => 'portfolio.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'writingMode',
+			],
+			'portfolio.decoration.font.textEffects__strokePosition' => [
+				'attrName' => 'portfolio.decoration.font.textEffects',
+				'preset'   => [ 'style' ],
+				'subName'  => 'strokePosition',
+			],
+			'title.decoration.font.font__capitalization'   => [
+				'attrName' => 'title.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'capitalization',
+			],
+			'title.decoration.font.font__columnCount'      => [
+				'attrName' => 'title.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnCount',
+			],
+			'title.decoration.font.font__columnGap'        => [
+				'attrName' => 'title.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'columnGap',
+			],
+			'title.decoration.font.font__hyphens'          => [
+				'attrName' => 'title.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'hyphens',
+			],
+			'title.decoration.font.font__lineThickness'    => [
+				'attrName' => 'title.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'lineThickness',
+			],
+			'title.decoration.font.font__opticalSizing'    => [
+				'attrName' => 'title.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'opticalSizing',
+			],
+			'title.decoration.font.font__textWrap'         => [
+				'attrName' => 'title.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'textWrap',
+			],
+			'title.decoration.font.font__underlineOffset'  => [
+				'attrName' => 'title.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'underlineOffset',
+			],
+			'title.decoration.font.font__weightFineTune'   => [
+				'attrName' => 'title.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'weightFineTune',
+			],
+			'title.decoration.font.font__writingMode'      => [
+				'attrName' => 'title.decoration.font.font',
+				'preset'   => [ 'style' ],
+				'subName'  => 'writingMode',
+			],
+			'title.decoration.font.textEffects__strokePosition' => [
+				'attrName' => 'title.decoration.font.textEffects',
+				'preset'   => [ 'style' ],
+				'subName'  => 'strokePosition',
 			],
 		];
 

@@ -179,9 +179,7 @@ class FlexboxMigration extends MigrationContentBase {
 			add_filter(
 				'the_content',
 				function ( $content ) {
-					$new_content = self::_migrate_block_content( $content );
-					remove_filter( 'the_content', __FUNCTION__ );
-					return $new_content;
+					return self::_migrate_block_content( $content );
 				},
 				8 // BEFORE do_blocks().
 			);

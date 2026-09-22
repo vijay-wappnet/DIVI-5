@@ -14,7 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use ET\Builder\Framework\Controllers\RESTController;
-use ET\Builder\Framework\UserRole\UserRole;
 use ET\Builder\Packages\WooCommerce\WooCommerceUtils;
 use WP_REST_Request;
 use WP_REST_Response;
@@ -152,7 +151,9 @@ class WooCommerceBreadcrumbController extends RESTController {
 	 *
 	 * @return bool Returns `true` if the current user has the permission to use the rest endpoint, otherwise `false`.
 	 */
-	public static function index_permission(): bool {
-		return UserRole::can_current_user_use_visual_builder();
+	public static function index_permission( WP_REST_Request $request ): bool {
+		$product_id = $request->get_param( 'productId' ) ?? WooCommerceUtils::get_default_product();
+
+		return WooCommerceUtils::can_current_user_render_product( $product_id );
 	}
 }

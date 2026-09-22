@@ -108,15 +108,89 @@ class DynamicDataController extends RESTController {
 	}
 
 	/**
+	 * Check whether current user can edit all requested posts.
+	 *
+	 * @since ??
+	 *
+	 * @param array $data Dynamic data payload.
+	 *
+	 * @return bool
+	 */
+	private static function _can_edit_requested_posts( array $data ): bool {
+		foreach ( $data as $datum ) {
+			if ( ! is_array( $datum ) ) {
+				return false;
+			}
+
+			foreach ( self::_get_requested_post_ids( $datum ) as $post_id ) {
+				if ( ! current_user_can( 'edit_post', $post_id ) ) {
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Get all post IDs referenced by a dynamic-data request item.
+	 *
+	 * This includes top-level `postId` and inner `value.post_id` references.
+	 *
+	 * @since ??
+	 *
+	 * @param array $datum Request item data.
+	 *
+	 * @return int[]
+	 */
+	private static function _get_requested_post_ids( array $datum ): array {
+		$post_ids = [];
+		$post_id  = isset( $datum['postId'] ) ? (int) $datum['postId'] : 0;
+
+		if ( 0 < $post_id ) {
+			$post_ids[] = $post_id;
+		}
+
+		$datum_value = $datum['value'] ?? '';
+		if ( ! is_string( $datum_value ) || '' === $datum_value ) {
+			return array_values( array_unique( $post_ids ) );
+		}
+
+		$variable_values = DynamicData::get_variable_values( $datum_value );
+		foreach ( $variable_values as $variable_value ) {
+			$data_value = DynamicData::get_data_value( $variable_value );
+			$value      = $data_value['value'] ?? [];
+
+			if ( is_array( $value ) ) {
+				$inner_post_id = isset( $value['post_id'] ) ? (int) $value['post_id'] : 0;
+				if ( 0 < $inner_post_id ) {
+					$post_ids[] = $inner_post_id;
+				}
+			}
+		}
+
+		return array_values( array_unique( $post_ids ) );
+	}
+
+	/**
 	 * Provides the permission status for the index action.
 	 *
 	 * This function checks if the current user has the permission to use the Visual Builder.
 	 *
 	 * @since ??
 	 *
+	 * @param WP_REST_Request $request The REST request object.
+	 *
 	 * @return bool Returns `true` if the current user has the permission to use the Visual Builder, `false` otherwise.
 	 */
-	public static function index_permission(): bool {
-		return UserRole::can_current_user_use_visual_builder();
+	public static function index_permission( WP_REST_Request $request ): bool {
+		if ( ! UserRole::can_current_user_use_visual_builder() ) {
+			return false;
+		}
+
+		$data = $request->get_param( 'data' );
+		$data = is_array( $data ) ? $data : [];
+
+		return self::_can_edit_requested_posts( $data );
 	}
 }

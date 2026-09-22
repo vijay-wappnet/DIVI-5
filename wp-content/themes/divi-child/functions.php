@@ -19,6 +19,9 @@ function dt_enqueue_styles()
     );
 
     wp_enqueue_script('div-child-script', get_stylesheet_directory_uri() . '/js/custom-script.js', array('jquery'), $theme->get('Version'), true);
+    
+    wp_enqueue_script('div-child-script-2', get_stylesheet_directory_uri() . '/js/custom-script-2.js', array('jquery'), $theme->get('Version'), true);
+    
     wp_enqueue_script('div-child-equalheight', get_stylesheet_directory_uri() . '/js/equalheight.js', array('jquery'), $theme->get('Version'), true);
     wp_localize_script('divi-child-script', 'ajax_object', array(
         'ajaxurl' => admin_url('admin-ajax.php')
@@ -251,5 +254,9 @@ function ctct_cf7_sync_contact( $contact_form ) {
         error_log( 'CTCT Success: Contact added - ' . $email );
     }
 }
+
+// Added custom functions file for Swiper + GSAP and [concert_archive] shortcode
+include_once get_stylesheet_directory() . '/custom-function-hero-slider.php';
+include_once get_stylesheet_directory() . '/events-custom-function.php';
 
 ?>

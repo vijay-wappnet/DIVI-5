@@ -78,26 +78,6 @@ class Admin {
 			return;
 		}
 
-		global $pagenow;
-
-		// phpcs:ignore WordPress.Security.NonceVerification -- Read-only screen detection, no state change.
-		$post_type = isset( $_GET['post_type'] ) ? sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) : '';
-
-		$is_theme_options_screen = function_exists( 'et_is_divi_specific_admin_page' ) && et_is_divi_specific_admin_page( 'et_divi_options' );
-		$is_divi_library_screen  = 'edit.php' === $pagenow && 'et_pb_layout' === $post_type;
-
-		if (
-			( $is_theme_options_screen || $is_divi_library_screen )
-			&& function_exists( 'et_common_should_enqueue_react' )
-			&& et_common_should_enqueue_react()
-		) {
-			// WordPress 6.9+ automatically enqueues wp-core-commands on all admin pages.
-			// Remove the action hook directly here to prevent conflicts with Divi 4's React 16
-			// that's used by legacy admin UIs (Theme Options, Divi Library). The action is registered
-			// in default-filters.php which loads early, so it's safe to remove it here.
-			remove_action( 'admin_enqueue_scripts', 'wp_enqueue_command_palette_assets' );
-		}
-
 		// Ensure speculation rule hooks are available on all admin pages.
 		// VisualBuilder bootstrap is conditional and may not load on dashboard.
 		( new SpeculationRules() )->load();

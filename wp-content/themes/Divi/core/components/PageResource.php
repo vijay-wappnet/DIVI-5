@@ -999,16 +999,23 @@ class ET_Core_PageResource {
 	}
 
 	/**
-	 * Determine if static CSS should be forced inline for paginated-loop requests.
+	 * Determine if static CSS should be forced inline for cache-unsafe requests.
 	 *
 	 * @return bool
 	 */
 	public static function should_force_inline_for_paginated_request() {
-		// PageResource does not know loop settings, so this guard only applies to
-		// actual loop pagination requests (loop-* page > 1).
+		// PageResource does not know loop settings, so this guard applies to:
+		// 1. actual loop pagination requests (loop-* page > 1), and
+		// 2. WordPress auto-update scrape requests.
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only request inspection for cache-safety behavior.
 		if ( ! isset( $_GET ) || ! is_array( $_GET ) ) {
 			return false;
+		}
+
+		// WordPress auto-update fatal-error scrape requests should never rewrite cache files.
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only request inspection for cache-safety behavior.
+		if ( isset( $_GET['wp_scrape_key'], $_GET['wp_scrape_nonce'] ) ) {
+			return true;
 		}
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only request inspection for cache-safety behavior.
@@ -1229,6 +1236,44 @@ class ET_Core_PageResource {
 		}
 
 		self::do_remove_static_resources( $post_id, $owner, $force, $slug, $preserve_vb_files, $delete_files );
+	}
+
+	/**
+	 * Stale-mark Divi static CSS for all taxonomy archive pages.
+	 *
+	 * Archive CSS lives under `taxonomy/{taxonomy}/{term_id}/`, not under a post ID folder.
+	 * Does not call et_core_clear_wp_cache() — third-party HTML cache for archives is handled
+	 * by those plugins' own WordPress hooks; this only invalidates Divi CSS files.
+	 *
+	 * @since 5.8.0
+	 *
+	 * @return void
+	 */
+	public static function remove_all_taxonomy_archive_resources(): void {
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
+		if ( ! wp_doing_cron() && ! et_core_security_check_passed( 'edit_posts' ) ) {
+			return;
+		}
+
+		if ( ! self::can_write_to_filesystem() ) {
+			return;
+		}
+
+		if ( ! self::$data_utils ) {
+			self::startup();
+		}
+
+		$cache_dir = self::get_cache_directory();
+
+		$files = array_filter(
+			(array) glob( "{$cache_dir}/taxonomy/*/*/et-*" ),
+			fn( $f ) => ! str_ends_with( $f, '.stale' ) && is_file( $f )
+		);
+
+		self::_mark_files_stale( array_values( $files ) );
 	}
 
 	/**

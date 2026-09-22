@@ -49,6 +49,7 @@ use ET\Builder\Packages\Conversion\ShortcodeMigration;
 use ET\Builder\VisualBuilder\OffCanvas\OffCanvasHooks;
 use ET\Builder\VisualBuilder\Performance\SettingsDataPerfCache;
 use ET\Builder\Packages\ModuleUtils\CanvasUtils;
+use ET\Builder\VisualBuilder\REST\Announcements\AnnouncementsController;
 
 /**
  * Class that provides Settings Data callbacks.
@@ -1774,7 +1775,7 @@ class SettingsDataCallbacks {
 	public static function services() {
 		static $return = null;
 
-		if ( null === $return ) {
+		if ( null === $return || Conditions::is_test_env() ) {
 			$return = [
 				'email'          => EmailAccountService::definition(),
 				'socialMedia'    => [
@@ -2576,5 +2577,25 @@ class SettingsDataCallbacks {
 		}
 
 		return $off_canvas_data;
+	}
+
+	/**
+	 * Get announcements data.
+	 *
+	 * This payload is used by the Visual Builder to render product updates instantly from the store.
+	 * Announcements are version-cached server-side and refreshed only when builder version changes.
+	 *
+	 * @since ??
+	 *
+	 * @return array<string, mixed>
+	 */
+	public static function announcements(): array {
+		static $return = null;
+
+		if ( null === $return || Conditions::is_test_env() ) {
+			$return = AnnouncementsController::get_announcements_payload_for_current_user();
+		}
+
+		return $return;
 	}
 }

@@ -1117,6 +1117,10 @@ class DynamicAssetsDetection {
 	 * @return mixed
 	 */
 	public function log_block_used( $parsed_block ) {
+		if ( ! DynamicAssetsUtils::should_run_detection() ) {
+			return $parsed_block;
+		}
+
 		// If no `parentId` is found, this block isn't Divi 5 module thus it can be skipped.
 		if ( empty( $parsed_block['parentId'] ) ) {
 			return $parsed_block;
@@ -1181,6 +1185,10 @@ class DynamicAssetsDetection {
 	 * @return mixed
 	 */
 	public function log_shortcode_used( $override, string $tag, array $attrs, array $m ) {
+		if ( ! DynamicAssetsUtils::should_run_detection() ) {
+			return $override;
+		}
+
 		if ( in_array( $tag, $this->detection_state->verified_shortcodes, true ) ) {
 			// Log the shortcode tags used.
 			if ( ! in_array( $tag, $this->detection_state->shortcode_used, true ) ) {

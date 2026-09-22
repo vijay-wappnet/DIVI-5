@@ -71,7 +71,11 @@ class ButtonIcon {
 			?? $full_attr['desktop']['value']['icon']['enable']
 			?? null;
 
-		$settings           = $attr_value['icon']['settings'] ?? $default_attr_value['icon']['settings'] ?? [];
+		$settings           = $attr_value['icon']['settings']
+			?? $default_attr_value['icon']['settings']
+			?? $full_attr[ $breakpoint ]['value']['icon']['settings']
+			?? $full_attr['desktop']['value']['icon']['settings']
+			?? [];
 		$color              = $attr_value['icon']['color'] ?? $default_attr_value['icon']['color'] ?? null;
 		$on_hover           = $attr_value['icon']['onHover'] ?? $default_attr_value['icon']['onHover'] ?? null;
 		$placement          = $attr_value['icon']['placement'] ?? $default_attr_value['icon']['placement'] ?? 'right';

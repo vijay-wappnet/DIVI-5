@@ -95,6 +95,7 @@ use ET\Builder\Packages\ModuleLibrary\Text\TextModule;
 use ET\Builder\Packages\ModuleLibrary\Timeline\TimelineModule;
 use ET\Builder\Packages\ModuleLibrary\TimelineItem\TimelineItemModule;
 use ET\Builder\Packages\ModuleLibrary\Toggle\ToggleModule;
+use ET\Builder\Packages\ModuleLibrary\Tooltip\TooltipModule;
 use ET\Builder\Packages\ModuleLibrary\VideoSliderItem\VideoSliderItemModule;
 use ET\Builder\Packages\ModuleLibrary\VideoSlider\VideoSliderModule;
 use ET\Builder\Packages\ModuleLibrary\Video\VideoModule;
@@ -520,6 +521,7 @@ if ( ConditionsUtility::should_register_all_d5_modules() ) {
 	$dependency_tree->add_dependency( new TimelineModule() );
 	$dependency_tree->add_dependency( new TimelineItemModule() );
 	$dependency_tree->add_dependency( new ToggleModule() );
+	$dependency_tree->add_dependency( new TooltipModule() );
 	$dependency_tree->add_dependency( new VideoModule() );
 	$dependency_tree->add_dependency( new VideoSliderItemModule() );
 	$dependency_tree->add_dependency( new VideoSliderModule() );

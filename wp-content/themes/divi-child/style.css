@@ -806,6 +806,341 @@ form.wpcf7-form .wpcf7-submit:hover {
     width: max-content;
 }
 
+
+
+/* Hero Slider styles — paste into Divi Theme Options > General > Custom CSS,
+   or your child theme's style.css. The shortcode only outputs HTML/JS,
+   not this CSS. */
+
+   .hero-slider{
+    width:100%;
+    height:85vh;
+    position:relative;
+}
+.hero-slider .swiper-slide{
+    position:relative;
+    overflow:hidden;
+}
+.slide-bg{
+    position:absolute;
+    inset:0;
+    background-size:cover;
+    background-position:center;
+    transform:scale(1);
+    transition:transform 8s linear;
+}
+.swiper-slide-active .slide-bg{
+    transform:scale(1.08);
+}
+.slide-overlay{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        90deg,
+        rgba(0,0,0,.70) 0%,
+        rgba(0,0,0,.45) 45%,
+        rgba(0,0,0,.35) 100%
+    );
+}
+.slide-content{
+    position:relative;
+    z-index:5;
+    max-width:100%;
+    height:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    color:#fff;
+    padding:0 8%;
+}
+.subtitle{
+    display:inline-block;
+    color:#d4af37;
+    font-size:15px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:2px;
+    margin-bottom:15px;
+}
+.slide-content h1{
+    font-size:62px;
+    line-height:1.1;
+    font-weight:700;
+    margin:0 0 25px;
+    color:#fff;
+}
+.slide-content p{
+    max-width:600px;
+    font-size:18px;
+    line-height:1.8;
+    margin-bottom:35px;
+    color:#f3f3f3;
+}
+.slider-buttons{
+    display:flex;
+    gap:18px;
+    flex-wrap:wrap;
+}
+.btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:15px 34px;
+    text-decoration:none;
+    border-radius:50px;
+    font-weight:600;
+    transition:.35s;
+}
+.btn-primary{
+    background:#d4af37;
+    color:#000;
+}
+.btn-primary:hover{
+    background:#fff;
+}
+.btn-secondary{
+    border:2px solid #fff;
+    color:#fff;
+}
+.btn-secondary:hover{
+    background:#fff;
+    color:#000;
+}
+.hero-slider .swiper-pagination-bullet{
+    width:12px;
+    height:12px;
+    background:#fff;
+    opacity:.4;
+}
+.hero-slider .swiper-pagination-bullet-active{
+    opacity:1;
+    background:#d4af37;
+}
+
+
+/* ----- Contact Form  ----- */
+form.wpcf7-form {
+	width: 100%;
+	float: left;
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 12px;
+}
+
+form.wpcf7-form .custom-row {
+	width: 100%;
+	float: left;
+	display: flex;
+	gap: 10px;
+}
+
+form.wpcf7-form .custom-row.margin-top-20 {
+	margin-top: 20px;
+}
+
+form.wpcf7-form .custom-col-12 {
+	width: 100%;
+	float: left;
+	margin-bottom: 15px;
+}
+
+form.wpcf7-form .custom-col-6 {
+	width: 50%;
+	float: left;
+	margin-bottom: 15px;
+}
+
+form.wpcf7-form .flex-direction-column {
+	flex-direction: column;
+}
+
+form.wpcf7-form .blue-bg {
+	background: #fbe7b5;
+	padding: 20px;
+	border-radius: 4px;
+	margin-bottom: 20px;
+}
+
+form.wpcf7-form .blue-bg label {
+	color: #fff !important;
+	font-weight: 500;
+	font-size: 22px;
+}
+
+form.wpcf7-form .custom-col-12 h4 {
+	font-weight: 600;
+	font-size: 26px;
+	padding: 0;
+	margin-top: 20px;
+}
+
+form.wpcf7-form .custom-col-12 .require-text {
+	font-size: 22px;
+	color: red !important;
+}
+
+form.wpcf7-form .blue-bg h6 {
+	color: #fff !important;
+	font-weight: 500;
+	font-size: 20px;
+	padding: 0;
+}
+
+form.wpcf7-form label {
+	font-weight: 500;
+	font-size: 18px;
+}
+
+form.wpcf7-form input[type="radio"] {
+	width: 25px;
+	height: 25px;
+	margin-right: 10px;
+}
+
+form.wpcf7-form .checkbox-col .wpcf7-list-item {
+	margin-left: 0px;
+	margin-right: 20px;
+}
+
+form.wpcf7-form .checkbox-col .wpcf7-list-item label {
+	display: flex;
+	align-items: center;
+	margin-top: 10px;
+}
+
+form.wpcf7-form input,
+form.wpcf7-form select {
+	height: 50px;
+	width: 100%;
+}
+
+form.wpcf7-form textarea {
+	height: 100px;
+	width: 100%;
+	padding-top: 10px;
+}
+
+form.wpcf7-form input,
+form.wpcf7-form textarea,
+form.wpcf7-form select {
+	background: #fff;
+	border-radius: 20px;
+	border: 1px solid #e0e0e0;
+	padding-left: 20px;
+	transition: all ease 0.6s;
+	-moz-transition: all ease 0.6s;
+	-webkit-transition: all ease 0.6s;
+	-o-transition: all ease 0.6s;
+}
+
+form.wpcf7-form input::-webkit-input-placeholder,
+form.wpcf7-form textarea::-webkit-input-placeholder {
+	color: #3f3f3f;
+}
+
+form.wpcf7-form input::-moz-placeholder,
+form.wpcf7-form textarea::-moz-placeholder {
+	color: #3f3f3f;
+	opacity: 1;
+}
+
+form.wpcf7-form input:-ms-input-placeholder,
+form.wpcf7-form textarea:-ms-input-placeholder {
+	color: #3f3f3f;
+}
+
+form.wpcf7-form input::placeholder,
+form.wpcf7-form textarea::placeholder {
+	color: #3f3f3f;
+	opacity: 1;
+	transition: all 0.3s ease-in-out;
+}
+
+form.wpcf7-form input:focus,
+form.wpcf7-form textarea:focus {
+	border: 1px solid #1f1f1f;
+}
+
+form.wpcf7-form input:focus::placeholder {
+	color: #1f1f1f;
+}
+
+form.wpcf7-form .field-required {
+	color: #ff0000;
+}
+
+form.wpcf7-form .wpcf7-submit {
+	width: auto;
+	color: #1f1f1f;
+	border: 1px solid #F4BD17;
+	border-radius: 30px;
+	letter-spacing: 0px;
+	font-size: 15px;
+	background-color: #F4BD17;
+	padding: 10px 20px;
+	transition: all 300ms ease-in-out 0ms;
+	cursor: pointer;
+}
+
+form.wpcf7-form .wpcf7-submit:hover {
+	color: #F4BD17;
+	background-color: transparent;
+	border: 1px solid #F4BD17;
+	transform: translateY(-2px);
+}
+
+.wpcf7 form.sent .wpcf7-response-output {
+	display: inline-block;
+}
+
+
+.wpcf7 form.invalid .wpcf7-response-output,
+.wpcf7 form.unaccepted .wpcf7-response-output,
+.wpcf7 form.payment-required .wpcf7-response-output,
+.wpcf7 form.failed .wpcf7-response-output,
+.wpcf7 form.aborted .wpcf7-response-output {
+	float: left;
+}
+
+@media(max-width:980px){
+    .hero-slider{
+        height:700px;
+    }
+    .slide-content{
+        text-align:center;
+        align-items:center;
+    }
+    .slide-content h1{
+        font-size:42px;
+    }
+    .slide-content p{
+        font-size:16px;
+    }
+}
+@media(max-width:767px){
+    .hero-slider{
+        height:600px;
+    }
+    .slide-content{
+        padding:0 25px;
+    }
+    .slide-content h1{
+        font-size:32px;
+    }
+    .slide-content p{
+        font-size:15px;
+        line-height:1.7;
+    }
+    .slider-buttons{
+        width:100%;
+        flex-direction:column;
+    }
+    .btn{
+        width:100%;
+    }
+}
+
+
 @media (max-width: 980px) {
     .header-menu ul li a:hover::before{
         content: none !important;

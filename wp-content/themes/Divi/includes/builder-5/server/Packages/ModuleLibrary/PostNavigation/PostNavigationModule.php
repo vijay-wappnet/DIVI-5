@@ -189,7 +189,7 @@ class PostNavigationModule implements DependencyInterface {
 				'hoverSelector' => $selector,
 				'setContent'    => [
 					[
-						'selector' => $selector . ' .nav-prev .nav-label',
+						'selector' => $selector . ' .nav-previous .nav-label',
 						'data'     => $attrs['links']['advanced']['prevText'] ?? [],
 					],
 					[

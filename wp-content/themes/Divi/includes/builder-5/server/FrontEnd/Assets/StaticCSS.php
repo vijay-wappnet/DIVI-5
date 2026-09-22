@@ -82,16 +82,24 @@ class StaticCSS implements DependencyInterface {
 	public static $forced_inline_styles = false;
 
 	/**
+	 * Cached return values from {@see self::setup_styles_manager()}.
+	 *
+	 * @var array<string, array>|null
+	 */
+	private static $_setup_styles_manager_cache = null;
+
+	/**
 	 * Reset all static properties.
 	 *
 	 * @since ??
 	 */
 	public static function reset(): void {
-		self::$styles_manager          = null;
-		self::$deferred_styles_manager = null;
-		self::$wp_editor_template      = [];
-		self::$_elements               = [];
-		self::$forced_inline_styles    = false;
+		self::$styles_manager                 = null;
+		self::$deferred_styles_manager        = null;
+		self::$wp_editor_template             = [];
+		self::$_elements                      = [];
+		self::$forced_inline_styles           = false;
+		self::$_setup_styles_manager_cache    = null;
 	}
 
 	/**
@@ -236,8 +244,6 @@ class StaticCSS implements DependencyInterface {
 	 * @param int $post_id The post ID.
 	 */
 	public static function setup_styles_manager( int $post_id = 0 ) {
-		static $cached = null;
-
 		if ( 0 === $post_id && et_core_page_resource_is_singular() ) {
 			// It doesn't matter if post id is 0 because we're going to force inline styles.
 			$post_id = et_core_page_resource_get_the_ID();
@@ -296,8 +302,8 @@ class StaticCSS implements DependencyInterface {
 		// Include pagination, random order state, blog style mode, and excerpt_content_on in cache key to prevent cross-request caching issues.
 		$cache_key = $post_id . intval( $should_generate_critical_css ) . intval( $has_paginated_loops ) . intval( $current_page_has_random_order_loops ) . intval( $blog_style_mode ) . intval( $has_excerpt_content_on ) . $pagination_key;
 
-		if ( isset( $cached[ $cache_key ] ) ) {
-			return $cached[ $cache_key ];
+		if ( isset( self::$_setup_styles_manager_cache[ $cache_key ] ) ) {
+			return self::$_setup_styles_manager_cache[ $cache_key ];
 		}
 
 		$deferred         = false;
@@ -408,7 +414,7 @@ class StaticCSS implements DependencyInterface {
 		$manager_data = apply_filters( 'divi_frontend_assets_static_css_module_style_manager', $manager_data );
 
 		// Cache $manager_data.
-		$cached[ $cache_key ] = $manager_data;
+		self::$_setup_styles_manager_cache[ $cache_key ] = $manager_data;
 
 		return $manager_data;
 	}
@@ -534,7 +540,8 @@ class StaticCSS implements DependencyInterface {
 			// Deduplicates identical rules that repeat because module order indices reset per TB layout.
 			$merged_module_styles_data = [];
 			foreach ( self::$_elements as $element_for_merge ) {
-				$module_for_layout = Style::get_style_array( 'module', $element_for_merge->get_layout_id() );
+				$layout_id         = $element_for_merge->get_layout_id();
+				$module_for_layout = Style::get_style_array( 'module', $layout_id );
 
 				if ( ! empty( $module_for_layout ) ) {
 					$merged_module_styles_data = Style::merge_module_styles_data(

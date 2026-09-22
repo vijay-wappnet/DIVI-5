@@ -36,7 +36,7 @@ class ContactFormHandler {
 	private static $_submission_coordination_snapshots = [];
 
 	/**
-	 * Tracks which `unique_id` values have already rendered a submitted-state outcome message HTML.
+	 * Outcome-message render claims keyed by `{store_instance}:{unique_id}`.
 	 *
 	 * @since ??
 	 *
@@ -207,6 +207,13 @@ class ContactFormHandler {
 			return;
 		}
 
+		$fields = BlockParserStore::get_children( $this->_module_id, $this->_store_instance );
+
+		if ( $this->_should_defer_submission_for_store( $fields ) ) {
+			$this->_submitted = false;
+			return;
+		}
+
 		// check whether captcha field is not empty.
 		$use_basic_captcha = $module_attrs['module']['advanced']['spamProtection']['desktop']['value']['useBasicCaptcha'] ?? 'on';
 		$use_spam_service  = $module_attrs['module']['advanced']['spamProtection']['desktop']['value']['enabled'] ?? 'off';
@@ -228,8 +235,6 @@ class ContactFormHandler {
 				$this->_add_error( 'spam_submission', esc_html__( 'You must be a human to submit this form.', 'et_builder_5' ) );
 			}
 		}
-
-		$fields = BlockParserStore::get_children( $this->_module_id, $this->_store_instance );
 
 		// Populate the form fields.
 		foreach ( $fields as $field ) {
@@ -436,23 +441,23 @@ class ContactFormHandler {
 	}
 
 	/**
-	 * Claims the right to render the submitted-state outcome message for a `unique_id` once per request.
-	 *
-	 * When the same contact form UUID is rendered twice (e.g. duplicate global off-canvas markup),
-	 * only the first instance should print success or error text inside `.et-pb-contact-message`.
+	 * Claims outcome-message render for a `unique_id` once per store instance per request.
 	 *
 	 * @since ??
 	 *
-	 * @param string $unique_id Value from `ContactFormUtils::get_unique_id()`.
+	 * @param string $unique_id      Value from `ContactFormUtils::get_unique_id()`.
+	 * @param int    $store_instance BlockParserStore instance for this render context.
 	 *
-	 * @return bool True if this render should output the message HTML; false if a prior instance claimed it.
+	 * @return bool True if this render should output the message HTML.
 	 */
-	public static function claim_submitted_contact_form_outcome_message_render( string $unique_id ): bool {
-		if ( isset( self::$_claimed_submitted_outcome_message_renders[ $unique_id ] ) ) {
+	public static function claim_submitted_contact_form_outcome_message_render( string $unique_id, int $store_instance = 0 ): bool {
+		$claim_key = $store_instance . ':' . $unique_id;
+
+		if ( isset( self::$_claimed_submitted_outcome_message_renders[ $claim_key ] ) ) {
 			return false;
 		}
 
-		self::$_claimed_submitted_outcome_message_renders[ $unique_id ] = true;
+		self::$_claimed_submitted_outcome_message_renders[ $claim_key ] = true;
 
 		return true;
 	}
@@ -508,6 +513,47 @@ class ContactFormHandler {
 				$this->_error->add( $code, $message, $snapshot['error_data'][ $code ] ?? '' );
 			}
 		}
+	}
+
+	/**
+	 * True when $_POST has contact-field keys for another store instance (extra render pass).
+	 *
+	 * @since ??
+	 *
+	 * @param BlockParserBlock[] $fields Contact form child blocks.
+	 *
+	 * @return bool
+	 */
+	private function _should_defer_submission_for_store( array $fields ): bool {
+		$post_has_contact_field = false;
+
+		foreach ( array_keys( $_POST ) as $post_key ) {
+			if (
+				is_string( $post_key )
+				&& 0 === strpos( $post_key, 'et_pb_contact_' )
+				&& 0 !== strpos( $post_key, 'et_pb_contact_captcha' )
+				&& false === strpos( $post_key, 'contactform_submit' )
+			) {
+				$post_has_contact_field = true;
+				break;
+			}
+		}
+
+		if ( ! $post_has_contact_field ) {
+			return false;
+		}
+
+		foreach ( $fields as $field ) {
+			if ( 'divi/contact-field' !== $field->blockName ) { // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase -- This is a property of the WP Core class.
+				continue;
+			}
+
+			if ( isset( $_POST[ ContactFieldModule::get_field_unique_id( $field->id, $this->_store_instance ) ] ) ) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**

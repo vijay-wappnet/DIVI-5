@@ -10,19 +10,11 @@ use ET\Builder\Framework\Utility\PostUtility;
 $post_id                                = get_queried_object_id();
 $show_default_title                     = get_post_meta( $post_id, '_et_pb_show_title', true );
 $is_page_builder_used                   = et_pb_is_pagebuilder_used( $post_id );
-$is_builder_enabled_custom_post_type_single = $is_page_builder_used && et_builder_post_is_of_custom_post_type( $post_id );
-
-if ( $is_builder_enabled_custom_post_type_single ) {
-	add_filter(
-		'body_class',
-		static function( $classes ) {
-			$classes   = array_diff( $classes, [ 'et_right_sidebar', 'et_left_sidebar' ] );
-			$classes[] = 'et_no_sidebar';
-
-			return array_values( array_unique( $classes ) );
-		}
-	);
-}
+$is_builder_cpt_single                  = $is_page_builder_used && et_builder_post_is_of_custom_post_type( $post_id );
+$cpt_page_layout                        = get_post_meta( $post_id, '_et_pb_page_layout', true );
+$is_builder_cpt_single_with_sidebar     = $is_builder_cpt_single && in_array( $cpt_page_layout, [ 'et_right_sidebar', 'et_left_sidebar' ], true );
+$render_default_single_shell            = ! $is_builder_cpt_single || $is_builder_cpt_single_with_sidebar;
+$show_builder_cpt_title                 = $is_builder_cpt_single_with_sidebar && 'off' !== $show_default_title;
 
 get_header();
 
@@ -49,7 +41,7 @@ get_header();
 		endwhile;
 		else :
 			?>
-	<?php if ( ! $is_builder_enabled_custom_post_type_single ) : ?>
+	<?php if ( $render_default_single_shell ) : ?>
 		<div class="container">
 			<div id="content-area" class="clearfix">
 				<div id="left-area">
@@ -67,7 +59,16 @@ get_header();
 				do_action( 'et_before_post' );
 				?>
 				<article id="post-<?php the_ID(); ?>" <?php post_class( 'et_pb_post' ); ?>>
-					<?php if ( ! $is_builder_enabled_custom_post_type_single && ( ( 'off' !== $show_default_title && $is_page_builder_used ) || ! $is_page_builder_used ) ) { ?>
+					<?php if ( $show_builder_cpt_title ) { ?>
+						<div class="et_post_meta_wrapper">
+							<h1 class="entry-title"><?php the_title(); ?></h1>
+							<?php
+							if ( ! post_password_required() ) {
+								et_divi_post_meta();
+							}
+							?>
+						</div>
+					<?php } elseif ( ! $is_builder_cpt_single && ( ( 'off' !== $show_default_title && $is_page_builder_used ) || ! $is_page_builder_used ) ) { ?>
 						<div class="et_post_meta_wrapper">
 							<h1 class="entry-title"><?php the_title(); ?></h1>
 
@@ -169,11 +170,11 @@ get_header();
 						);
 					?>
 					</div>
-					<?php if ( ! $is_builder_enabled_custom_post_type_single ) : ?>
+					<?php if ( ! $is_builder_cpt_single ) : ?>
 						<div class="et_post_meta_wrapper">
 					<?php endif; ?>
 					<?php
-					if ( ! $is_builder_enabled_custom_post_type_single && et_get_option( 'divi_468_enable' ) === 'on' ) {
+					if ( ! $is_builder_cpt_single && et_get_option( 'divi_468_enable' ) === 'on' ) {
 						echo '<div class="et-single-post-ad">';
 						if ( et_get_option( 'divi_468_adsense' ) !== '' ) {
 							echo et_core_intentionally_unescaped( et_core_fix_unclosed_html_tags( et_get_option( 'divi_468_adsense' ) ), 'html' );
@@ -193,7 +194,7 @@ get_header();
 					do_action( 'et_after_post' );
 
 					if (
-						! $is_builder_enabled_custom_post_type_single &&
+						! $is_builder_cpt_single &&
 						( comments_open() || get_comments_number() ) &&
 						'on' === et_get_option( 'divi_show_postcomments', 'on' )
 					) {
@@ -201,13 +202,13 @@ get_header();
 						et_comments_template_safe( '', true );
 					}
 					?>
-					<?php if ( ! $is_builder_enabled_custom_post_type_single ) : ?>
+					<?php if ( ! $is_builder_cpt_single ) : ?>
 						</div>
 					<?php endif; ?>
 				</article>
 
 			<?php endwhile; ?>
-			<?php if ( ! $is_builder_enabled_custom_post_type_single ) : ?>
+			<?php if ( $render_default_single_shell ) : ?>
 				</div>
 
 				<?php get_sidebar(); ?>

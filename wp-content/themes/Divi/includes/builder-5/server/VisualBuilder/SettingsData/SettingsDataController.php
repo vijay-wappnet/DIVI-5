@@ -223,10 +223,29 @@ class SettingsDataController extends RESTController {
 	 *
 	 * @since ??
 	 *
+	 * @param WP_REST_Request $request REST request object.
+	 *
 	 * @return bool returns `true` if the current user has the permission to use the rest endpoint, otherwise `false`
 	 */
-	public static function index_permission(): bool {
-		return UserRole::can_current_user_use_visual_builder();
+	public static function index_permission( WP_REST_Request $request ): bool {
+		if ( ! UserRole::can_current_user_use_visual_builder() ) {
+			return false;
+		}
+
+		$post_id = $request->has_param( 'et_post_id' )
+			? absint( $request->get_param( 'et_post_id' ) )
+			: absint( $request->get_param( 'currentPage[id]' ) );
+
+		if ( 0 < $post_id ) {
+			return current_user_can( 'edit_post', $post_id );
+		}
+
+		$main_loop_type = sanitize_text_field( (string) $request->get_param( 'mainLoopType' ) );
+
+		return '' !== $main_loop_type
+			&& 'singular' !== $main_loop_type
+			&& current_user_can( 'edit_theme_options' )
+			&& et_pb_is_allowed( 'theme_builder' );
 	}
 
 	/**
@@ -269,6 +288,6 @@ class SettingsDataController extends RESTController {
 	 * @return bool
 	 */
 	public static function nonces_permission(): bool {
-		return self::index_permission();
+		return UserRole::can_current_user_use_visual_builder();
 	}
 }

@@ -102,6 +102,7 @@ class QueryPostsController extends RESTController {
 			'posts_per_page' => $posts_per_page,
 			'offset'         => $offset,
 			'post_status'    => 'publish',
+			'perm'           => 'readable',
 		];
 
 		// Handle post status for attachments and 'any' post type.
@@ -142,6 +143,10 @@ class QueryPostsController extends RESTController {
 		$wordpress_date_format = get_option( 'date_format' );
 
 		foreach ( $query->posts as $post ) {
+			if ( 'publish' !== $post->post_status && ! current_user_can( 'read_post', $post->ID ) ) {
+				continue;
+			}
+
 			// Get full excerpt/content for Visual Builder to handle truncation based on user's word limit.
 			// Use manual excerpt if available, otherwise get full content (not truncated).
 			$excerpt_value = '';

@@ -49,11 +49,15 @@ class Admin {
 	 *
 	 * @since ??
 	 *
-	 * @param string $hook_suffix Current admin page hook.
+	 * @param string|null $hook_suffix Current admin page hook. May be null in iframe sub-requests (e.g. `iframe_header()`).
 	 *
 	 * @return void
 	 */
-	public function load_visual_builder_dependencies( string $hook_suffix ): void {
+	public function load_visual_builder_dependencies( ?string $hook_suffix ): void {
+		if ( null === $hook_suffix ) {
+			return;
+		}
+
 		if ( ! Conditions::is_block_editor() ) {
 			return;
 		}

@@ -161,6 +161,68 @@ class FontBodyStyle {
 			} elseif ( $children_body ) {
 				$children .= $children_body;
 			}
+
+			$children_body_paragraph_spacing = Utils::style_statements(
+				[
+					'selectors'              => ! empty( $selectors ) ? $selectors : [ 'desktop' => [ 'value' => $selector ] ],
+					'selectorFunction'       => function ( $params ) use ( $selector_function, $selector ) {
+						$base_selector = isset( $selector_function )
+							? call_user_func( $selector_function, self::_extend_selector_function_params( 'body', $params ) )
+							: ( $params['selector'] ?? $selector );
+						$sub_selector  = '*:not([data-et-vb-popover-tinymce])';
+
+						return ModuleUtils::generate_combined_selectors( $base_selector, $sub_selector );
+					},
+					'propertySelectors'      => $property_selectors['body']['list'] ?? [],
+					'declarationFunction'    => function ( $params ) {
+						return ListFontStyle::paragraph_spacing_declaration( $params );
+					},
+					'attr'                   => $attr['body']['list'] ?? [],
+					'important'              => is_bool( $important ) ? $important : ( $important['body']['list'] ?? [] ),
+					'orderClass'             => $order_class,
+					'isInsideStickyModule'   => $is_inside_sticky_module,
+					'stickyParentOrderClass' => $sticky_parent_order_class,
+					'returnType'             => $args['returnType'],
+					'atRules'                => $at_rules,
+				]
+			);
+
+			if ( $children_body_paragraph_spacing && $return_as_array ) {
+				array_push( $children, ...$children_body_paragraph_spacing );
+			} elseif ( $children_body_paragraph_spacing ) {
+				$children .= $children_body_paragraph_spacing;
+			}
+
+			$children_body_paragraph_spacing_last_paragraph_reset = Utils::style_statements(
+				[
+					'selectors'              => ! empty( $selectors ) ? $selectors : [ 'desktop' => [ 'value' => $selector ] ],
+					'selectorFunction'       => function ( $params ) use ( $selector_function, $selector ) {
+						$base_selector = isset( $selector_function )
+							? call_user_func( $selector_function, self::_extend_selector_function_params( 'body', $params ) )
+							: ( $params['selector'] ?? $selector );
+						$sub_selector  = 'p:not(.has-background):last-of-type';
+
+						return ModuleUtils::generate_combined_selectors( $base_selector, $sub_selector );
+					},
+					'propertySelectors'      => $property_selectors['body']['list'] ?? [],
+					'declarationFunction'    => function ( $params ) {
+						return ListFontStyle::paragraph_spacing_last_paragraph_reset_declaration( $params );
+					},
+					'attr'                   => $attr['body']['list'] ?? [],
+					'important'              => is_bool( $important ) ? $important : ( $important['body']['list'] ?? [] ),
+					'orderClass'             => $order_class,
+					'isInsideStickyModule'   => $is_inside_sticky_module,
+					'stickyParentOrderClass' => $sticky_parent_order_class,
+					'returnType'             => $args['returnType'],
+					'atRules'                => $at_rules,
+				]
+			);
+
+			if ( $children_body_paragraph_spacing_last_paragraph_reset && $return_as_array ) {
+				array_push( $children, ...$children_body_paragraph_spacing_last_paragraph_reset );
+			} elseif ( $children_body_paragraph_spacing_last_paragraph_reset ) {
+				$children .= $children_body_paragraph_spacing_last_paragraph_reset;
+			}
 		}
 
 		if ( ! empty( $attr['link'] ) ) {
@@ -284,6 +346,37 @@ class FontBodyStyle {
 				array_push( $children, ...$children_quote );
 			} elseif ( $children_quote ) {
 				$children .= $children_quote;
+			}
+		}
+
+		if ( ! empty( $attr['dropCap'] ) ) {
+			$children_drop_cap = FontStyle::style(
+				[
+					'selector'                => $selector,
+					'selectors'               => $selectors,
+					'selectorFunction'        => function ( $params ) use ( $selector_function ) {
+						$base_selector = isset( $selector_function ) ? call_user_func( $selector_function, self::_extend_selector_function_params( 'dropCap', $params ) ) : $params['selector'];
+						$sub_selector  = 'p:first-of-type:first-letter';
+						return ModuleUtils::generate_combined_selectors( $base_selector, $sub_selector );
+					},
+					'propertySelectors'       => $property_selectors['dropCap'] ?? [],
+					'attrs_json'              => $attr_json,
+					'attr'                    => $attr['dropCap'],
+					'defaultPrintedStyleAttr' => $args['defaultPrintedStyleAttr']['dropCap'] ?? [],
+					'important'               => is_bool( $important ) ? $important : ( $important['dropCap'] ?? [] ),
+					'asStyle'                 => false,
+					'orderClass'              => $order_class,
+					'isInsideStickyModule'    => $is_inside_sticky_module,
+					'stickyParentOrderClass'  => $sticky_parent_order_class,
+					'returnType'              => $args['returnType'],
+					'atRules'                 => $at_rules,
+				]
+			);
+
+			if ( $children_drop_cap && $return_as_array ) {
+				array_push( $children, ...$children_drop_cap );
+			} elseif ( $children_drop_cap ) {
+				$children .= $children_drop_cap;
 			}
 		}
 

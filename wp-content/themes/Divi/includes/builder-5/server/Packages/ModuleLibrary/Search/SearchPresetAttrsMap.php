@@ -79,6 +79,16 @@ class SearchPresetAttrsMap {
 					'preset'   => [ 'style' ],
 					'subName'  => 'weight',
 				],
+				'field.decoration.placeholderFont.font__weightFineTune' => [
+					'attrName' => 'field.decoration.placeholderFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'weightFineTune',
+				],
+				'field.decoration.placeholderFont.font__opticalSizing' => [
+					'attrName' => 'field.decoration.placeholderFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'opticalSizing',
+				],
 				'field.decoration.placeholderFont.font__style' => [
 					'attrName' => 'field.decoration.placeholderFont.font',
 					'preset'   => [ 'style' ],
@@ -88,6 +98,16 @@ class SearchPresetAttrsMap {
 					'attrName' => 'field.decoration.placeholderFont.font',
 					'preset'   => [ 'style' ],
 					'subName'  => 'lineColor',
+				],
+				'field.decoration.placeholderFont.font__lineThickness' => [
+					'attrName' => 'field.decoration.placeholderFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'lineThickness',
+				],
+				'field.decoration.placeholderFont.font__underlineOffset' => [
+					'attrName' => 'field.decoration.placeholderFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'underlineOffset',
 				],
 				'field.decoration.placeholderFont.font__lineStyle' => [
 					'attrName' => 'field.decoration.placeholderFont.font',
@@ -118,6 +138,36 @@ class SearchPresetAttrsMap {
 					'attrName' => 'field.decoration.placeholderFont.font',
 					'preset'   => [ 'style' ],
 					'subName'  => 'lineHeight',
+				],
+				'field.decoration.placeholderFont.font__capitalization' => [
+					'attrName' => 'field.decoration.placeholderFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'capitalization',
+				],
+				'field.decoration.placeholderFont.font__textWrap' => [
+					'attrName' => 'field.decoration.placeholderFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'textWrap',
+				],
+				'field.decoration.placeholderFont.font__writingMode' => [
+					'attrName' => 'field.decoration.placeholderFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'writingMode',
+				],
+				'field.decoration.placeholderFont.font__hyphens' => [
+					'attrName' => 'field.decoration.placeholderFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'hyphens',
+				],
+				'field.decoration.placeholderFont.font__columnCount' => [
+					'attrName' => 'field.decoration.placeholderFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'columnCount',
+				],
+				'field.decoration.placeholderFont.font__columnGap' => [
+					'attrName' => 'field.decoration.placeholderFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'columnGap',
 				],
 				'field.decoration.placeholderFont.textShadow__style' => [
 					'attrName' => 'field.decoration.placeholderFont.textShadow',
@@ -338,6 +388,11 @@ class SearchPresetAttrsMap {
 					'attrName' => 'field.decoration.placeholderFont.textEffects',
 					'preset'   => [ 'style' ],
 					'subName'  => 'strokeWidth',
+				],
+				'field.decoration.placeholderFont.textEffects__strokePosition' => [
+					'attrName' => 'field.decoration.placeholderFont.textEffects',
+					'preset'   => [ 'style' ],
+					'subName'  => 'strokePosition',
 				],
 				'button.decoration.font.textEffects__fillType' => [
 					'attrName' => 'button.decoration.font.textEffects',

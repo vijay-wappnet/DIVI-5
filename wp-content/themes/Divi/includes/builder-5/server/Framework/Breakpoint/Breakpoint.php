@@ -341,7 +341,12 @@ class Breakpoint {
 	 * @return bool True if the breakpoint is enabled, false otherwise.
 	 */
 	public static function is_enabled_for_style( string $breakpoint_name ): bool {
-		static $enableds = [];
+		$cache_key = __FUNCTION__;
+		$enableds  = wp_cache_get( $cache_key, self::$cache_group );
+
+		if ( false === $enableds ) {
+			$enableds = [];
+		}
 
 		if ( isset( $enableds[ $breakpoint_name ] ) ) {
 			return $enableds[ $breakpoint_name ];
@@ -358,6 +363,7 @@ class Breakpoint {
 		);
 
 		$enableds[ $breakpoint_name ] = $found['enable'] ?? false;
+		wp_cache_set( $cache_key, $enableds, self::$cache_group );
 
 		return $enableds[ $breakpoint_name ];
 	}
@@ -779,7 +785,35 @@ class Breakpoint {
 		];
 
 		// Update breakpoints on WordPress options.
-		return update_option( self::$option_name, $sanitized_breakpoints );
+		$is_updated = update_option( self::$option_name, $sanitized_breakpoints );
+
+		if ( $is_updated ) {
+			foreach ( self::get_cache_keys() as $cache_key ) {
+				wp_cache_delete( $cache_key, self::$cache_group );
+			}
+		}
+
+		return $is_updated;
+	}
+
+	/**
+	 * Get breakpoint cache keys.
+	 *
+	 * @since ??
+	 *
+	 * @return array
+	 */
+	public static function get_cache_keys(): array {
+		return [
+			'get_settings_values',
+			'get_all_breakpoint_names',
+			'get_enabled_breakpoints',
+			'get_enabled_breakpoint_names',
+			'is_enabled_for_style',
+			'get_style_breakpoint_order',
+			'get_style_breakpoint_settings',
+			'get_disabled_on_rules',
+		];
 	}
 
 	/**

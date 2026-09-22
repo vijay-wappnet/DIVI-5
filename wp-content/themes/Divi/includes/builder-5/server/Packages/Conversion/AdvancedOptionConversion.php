@@ -265,6 +265,7 @@ class AdvancedOptionConversion {
         'd4_attr_name_line_height' => 'lineHeight',
         'd4_attr_name_text_align' => 'textAlign',
         'd4_attr_name_text_color' => 'color',
+        'd4_attr_name_all_caps' => 'capitalization',
     ];
 
     /**
@@ -279,6 +280,7 @@ class AdvancedOptionConversion {
      */
     public static $fontValueConversionFunctionMap = [
         'font' => 'ET\Builder\Packages\Conversion\AdvancedOptionConversion::convertFont',
+        'capitalization' => 'ET\Builder\Packages\Conversion\AdvancedOptionConversion::convertAllCaps',
     ];
 
 	/**
@@ -2423,11 +2425,10 @@ class AdvancedOptionConversion {
      * //  'lineStyle' => 'dotted',
      * //  'style' => [
      * //    'italic',
-     * //    'uppercase',
      * //    'underline',
-     * //    'capitalize',
      * //    'strikethrough',
      * //  ],
+     * //  'capitalization' => 'smallCaps',
      * //  'weight' => '300',
      * //}
      * ```
@@ -2465,21 +2466,35 @@ class AdvancedOptionConversion {
 
         $valueArray = explode('|', $value);
 
-        $fontStyle = [];
+        $fontStyle          = [];
+		$fontCapitalization = '';
         if (isset($valueArray[2]) && strpos($valueArray[2], 'on') === 0) {
             $fontStyle[] = 'italic';
         }
         if (isset($valueArray[3]) && strpos($valueArray[3], 'on') === 0) {
-            $fontStyle[] = 'uppercase';
+            $fontCapitalization = 'uppercase';
+        }
+        if (isset($valueArray[10]) && strpos($valueArray[10], 'on') === 0) {
+            $fontCapitalization = 'lowercase';
         }
         if (isset($valueArray[4]) && strpos($valueArray[4], 'on') === 0) {
             $fontStyle[] = 'underline';
         }
         if (isset($valueArray[5]) && strpos($valueArray[5], 'on') === 0) {
-            $fontStyle[] = 'capitalize';
+            // D4 capitalize option produced small-caps rendering in practice.
+            $fontCapitalization = 'smallCaps';
         }
         if (isset($valueArray[6]) && strpos($valueArray[6], 'on') === 0) {
             $fontStyle[] = 'strikethrough';
+        }
+        if (isset($valueArray[9]) && strpos($valueArray[9], 'on') === 0) {
+            $fontStyle[] = 'overline';
+        }
+        if (isset($valueArray[11]) && strpos($valueArray[11], 'on') === 0) {
+            $fontCapitalization = 'smallCaps';
+        }
+        if (isset($valueArray[12]) && strpos($valueArray[12], 'on') === 0) {
+            $fontCapitalization = 'allSmallCaps';
         }
 
         $font = [];
@@ -2501,6 +2516,10 @@ class AdvancedOptionConversion {
             $font['style'] = $fontStyle;
         }
 
+        if (!empty($fontCapitalization)) {
+            $font['capitalization'] = $fontCapitalization;
+        }
+
         if (!empty($fontLineColor)) {
             $font['lineColor'] = $fontLineColor;
         }
@@ -2510,6 +2529,27 @@ class AdvancedOptionConversion {
         }
 
         return $font;
+    }
+
+	/**
+     * Convert D4 `{font}_all_caps` attribute value to D5 capitalization.
+     *
+     * D4 stores all-caps as a standalone on/off hidden attribute separate from the
+     * pipe-delimited font string. D5 expects `uppercase` or an empty string.
+     *
+     * @since ??
+     *
+     * @param string $value        Shortcode attribute value for all caps.
+     * @param array  $extra_params Optional conversion context.
+     *
+     * @return string D5 capitalization value.
+     */
+    public static function convertAllCaps( $value, $extra_params = [] ) {
+        if ( is_string( $value ) && 0 === strpos( $value, 'on' ) ) {
+            return 'uppercase';
+        }
+
+        return '';
     }
 
 	/**

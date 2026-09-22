@@ -765,7 +765,6 @@ class TeamMemberModule implements DependencyInterface {
 		$social_media_items = [
 			'facebook' => 'Facebook',
 			'twitter'  => 'Twitter',
-			'google'   => 'Google+',
 			'linkedin' => 'LinkedIn',
 		];
 

@@ -380,6 +380,7 @@ class ContactForm7Module implements DependencyInterface {
 			[
 				'formId'        => $form_id,
 				'layoutDisplay' => $layout_display,
+				'button'        => $attrs['button'] ?? [],
 			]
 		);
 

@@ -136,6 +136,7 @@ class TransitionUtils {
 		$animatable_options = [
 			'font-size',
 			'font-weight',
+			'font-variation-settings',
 			'color',
 			'-webkit-text-stroke-color',
 			'fill',
@@ -1441,6 +1442,28 @@ class TransitionUtils {
 							$css_properties[] = 'font-size';
 						} elseif ( 'weight' === $text_font ) {
 							$css_properties[] = 'font-weight';
+						} elseif ( 'weightFineTune' === $text_font ) {
+							$css_properties[] = 'font-weight';
+						} elseif ( 'variationSettings' === $text_font && isset( $font_values['variationSettings'] ) && is_array( $font_values['variationSettings'] ) ) {
+							$axis_tags = array_map(
+								'strtoupper',
+								array_keys( $font_values['variationSettings'] )
+							);
+
+							if ( in_array( 'WGHT', $axis_tags, true ) ) {
+								$css_properties[] = 'font-weight';
+							}
+
+							$non_weight_axis_tags = array_filter(
+								$axis_tags,
+								function ( $axis_tag ) {
+									return 'WGHT' !== $axis_tag;
+								}
+							);
+
+							if ( ! empty( $non_weight_axis_tags ) ) {
+								$css_properties[] = 'font-variation-settings';
+							}
 						} elseif ( 'letterSpacing' === $text_font ) {
 							$css_properties[] = 'letter-spacing';
 						} elseif ( 'lineHeight' === $text_font ) {

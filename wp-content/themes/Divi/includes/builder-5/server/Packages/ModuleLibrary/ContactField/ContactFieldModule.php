@@ -286,8 +286,9 @@ class ContactFieldModule implements DependencyInterface {
 			'text-decoration-line',
 			'text-decoration-color',
 			'text-decoration-style',
-			// UI "Capitalize" uses `font-variant: small-caps`, not `text-transform`; keep it off the icon selector like other label font longhands.
+			// Keep small-caps on the label text selector for both legacy and new capitalization outputs.
 			'font-variant',
+			'font-variant-caps',
 		];
 		$font_property_selectors                   = array_fill_keys( $font_group_properties, implode( ', ', $text_group_targets ) );
 		$font_property_selectors_hover             = array_fill_keys( $font_group_properties, implode( ', ', $text_group_targets_hover ) );

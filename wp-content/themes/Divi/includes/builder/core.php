@@ -4876,7 +4876,10 @@ if ( ! function_exists( 'et_builder_google_fonts_sync' ) ) :
 		// Set 'fonts_cache_status' transient to true, marking the font cache update attempt to avoid making the request more than once a day in case of an error.
 		set_transient( 'fonts_cache_status', true, 24 * HOUR_IN_SECONDS );
 
-		$google_fonts_api_url  = sprintf( 'https://www.googleapis.com/webfonts/v1/webfonts?key=%1$s', $google_api_key );
+		$google_fonts_api_url  = sprintf(
+			'https://www.googleapis.com/webfonts/v1/webfonts?capability=VF&sort=alpha&key=%1$s',
+			$google_api_key
+		);
 		$google_fonts_response = wp_remote_get( esc_url_raw( $google_fonts_api_url ) );
 
 		// Check if the response is an array and we have a valid 200 response, otherwise log an error.

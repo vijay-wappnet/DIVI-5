@@ -194,6 +194,11 @@ class DynamicAssetsEnqueue {
 				'enqueue_function'   => [ DynamicAssetsUtils::class, 'enqueue_signup_script' ],
 				'module_deps'        => [ 'divi/signup' ],
 			],
+			'tooltip'                  => [
+				'enqueue_state_prop' => 'tooltip',
+				'enqueue_function'   => [ DynamicAssetsUtils::class, 'enqueue_tooltip_script' ],
+				'module_deps'        => [ 'divi/tooltip' ],
+			],
 			'table_of_contents'        => [
 				'enqueue_state_prop' => 'table_of_contents',
 				'enqueue_function'   => [ DynamicAssetsUtils::class, 'enqueue_table_of_contents_script' ],
@@ -1106,7 +1111,7 @@ class DynamicAssetsEnqueue {
 			* which adds the script-data as required.
 			*
 			* Note: Animation, interactions, link, motion effects, sticky, circle counter, number counter, contact form,
-			* woocommerce cart totals, signup, lottie, group carousel, and woocommerce cart scripts are enqueued
+			* woocommerce cart totals, signup, lottie, group carousel, tooltip, and woocommerce cart scripts are enqueued
 			* in the early phase if detected early, but script-data must still be enqueued here after modules render.
 			*/
 			if ( $this->dependency_checker->should_enqueue( $this->enqueue_state->animation ) || $this->feature_state->late_use_animation_style ) {
@@ -1159,6 +1164,10 @@ class DynamicAssetsEnqueue {
 
 			if ( $this->dependency_checker->should_enqueue( $this->enqueue_state->group_carousel ) ) {
 				ScriptData::enqueue_data( 'group_carousel' );
+			}
+
+			if ( $this->dependency_checker->should_enqueue( $this->enqueue_state->tooltip ) ) {
+				ScriptData::enqueue_data( 'tooltip' );
 			}
 
 			/*

@@ -50,7 +50,24 @@ class TeamMemberPresetAttrsMap {
 			BorderPresetAttrsMap::get_map( 'image.decoration.border' ),
 			BoxShadowPresetAttrsMap::get_map( 'image.decoration.boxShadow' ),
 			FitPresetAttrsMap::get_map( 'image.decoration.fit' ),
-			FiltersPresetAttrsMap::get_map( 'image.decoration.filters' )
+			FiltersPresetAttrsMap::get_map( 'image.decoration.filters' ),
+			[
+				'content.decoration.bodyFont.dropCap.textShadow__horizontal' => [
+					'attrName' => 'content.decoration.bodyFont.dropCap.textShadow',
+					'preset'   => [ 'style' ],
+					'subName'  => 'horizontal',
+				],
+				'content.decoration.bodyFont.dropCap.textShadow__vertical' => [
+					'attrName' => 'content.decoration.bodyFont.dropCap.textShadow',
+					'preset'   => [ 'style' ],
+					'subName'  => 'vertical',
+				],
+				'content.decoration.bodyFont.dropCap.textShadow__blur' => [
+					'attrName' => 'content.decoration.bodyFont.dropCap.textShadow',
+					'preset'   => [ 'style' ],
+					'subName'  => 'blur',
+				],
+			]
 		);
 	}
 }

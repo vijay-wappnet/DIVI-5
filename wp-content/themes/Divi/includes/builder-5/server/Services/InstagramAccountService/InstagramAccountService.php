@@ -90,7 +90,15 @@ class InstagramAccountService {
 	 * @return array
 	 */
 	public static function definition(): array {
-		return self::_get_accounts();
+		$accounts = self::_get_accounts();
+
+		foreach ( $accounts as $account_id => $account ) {
+			if ( is_array( $account ) && isset( $account['access_token'] ) && is_string( $account['access_token'] ) ) {
+				$accounts[ $account_id ]['access_token'] = str_repeat( '*', strlen( $account['access_token'] ) );
+			}
+		}
+
+		return $accounts;
 	}
 
 	/**

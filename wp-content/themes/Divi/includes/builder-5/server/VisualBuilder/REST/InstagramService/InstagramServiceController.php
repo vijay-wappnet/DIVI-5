@@ -76,7 +76,7 @@ class InstagramServiceController extends RESTController {
 	 * @return bool
 	 */
 	public static function create_permission(): bool {
-		return UserRole::can_current_user_use_visual_builder();
+		return UserRole::can_current_user_use_visual_builder() && current_user_can( 'manage_options' );
 	}
 
 	/**
@@ -118,7 +118,7 @@ class InstagramServiceController extends RESTController {
 	 * @return bool
 	 */
 	public static function delete_permission(): bool {
-		return UserRole::can_current_user_use_visual_builder();
+		return UserRole::can_current_user_use_visual_builder() && current_user_can( 'manage_options' );
 	}
 
 	/**
@@ -160,6 +160,6 @@ class InstagramServiceController extends RESTController {
 	 * @return bool
 	 */
 	public static function read_permission(): bool {
-		return UserRole::can_current_user_use_visual_builder();
+		return UserRole::can_current_user_use_visual_builder() && current_user_can( 'manage_options' );
 	}
 }

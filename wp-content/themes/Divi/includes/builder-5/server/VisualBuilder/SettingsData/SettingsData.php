@@ -226,6 +226,14 @@ class SettingsData implements DependencyInterface {
 
 		self::register_item(
 			[
+				'name'               => 'announcements',
+				'usage'              => 'after_app_load',
+				'get_value_function' => [ SettingsDataCallbacks::class, 'announcements' ],
+			]
+		);
+
+		self::register_item(
+			[
 				'name'               => 'settings',
 				'usage'              => 'app_load',
 				'get_value_function' => [ SettingsDataCallbacks::class, 'settings' ],

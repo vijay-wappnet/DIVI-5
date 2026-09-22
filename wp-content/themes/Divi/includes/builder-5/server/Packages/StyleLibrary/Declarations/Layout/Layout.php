@@ -43,10 +43,11 @@ class Layout {
 	 * @return string|array Layout style declaration.
 	 */
 	public static function style_declaration( array $params ) {
-		$important   = $params['important'] ?? false;
-		$attr_value  = $params['attrValue'] ?? [];
-		$return_type = $params['returnType'] ?? 'string';
-		$attr        = $params['attr'] ?? [];
+		$important          = $params['important'] ?? false;
+		$attr_value         = $params['attrValue'] ?? [];
+		$default_attr_value = $params['defaultAttrValue'] ?? [];
+		$return_type        = $params['returnType'] ?? 'string';
+		$attr               = $params['attr'] ?? [];
 
 		// Create new style declarations instance.
 		$declarations = new StyleDeclarations(
@@ -76,23 +77,26 @@ class Layout {
 		$align_content   = $attr_value['alignContent'] ?? '';
 
 		// Grid-specific properties.
-		$grid_column_widths     = $attr_value['gridColumnWidths'] ?? 'equal';
-		$grid_column_count      = $attr_value['gridColumnCount'] ?? '';
-		$collapse_empty_columns = $attr_value['collapseEmptyColumns'] ?? '';
-		$grid_column_min_width  = $attr_value['gridColumnMinWidth'] ?? '';
-		$grid_column_width      = $attr_value['gridColumnWidth'] ?? '';
-		$grid_template_columns  = $attr_value['gridTemplateColumns'] ?? '';
-		$grid_auto_columns      = $attr_value['gridAutoColumns'] ?? '';
-		$grid_row_heights       = $attr_value['gridRowHeights'] ?? 'auto';
-		$grid_row_count         = $attr_value['gridRowCount'] ?? '';
-		$grid_row_min_height    = $attr_value['gridRowMinHeight'] ?? '';
-		$grid_row_height        = $attr_value['gridRowHeight'] ?? '';
-		$grid_template_rows     = $attr_value['gridTemplateRows'] ?? '';
-		$grid_auto_rows         = $attr_value['gridAutoRows'] ?? '';
-		$grid_auto_flow         = $attr_value['gridAutoFlow'] ?? 'row';
-		$grid_density           = $attr_value['gridDensity'] ?? '';
-		$grid_justify_items     = $attr_value['gridJustifyItems'] ?? '';
-		$grid_offset_rules      = $attr_value['gridOffsetRules'] ?? null;
+		$grid_column_widths           = $attr_value['gridColumnWidths'] ?? '';
+		$grid_column_count            = $attr_value['gridColumnCount'] ?? '';
+		$collapse_empty_columns       = $attr_value['collapseEmptyColumns'] ?? '';
+		$grid_column_min_width        = $attr_value['gridColumnMinWidth'] ?? '';
+		$grid_column_width            = $attr_value['gridColumnWidth'] ?? '';
+		$grid_template_columns        = $attr_value['gridTemplateColumns'] ?? '';
+		$grid_auto_columns            = $attr_value['gridAutoColumns'] ?? '';
+		$grid_row_heights             = $attr_value['gridRowHeights'] ?? 'auto';
+		$grid_row_count               = $attr_value['gridRowCount'] ?? '';
+		$grid_row_min_height          = $attr_value['gridRowMinHeight'] ?? '';
+		$grid_row_height              = $attr_value['gridRowHeight'] ?? '';
+		$grid_template_rows           = $attr_value['gridTemplateRows'] ?? '';
+		$grid_auto_rows               = $attr_value['gridAutoRows'] ?? '';
+		$grid_auto_flow               = $attr_value['gridAutoFlow'] ?? 'row';
+		$grid_density                 = $attr_value['gridDensity'] ?? '';
+		$grid_justify_items           = $attr_value['gridJustifyItems'] ?? '';
+		$grid_offset_rules            = $attr_value['gridOffsetRules'] ?? null;
+		$effective_grid_column_widths = '' !== $grid_column_widths
+			? $grid_column_widths
+			: ( $default_attr_value['gridColumnWidths'] ?? 'equal' );
 
 		if ( 'block' !== $display ) {
 			if ( $column_gap ) {
@@ -113,8 +117,8 @@ class Layout {
 				}
 
 				// Grid template columns based on column width setting.
-				if ( $grid_column_widths ) {
-					if ( 'equal' === $grid_column_widths ) {
+				if ( $effective_grid_column_widths ) {
+					if ( 'equal' === $effective_grid_column_widths ) {
 						if ( $grid_column_count ) {
 
 							// Apply grid-template-columns, use collapse logic when enabled.
@@ -125,27 +129,32 @@ class Layout {
 								$declarations->add( 'grid-template-columns', 'repeat(var(--column-count), 1fr)' );
 							}
 						}
-					} elseif ( 'equalMinimum' === $grid_column_widths ) {
-						if ( $grid_column_min_width ) {
-							// Set CSS properties.
-							$declarations->add( '--min-column-width', $grid_column_min_width );
-							$declarations->add( 'grid-template-columns', 'repeat(auto-fill, minmax(min(100%, var(--min-column-width)), 1fr))' );
-						}
-					} elseif ( 'equalFixed' === $grid_column_widths ) {
-						if ( $grid_column_count && $grid_column_width ) {
-							// Set the CSS variable for fixed column width.
-							$declarations->add( '--fixed-column-width', $grid_column_width );
-							$declarations->add( 'grid-template-columns', 'repeat(auto-fit, minmax(0, var(--fixed-column-width)))' );
-						}
-					} elseif ( 'auto' === $grid_column_widths ) {
+					} elseif ( 'equalMinimum' === $effective_grid_column_widths ) {
+						// Default to 250px when no explicit minimum width is provided.
+						$min_column_width = $grid_column_min_width
+							? $grid_column_min_width
+							: ( $default_attr_value['gridColumnMinWidth'] ?? '250px' );
+						$declarations->add( '--min-column-width', $min_column_width );
+						$declarations->add( 'grid-template-columns', 'repeat(auto-fill, minmax(min(100%, var(--min-column-width)), 1fr))' );
+					} elseif ( 'equalFixed' === $effective_grid_column_widths ) {
+						// Default to 250px when no explicit fixed width is provided.
+						$fixed_column_width = $grid_column_width
+							? $grid_column_width
+							: ( $default_attr_value['gridColumnWidth'] ?? '250px' );
+						$declarations->add( '--fixed-column-width', $fixed_column_width );
+						$declarations->add( 'grid-template-columns', 'repeat(auto-fit, minmax(0, var(--fixed-column-width)))' );
+					} elseif ( 'auto' === $effective_grid_column_widths ) {
 						if ( $grid_column_count ) {
 							// Set grid-template-columns.
 							$declarations->add( 'grid-template-columns', "repeat({$grid_column_count}, auto)" );
 						}
-					} elseif ( 'manual' === $grid_column_widths ) {
+					} elseif ( 'manual' === $effective_grid_column_widths ) {
 						if ( $grid_template_columns ) {
 							// Set grid-template-columns.
 							$declarations->add( 'grid-template-columns', $grid_template_columns );
+						} else {
+							// Ensure reset/manual-empty state still applies a single explicit track.
+							$declarations->add( 'grid-template-columns', 'repeat(var(--column-count), 1fr)' );
 						}
 					}
 				}

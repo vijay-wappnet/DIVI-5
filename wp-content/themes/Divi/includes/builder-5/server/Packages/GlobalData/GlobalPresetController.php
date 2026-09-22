@@ -463,6 +463,6 @@ class GlobalPresetController extends RESTController {
 	 * @return bool Returns `true` if the current user has the permission to use the Visual Builder, `false` otherwise.
 	 */
 	public static function sync_permission(): bool {
-		return UserRole::can_current_user_use_visual_builder();
+		return UserRole::can_current_user_use_visual_builder() && current_user_can( 'edit_theme_options' );
 	}
 }

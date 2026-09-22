@@ -86,6 +86,16 @@ class SignupCustomFieldPresetAttrsMap {
 					'preset'   => [ 'style' ],
 					'subName'  => 'weight',
 				],
+				'field.decoration.labelFont.font__weightFineTune' => [
+					'attrName' => 'field.decoration.labelFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'weightFineTune',
+				],
+				'field.decoration.labelFont.font__opticalSizing' => [
+					'attrName' => 'field.decoration.labelFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'opticalSizing',
+				],
 				'field.decoration.labelFont.font__style'   => [
 					'attrName' => 'field.decoration.labelFont.font',
 					'preset'   => [ 'style' ],
@@ -96,15 +106,45 @@ class SignupCustomFieldPresetAttrsMap {
 					'preset'   => [ 'style' ],
 					'subName'  => 'lineColor',
 				],
+				'field.decoration.labelFont.font__lineThickness' => [
+					'attrName' => 'field.decoration.labelFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'lineThickness',
+				],
+				'field.decoration.labelFont.font__underlineOffset' => [
+					'attrName' => 'field.decoration.labelFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'underlineOffset',
+				],
 				'field.decoration.labelFont.font__lineStyle' => [
 					'attrName' => 'field.decoration.labelFont.font',
 					'preset'   => [ 'style' ],
 					'subName'  => 'lineStyle',
 				],
+				'field.decoration.labelFont.font__textWrap' => [
+					'attrName' => 'field.decoration.labelFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'textWrap',
+				],
+				'field.decoration.labelFont.font__writingMode' => [
+					'attrName' => 'field.decoration.labelFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'writingMode',
+				],
+				'field.decoration.labelFont.font__hyphens' => [
+					'attrName' => 'field.decoration.labelFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'hyphens',
+				],
 				'field.decoration.labelFont.font__textAlign' => [
 					'attrName' => 'field.decoration.labelFont.font',
 					'preset'   => [ 'style' ],
 					'subName'  => 'textAlign',
+				],
+				'field.decoration.labelFont.font__capitalization' => [
+					'attrName' => 'field.decoration.labelFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'capitalization',
 				],
 				'field.decoration.labelFont.font__color'   => [
 					'attrName' => 'field.decoration.labelFont.font',
@@ -125,6 +165,16 @@ class SignupCustomFieldPresetAttrsMap {
 					'attrName' => 'field.decoration.labelFont.font',
 					'preset'   => [ 'style' ],
 					'subName'  => 'lineHeight',
+				],
+				'field.decoration.labelFont.font__columnCount' => [
+					'attrName' => 'field.decoration.labelFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'columnCount',
+				],
+				'field.decoration.labelFont.font__columnGap' => [
+					'attrName' => 'field.decoration.labelFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'columnGap',
 				],
 				'field.decoration.labelFont.textShadow__style' => [
 					'attrName' => 'field.decoration.labelFont.textShadow',
@@ -161,6 +211,16 @@ class SignupCustomFieldPresetAttrsMap {
 					'preset'   => [ 'style' ],
 					'subName'  => 'weight',
 				],
+				'field.decoration.placeholderFont.font__weightFineTune' => [
+					'attrName' => 'field.decoration.placeholderFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'weightFineTune',
+				],
+				'field.decoration.placeholderFont.font__opticalSizing' => [
+					'attrName' => 'field.decoration.placeholderFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'opticalSizing',
+				],
 				'field.decoration.placeholderFont.font__style' => [
 					'attrName' => 'field.decoration.placeholderFont.font',
 					'preset'   => [ 'style' ],
@@ -171,15 +231,45 @@ class SignupCustomFieldPresetAttrsMap {
 					'preset'   => [ 'style' ],
 					'subName'  => 'lineColor',
 				],
+				'field.decoration.placeholderFont.font__lineThickness' => [
+					'attrName' => 'field.decoration.placeholderFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'lineThickness',
+				],
+				'field.decoration.placeholderFont.font__underlineOffset' => [
+					'attrName' => 'field.decoration.placeholderFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'underlineOffset',
+				],
 				'field.decoration.placeholderFont.font__lineStyle' => [
 					'attrName' => 'field.decoration.placeholderFont.font',
 					'preset'   => [ 'style' ],
 					'subName'  => 'lineStyle',
 				],
+				'field.decoration.placeholderFont.font__textWrap' => [
+					'attrName' => 'field.decoration.placeholderFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'textWrap',
+				],
+				'field.decoration.placeholderFont.font__writingMode' => [
+					'attrName' => 'field.decoration.placeholderFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'writingMode',
+				],
+				'field.decoration.placeholderFont.font__hyphens' => [
+					'attrName' => 'field.decoration.placeholderFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'hyphens',
+				],
 				'field.decoration.placeholderFont.font__textAlign' => [
 					'attrName' => 'field.decoration.placeholderFont.font',
 					'preset'   => [ 'style' ],
 					'subName'  => 'textAlign',
+				],
+				'field.decoration.placeholderFont.font__capitalization' => [
+					'attrName' => 'field.decoration.placeholderFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'capitalization',
 				],
 				'field.decoration.placeholderFont.font__color' => [
 					'attrName' => 'field.decoration.placeholderFont.font',
@@ -200,6 +290,16 @@ class SignupCustomFieldPresetAttrsMap {
 					'attrName' => 'field.decoration.placeholderFont.font',
 					'preset'   => [ 'style' ],
 					'subName'  => 'lineHeight',
+				],
+				'field.decoration.placeholderFont.font__columnCount' => [
+					'attrName' => 'field.decoration.placeholderFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'columnCount',
+				],
+				'field.decoration.placeholderFont.font__columnGap' => [
+					'attrName' => 'field.decoration.placeholderFont.font',
+					'preset'   => [ 'style' ],
+					'subName'  => 'columnGap',
 				],
 				'field.decoration.placeholderFont.textShadow__style' => [
 					'attrName' => 'field.decoration.placeholderFont.textShadow',
@@ -287,6 +387,17 @@ class SignupCustomFieldPresetAttrsMap {
 			'field.advanced.placeholder.font.textEffects__imageFill.width',
 			'field.advanced.placeholder.font.textEffects__strokeColor',
 			'field.advanced.placeholder.font.textEffects__strokeWidth',
+			'field.advanced.placeholder.font.textEffects__strokePosition',
+			'field.advanced.placeholder.font.font__weightFineTune',
+			'field.advanced.placeholder.font.font__opticalSizing',
+			'field.advanced.placeholder.font.font__lineThickness',
+			'field.advanced.placeholder.font.font__underlineOffset',
+			'field.advanced.placeholder.font.font__textWrap',
+			'field.advanced.placeholder.font.font__writingMode',
+			'field.advanced.placeholder.font.font__hyphens',
+			'field.advanced.placeholder.font.font__columnCount',
+			'field.advanced.placeholder.font.font__columnGap',
+			'field.advanced.placeholder.font.font__capitalization',
 			'field.advanced.focus.font.textEffects__fillType',
 			'field.advanced.focus.font.textEffects__gradient',
 			'field.advanced.focus.font.textEffects__gradient.type',
@@ -305,6 +416,17 @@ class SignupCustomFieldPresetAttrsMap {
 			'field.advanced.focus.font.textEffects__imageFill.width',
 			'field.advanced.focus.font.textEffects__strokeColor',
 			'field.advanced.focus.font.textEffects__strokeWidth',
+			'field.advanced.focus.font.textEffects__strokePosition',
+			'field.advanced.focus.font.font__weightFineTune',
+			'field.advanced.focus.font.font__opticalSizing',
+			'field.advanced.focus.font.font__lineThickness',
+			'field.advanced.focus.font.font__underlineOffset',
+			'field.advanced.focus.font.font__textWrap',
+			'field.advanced.focus.font.font__writingMode',
+			'field.advanced.focus.font.font__hyphens',
+			'field.advanced.focus.font.font__columnCount',
+			'field.advanced.focus.font.font__columnGap',
+			'field.advanced.focus.font.font__capitalization',
 			'button.decoration.button.decoration.font.textEffects__fillType',
 			'button.decoration.button.decoration.font.textEffects__gradient',
 			'button.decoration.button.decoration.font.textEffects__gradient.type',
@@ -323,6 +445,17 @@ class SignupCustomFieldPresetAttrsMap {
 			'button.decoration.button.decoration.font.textEffects__imageFill.width',
 			'button.decoration.button.decoration.font.textEffects__strokeColor',
 			'button.decoration.button.decoration.font.textEffects__strokeWidth',
+			'button.decoration.button.decoration.font.font__weightFineTune',
+			'button.decoration.button.decoration.font.font__opticalSizing',
+			'button.decoration.button.decoration.font.font__lineThickness',
+			'button.decoration.button.decoration.font.font__underlineOffset',
+			'button.decoration.button.decoration.font.font__textWrap',
+			'button.decoration.button.decoration.font.font__writingMode',
+			'button.decoration.button.decoration.font.font__hyphens',
+			'button.decoration.button.decoration.font.font__columnCount',
+			'button.decoration.button.decoration.font.font__columnGap',
+			'button.decoration.button.decoration.font.font__capitalization',
+			'button.decoration.button.decoration.font.textEffects__strokePosition',
 		];
 
 		foreach ( $keys_to_remove as $key ) {
@@ -522,6 +655,11 @@ class SignupCustomFieldPresetAttrsMap {
 				'preset'   => [ 'style' ],
 				'subName'  => 'strokeColor',
 			],
+			'field.decoration.labelFont.textEffects__strokePosition' => [
+				'attrName' => 'field.decoration.labelFont.textEffects',
+				'preset'   => [ 'style' ],
+				'subName'  => 'strokePosition',
+			],
 			'field.decoration.labelFont.textEffects__strokeWidth' => [
 				'attrName' => 'field.decoration.labelFont.textEffects',
 				'preset'   => [ 'style' ],
@@ -611,6 +749,11 @@ class SignupCustomFieldPresetAttrsMap {
 				'attrName' => 'field.decoration.placeholderFont.textEffects',
 				'preset'   => [ 'style' ],
 				'subName'  => 'strokeColor',
+			],
+			'field.decoration.placeholderFont.textEffects__strokePosition' => [
+				'attrName' => 'field.decoration.placeholderFont.textEffects',
+				'preset'   => [ 'style' ],
+				'subName'  => 'strokePosition',
 			],
 			'field.decoration.placeholderFont.textEffects__strokeWidth' => [
 				'attrName' => 'field.decoration.placeholderFont.textEffects',

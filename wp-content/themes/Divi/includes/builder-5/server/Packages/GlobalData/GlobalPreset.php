@@ -717,6 +717,116 @@ class GlobalPreset {
 	}
 
 	/**
+	 * Group selected group preset items by usage groupId.
+	 *
+	 * @since ??
+	 *
+	 * @param array $selected_group_presets Selected group presets from get_selected_group_presets().
+	 *
+	 * @return array<string, GlobalPresetItemGroup[]> Presets grouped by groupId.
+	 */
+	private static function _group_selected_group_presets_by_group_id( array $selected_group_presets ): array {
+		$presets_by_group = [];
+
+		foreach ( $selected_group_presets as $selected_group_preset ) {
+			if ( ! ( $selected_group_preset instanceof GlobalPresetItemGroup ) || ! $selected_group_preset->is_exist() ) {
+				continue;
+			}
+
+			$group_id = $selected_group_preset->get_group_id();
+
+			if ( ! isset( $presets_by_group[ $group_id ] ) ) {
+				$presets_by_group[ $group_id ] = [];
+			}
+
+			$presets_by_group[ $group_id ][] = $selected_group_preset;
+		}
+
+		return $presets_by_group;
+	}
+
+	/**
+	 * Sort group preset items for merge: nested presets first, then explicit; priority ascending within each segment.
+	 *
+	 * Mirrors VB mergePresetStack segment ordering (nested before explicit, higher priority merged last).
+	 *
+	 * @since ??
+	 *
+	 * @param GlobalPresetItemGroup[] $group_presets Group preset items sharing the same groupId.
+	 *
+	 * @return GlobalPresetItemGroup[] Sorted preset items.
+	 */
+	private static function _sort_group_presets_for_merge( array $group_presets ): array {
+		$nested_presets   = [];
+		$explicit_presets = [];
+
+		foreach ( $group_presets as $preset_item ) {
+			if ( $preset_item->is_nested() ) {
+				$nested_presets[] = $preset_item;
+			} else {
+				$explicit_presets[] = $preset_item;
+			}
+		}
+
+		$sort_by_priority = function ( GlobalPresetItemGroup $a, GlobalPresetItemGroup $b ): int {
+			return $a->get_data_priority() <=> $b->get_data_priority();
+		};
+
+		usort( $nested_presets, $sort_by_priority );
+		usort( $explicit_presets, $sort_by_priority );
+
+		return array_merge( $nested_presets, $explicit_presets );
+	}
+
+	/**
+	 * Merge selected group preset attrs, renderAttrs, and styleAttrs with priority ordering within each groupId.
+	 *
+	 * Stacked presets on the same group are sorted by priority (ascending) so higher priority values win.
+	 * Nested presets merge before explicit presets within each group, matching VB mergePresetStack behavior.
+	 *
+	 * @since ??
+	 *
+	 * @param array $selected_group_presets Selected group presets from get_selected_group_presets().
+	 *
+	 * @return array{
+	 *     attrs: array,
+	 *     renderAttrs: array,
+	 *     styleAttrs: array,
+	 * }
+	 */
+	public static function merge_selected_group_presets_by_priority( array $selected_group_presets ): array {
+		$merged_attrs        = [];
+		$merged_render_attrs = [];
+		$merged_style_attrs  = [];
+
+		$presets_by_group = self::_group_selected_group_presets_by_group_id( $selected_group_presets );
+
+		foreach ( $presets_by_group as $group_presets ) {
+			$sorted_presets = self::_sort_group_presets_for_merge( $group_presets );
+
+			$group_attrs        = [];
+			$group_render_attrs = [];
+			$group_style_attrs  = [];
+
+			foreach ( $sorted_presets as $preset_item ) {
+				$group_attrs        = array_replace_recursive( $group_attrs, $preset_item->get_data_attrs() );
+				$group_render_attrs = array_replace_recursive( $group_render_attrs, $preset_item->get_data_render_attrs() );
+				$group_style_attrs  = array_replace_recursive( $group_style_attrs, $preset_item->get_data_style_attrs() );
+			}
+
+			$merged_attrs        = array_replace_recursive( $merged_attrs, $group_attrs );
+			$merged_render_attrs = array_replace_recursive( $merged_render_attrs, $group_render_attrs );
+			$merged_style_attrs  = array_replace_recursive( $merged_style_attrs, $group_style_attrs );
+		}
+
+		return [
+			'attrs'       => $merged_attrs,
+			'renderAttrs' => $merged_render_attrs,
+			'styleAttrs'  => $merged_style_attrs,
+		];
+	}
+
+	/**
 	 * Get all module preset class names for stacked presets.
 	 *
 	 * This function returns an array of CSS class names for all presets in the stack,
@@ -2812,6 +2922,7 @@ class GlobalPreset {
 				'font'        => 'divi/font',
 				'headingFont' => 'divi/font-header',
 				'image'       => 'divi/image',
+				'layout'      => 'divi/layout',
 				'overflow'    => 'divi/overflow',
 				'position'    => 'divi/position',
 				'scroll'      => 'divi/scroll',
@@ -3166,35 +3277,14 @@ class GlobalPreset {
 			[
 				'moduleName'  => $module_name,
 				'moduleAttrs' => $module_attrs,
+				'allData'     => $all_data,
 			]
 		);
 
-		// Group presets by groupId to ensure proper ordering: nested presets first, then explicit.
-		$presets_by_group = [];
-		foreach ( $selected_group_presets as $selected_group_preset ) {
-			if ( $selected_group_preset->is_exist() ) {
-				$group_id = $selected_group_preset->get_group_id();
-				if ( ! isset( $presets_by_group[ $group_id ] ) ) {
-					$presets_by_group[ $group_id ] = [];
-				}
-				$presets_by_group[ $group_id ][] = $selected_group_preset;
-			}
-		}
+		$merged_group_presets = self::merge_selected_group_presets_by_priority( $selected_group_presets );
 
-		// Merge presets within each groupId scope to prevent cross-sibling attribute leakage.
-		foreach ( $presets_by_group as $group_id => $group_presets ) {
-			$group_attrs        = [];
-			$group_render_attrs = [];
-
-			foreach ( $group_presets as $preset ) {
-				$group_attrs        = array_replace_recursive( $group_attrs, $preset->get_data_attrs() );
-				$group_render_attrs = array_replace_recursive( $group_render_attrs, $preset->get_data_render_attrs() );
-			}
-
-			// Merge group-scoped attributes into global arrays.
-			$group_presets_attrs        = array_replace_recursive( $group_presets_attrs, $group_attrs );
-			$group_presets_render_attrs = array_replace_recursive( $group_presets_render_attrs, $group_render_attrs );
-		}
+		$group_presets_attrs        = $merged_group_presets['attrs'];
+		$group_presets_render_attrs = $merged_group_presets['renderAttrs'];
 
 		// Merge preset and group preset attributes (without module attributes).
 		// This is used for preset detection and style rendering.

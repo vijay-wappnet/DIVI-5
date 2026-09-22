@@ -18,7 +18,6 @@ use WP_Error;
 use WP_REST_Request;
 use WP_REST_Response;
 use WP_REST_Server;
-use ET\Builder\Framework\UserRole\UserRole;
 use ET\Builder\Packages\ModuleLibrary\WooCommerce\ProductDescription\WooCommerceProductDescriptionModule;
 use ET\Builder\Framework\Controllers\RESTController;
 
@@ -130,7 +129,9 @@ class WooCommerceProductDescriptionController extends RESTController {
 	 *
 	 * @return bool Returns `true` if the current user has permission to use the REST endpoint, otherwise `false`.
 	 */
-	public static function index_permission(): bool {
-		return UserRole::can_current_user_use_visual_builder();
+	public static function index_permission( WP_REST_Request $request ): bool {
+		$product_id = $request->get_param( 'productId' ) ?? 'current';
+
+		return WooCommerceUtils::can_current_user_render_product( $product_id );
 	}
 }

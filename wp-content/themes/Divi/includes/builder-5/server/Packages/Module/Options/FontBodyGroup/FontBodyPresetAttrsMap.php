@@ -32,7 +32,12 @@ class FontBodyPresetAttrsMap {
 	 * @return array The map for the body font preset attributes.
 	 */
 	public static function get_map( string $attr_name ) {
-		$body_font_attrs_map  = FontPresetAttrsMap::get_map( "{$attr_name}.body" );
+		$body_font_attrs_map  = FontPresetAttrsMap::get_map(
+			"{$attr_name}.body",
+			[
+				'has_paragraph' => true,
+			]
+		);
 		$link_font_attrs_map  = FontPresetAttrsMap::get_map( "{$attr_name}.link" );
 		$ul_font_attrs_map    = FontPresetAttrsMap::get_map(
 			"{$attr_name}.ul",
@@ -52,7 +57,46 @@ class FontBodyPresetAttrsMap {
 				'has_border' => true,
 			]
 		);
+		$drop_cap_attrs_map   = [
+			"{$attr_name}.dropCap.font__dropCapLineSize" => [
+				'attrName' => "{$attr_name}.dropCap.font",
+				'preset'   => [ 'style' ],
+				'subName'  => 'dropCapLineSize',
+			],
+			"{$attr_name}.dropCap.font__dropCapSpacing"  => [
+				'attrName' => "{$attr_name}.dropCap.font",
+				'preset'   => [ 'style' ],
+				'subName'  => 'dropCapSpacing',
+			],
+		];
 
-		return array_merge( $body_font_attrs_map, $link_font_attrs_map, $ul_font_attrs_map, $ol_font_attrs_map, $quote_font_attrs_map );
+		$drop_cap_font_attrs_map = FontPresetAttrsMap::get_map( "{$attr_name}.dropCap" );
+		$drop_cap_font_attrs_map = array_filter(
+			$drop_cap_font_attrs_map,
+			function ( $preset_attr ) {
+				$sub_name = $preset_attr['subName'] ?? '';
+				return in_array(
+					$sub_name,
+					[
+						'family',
+						'weight',
+						'weightFineTune',
+						'opticalSizing',
+						'color',
+						'capitalization',
+						'style',
+						'lineColor',
+						'lineThickness',
+						'underlineOffset',
+						'lineStyle',
+						'dropCapLineSize',
+						'dropCapSpacing',
+					],
+					true
+				);
+			}
+		);
+
+		return array_merge( $body_font_attrs_map, $link_font_attrs_map, $ul_font_attrs_map, $ol_font_attrs_map, $quote_font_attrs_map, $drop_cap_attrs_map, $drop_cap_font_attrs_map );
 	}
 }

@@ -104,7 +104,7 @@ class Layout {
 
 		ET_Post_Stack::replace( $layout );
 
-		$is_visual_builder     = isset( $_GET['et_fb'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Value is not used
+		$is_visual_builder     = et_core_is_fb_enabled();
 		$theme_builder_layouts = [ 'et_header_layout', 'et_footer_layout' ];
 
 		// Do not pass header and footer content here if visual builder is loaded,

@@ -663,6 +663,7 @@ class VisualBuilder {
 		$ai_agent_src                 = $this->_get_package_script_src( 'divi-ai-agent' );
 		$mask_lib_src                 = $this->_get_package_script_src( 'divi-mask-and-pattern-library' );
 		$variable_generator_modal_src = $this->_get_package_script_src( 'divi-variable-generator-modal' );
+		$grid_editor_modal_src        = $this->_get_package_script_src( 'divi-grid-editor-modal' );
 		$cloud_css                    = $this->_get_package_style_src( 'divi-cloud-app' );
 		$lazy_assets                  = $this->_build_cloud_and_ai_lazy_assets_payload(
 			'et-cloud-app-lazy-script',
@@ -683,6 +684,10 @@ class VisualBuilder {
 
 		if ( '' !== $variable_generator_modal_src ) {
 			$lazy_assets['scripts']['divi-variable-generator-modal-lazy-script'] = $variable_generator_modal_src;
+		}
+
+		if ( '' !== $grid_editor_modal_src ) {
+			$lazy_assets['scripts']['divi-grid-editor-modal-lazy-script'] = $grid_editor_modal_src;
 		}
 
 		if ( '' !== $cloud_css ) {

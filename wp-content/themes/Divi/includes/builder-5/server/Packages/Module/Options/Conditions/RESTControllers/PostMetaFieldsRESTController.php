@@ -46,7 +46,7 @@ class PostMetaFieldsRESTController extends RESTController {
 	 */
 	public static function index( WP_REST_Request $request ): WP_REST_Response {
 		$data        = [];
-		$post_id     = $request->get_param( 'postId' );
+		$post_id     = (int) $request->get_param( 'postId' );
 		$meta_fields = get_post_meta( $post_id );
 
 		/**
@@ -57,8 +57,7 @@ class PostMetaFieldsRESTController extends RESTController {
 		 * @param array $meta_fields Array of post meta fields to include.
 		 */
 		$meta_fields = apply_filters( 'et_builder_ajax_get_post_meta_fields', $meta_fields );
-
-		$data = is_array( $meta_fields ) ? $meta_fields : [];
+		$data        = is_array( $meta_fields ) ? $meta_fields : [];
 
 		return self::response_success( $data );
 	}
@@ -96,10 +95,18 @@ class PostMetaFieldsRESTController extends RESTController {
 	 *
 	 * @since ??
 	 *
+	 * @param WP_REST_Request $request The REST request object.
+	 *
 	 * @return bool Returns `true` if the current user has the permission to use the Visual Builder, `false` otherwise.
 	 *              This function always returns `true`.
 	 */
-	public static function index_permission(): bool {
-		return UserRole::can_current_user_use_visual_builder();
+	public static function index_permission( WP_REST_Request $request ): bool {
+		if ( ! UserRole::can_current_user_use_visual_builder() ) {
+			return false;
+		}
+
+		$post_id = (int) $request->get_param( 'postId' );
+
+		return 0 < $post_id && current_user_can( 'edit_post', $post_id );
 	}
 }

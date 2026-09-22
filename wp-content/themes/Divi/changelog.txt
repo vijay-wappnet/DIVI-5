@@ -1,3 +1,99 @@
+version 5.9.0 ( updated 07-09-2026 )
+- Added new Grid Editor, enabling the visual creation of advanced grid layouts.
+- Added support for number variables in the grid offset editor.
+- Individual grid offset editor rules now support the full range of start, end, and span settings in a single rule.
+- Fixed columns getting consolidated when switching the layout style from flex to grid when editing a row preset.
+- Fixed grid offset rules not being copied to presets when creating new presets from current styles.
+- Fixed minimum column width CSS not printing when set at the module level, when "equal minimum width columns" was set at the preset level.
+- Fixed sections remaining hidden when section animation was enabled but duration and delay were stored as empty values.
+- Fixed Theme Builder loops using the “current page” query on 404 pages incorrectly showing recent blog posts instead of the no-results state.
+- Fixed Button Line Color and Button Line Style being unavailable when editing hover or sticky states after enabling underline on the normal state.
+- Improved frontend font-family sanitization and archived global variable CSS output reliability.
+- WooCommerce checkout pages built with Divi checkout modules now render one consistent checkout form instead of multiple competing checkout forms.
+- Woo Product Gallery now exposes Design -> Image -> Sizing -> Column Class and keeps wrapped flex gallery item sizing aligned between the frontend and Visual Builder.
+- Fixed an issue where nested Blurb modules could display the wrong icon in Visual Builder preview due to parent icon style leakage.
+- Fixed ACF Color Picker dynamic content not displaying the correct text and decoration colors in the Visual Builder, so on-canvas styles now match the resolved colors shown on the live site.
+- Internal test coverage only; no customer-facing changelog.
+- Added Theme Builder Playwright smoke tests to the Builder 5 CI pipeline.
+- Added a Playwright smoke test that verified the Theme Builder admin screen loads.
+- Fixed the Layer view drop zone indicator and drag handle label being invisible in dark mode when dragging regular modules.
+- Fixed an issue where module settings reset/default values could show module preset styles instead of the applied option group preset styles.
+- Fixed an issue where custom button icons did not appear on the Contact Form 7 Styler module submit button in the Visual Builder and on the front end.
+- Fixed Dropdown mega-menu positioning and sizing so floating menus can reliably align to parent row or viewport width across columns.
+- Fixed frontend module order classes not starting at zero after layout migration.
+- Imported legacy Text modules now preserve the expected Open Sans body weight during import so frontend rendering matches freshly created Text modules.
+- Fixed an issue where Code Module curly-quote HTML entities rendered correctly in Visual Builder but not on the frontend.
+- Fixed an issue where CTA modules with AnalyticsWP tracking enabled could enter backward compatibility mode after Divi 4 to Divi 5 migration.
+- Fixed Visual Builder REST responses exposing Instagram tokens and accepting invalid Post Navigation post contexts.
+- Improved performance of variable font weight inheritance.
+- Fixed an issue where Video modules could fail to render YouTube videos when a video is added via Insert from URL in the media modal.
+
+version 5.8.1 ( updated 06-25-2026 )
+- Added more Google fonts to the default list of web fonts.
+- Added support for flexible fonts, including variable font weight and many additional font settings. 
+- Added a drop cap tab to all body text option groups, allowing drop caps to be added and styled along with paragraph, anchor text, block quote and lists.
+- Add new text styling options too all body font elements, including text direction, columns, stroke position, capitalization, hyphenation and wrapping.
+- The long font select menu is now lazy loaded, improving performance when selecting fonts.
+- Fixed Comment Module comment boxes duplicating in the Visual Builder when changing Comment Count or Form Title heading levels.
+- Fixed a fatal error when using Event Tickets Move Attendees and other admin iframe flows that pass a null hook suffix to admin_enqueue_scripts.
+- Fixed Divi 4 to Divi 5 migration for mixed Gutenberg and Divi Layout content by improving layout block detection and preserving non-layout Gutenberg blocks with native serialization.
+- Fixed accordion modules showing backward compatibility mode after D5 migration when Rank Math FAQ Schema Markup was enabled in Divi 4.
+- Fixed Group Carousel in the Visual Builder not navigating to a newly added carousel slide, which prevented adding content to the new slide without manually switching slides.
+- Fixed an issue where Brevo/Sendinblue custom fields were not always visible in the Email Optin module Visual Builder.
+- Fixed an issue where the field dropdown always showed "Choose a field..." after selection.
+- Fixed an issue where  custom fields remained visible on the canvas after disabling the "Use Custom Fields" toggle.
+- Fixed global font variables not rendering in the Visual Builder when applied to module font settings.
+- Fixed Query Monitor reporting missing dependencies for wp-block-library on Theme Builder pages with header or footer overrides when Defer Block CSS is enabled.
+- Fixed gap-0 global variables not appearing in Dynamic Content pickers for dimensional number fields such as Horizontal Gap.
+- Fixed Preview Mode showing disabled modules at 50% opacity when the "Show Disabled Modules At 50% Opacity" builder setting was enabled.
+- Fixed Google+ icon appearing in the Person module on imported layouts when no Google+ setting is available.
+- Fixed nested module entrance animations not playing inside the Dropdown module when editing in the Visual Builder, so animated content inside an open dropdown now matches the behavior on the live page.
+- Improved Divi 5 AI Agent planner prompt clarity and orchestration consistency for multi-agent request execution.
+- Fixed default Layout option group preset Vertical Gap not applying to columns on the frontend when the preset was not explicitly assigned.
+- Fixed an issue where the default image border could not be removed from Woo Related Products using the builder's Image border settings.
+- Fixed a Blog migration issue where the D4 "Show Content" option could revert to excerpt behavior after conversion to Divi 5.
+- Fixed Visual Builder crash when loop subTypes were stored as an object instead of an array, which caused nested modules such as Group Carousel and Icon List to show "Oops, an error has occurred".
+- Added public upload attachment metadata support for third-party developers, including attachmentMetadata on upload field change events and a getAttachmentMetadata() helper in @divi/field-library.
+- Fixed CSS numeric and similar module settings fields losing their value when edited in the main settings modal by correctly handling field onChange callbacks that pass a plain value instead of an event-shaped object.
+- Adds Layer 1 preset unit tests for Divi 5: a shared cross-cutting fixture library, then PHP and TypeScript coverage for stack normalization, preset merge and selection, option-group discovery and attribute path mapping, attribute fetch and merge primitives, full merge orchestration (including two small production fixes), preset class names and store selectors, edit-mode field resolution, and edit-container plus settings-panel orchestrator merge paths (with a behavior-neutral settings merge extract for unit testability).
+- Fixed Blurb image alignment not applying when image width used a percentage unit with top image placement.
+- Fixed Group Carousel automatic rotation not working in the Visual Builder while it worked correctly on the frontend.
+- Fixed modifier indicator dot appearing on border option groups when explicit border values matched defaults.
+- Fixed Block Row layouts breaking on the frontend after updating Divi when Website Gutter Width was customized.
+- Fixed a migration regression where column widths could become larger after update due to gutter class and dynamic asset desynchronization.
+- Fixed an issue where Countdown Timer, Email Optin, and Login could lose frontend padding because et_pb_no_bg was incorrectly added when non-color backgrounds were active.
+- Fixed an issue where migrated modules could receive unintended center auto margins when module alignment was set to center without custom width constraints.
+- Fixed an issue where the CSS Variable option was incorrectly shown in the color type picker for Background Pattern Color and Background Mask Color fields, causing those fields to render as black when a CSS variable was selected.
+- Fixed the Contact Form Module failing to submit or show a success message when All-In-One SEO was active.
+- Fixed an issue where clicking "Remove Variable" on a global color in a background gradient stop would leave the stop's color empty, causing the gradient to break and the background to appear white after saving and refreshing the page.
+
+version 5.8.0 ( updated 06-19-2026 )
+- Added Tooltip module.
+- Fixed an issue where WordPress automatic update scrape requests could regenerate incomplete Divi 5 homepage CSS, causing builder styles to disappear.
+- Fixed an issue where pages visited with specific URL paramaters could generate invalid CSS for pages containing loops.
+- Fixed VB perf regression by removing update-transient priming from perf-mode bootstrap and restored CI perf gate thresholds.
+- Fixed an issue where a thin sliver of the next Group Carousel slide could show at certain viewport widths.
+- D4 Search migration now keeps Search native and moves the legacy free-form CSS rule into module free-form CSS instead of leaving it at the page level.
+- Fixed an issue where saving a page in the Visual Builder could purge all LiteSpeed Cache entries instead of only the edited page.
+- Fixed Button Options selection and global module sync tracking edge cases by aligning field change payload typing and handling immutable attribute trees correctly.
+- Fixed an issue where Section Area Background Color could fail to apply in certain Theme Builder front-end layouts, causing sections to appear white.
+- Fixed false CSS linter errors when using nested selectors without & in Free Form CSS and other Divi 5 CodeMirror CSS fields.
+- Fixed Image module lightbox not opening inside Group Carousel after the carousel looped back to the first slide.
+- Fixed workspace save not preserving the selected sidebar tab when multiple tabs are open in the same row.
+- Fixed default Heading/Body global font variable labels, aligned VB/FE font resolution using shared/customizer store data, and resolved frontend fallback issues for default-like customizer font values.
+- Fixed Contact Form 7 Styler button icon and rounded corners on hover.
+- Fixed control layering in the Slider Module so arrows and dot navigation stay above high z-index Slide content.
+- Fixed heading level set through Option Group or module presets not applying to rendered HTML on the frontend and Visual Builder.
+- Fixed an issue where the Pagination module did not display custom Previous link text on hover.
+- Fixed an issue where input fields could stop responding after saving the Visual Builder.
+- Fixed an issue where the top-bar Clear Layout modal would not reopen after being closed.
+- Fixed Social Media Follow icon font size and icon color being unavailable for editing in the sticky state.
+- Fixed an issue where Divi Cloud duplicate and copy actions could save empty layout content to the cloud when a layout failed to download or export correctly.
+- Fixed an issue where Theme Customizer background settings could reset after activating a child theme.
+- Preserved the parent theme background color and image when activating a child theme.
+- Fixed a PHP deprecated warning when using custom CSS on the Contact Form module's Contact Button field.
+- Fixed an issue where the Layers panel could unexpectedly jump when activating modules that were already visible or when selecting modules directly inside Layers.
+
 version 5.7.4 ( updated 06-12-2026 )
 - Added new workspace management system, allowing users to create customizable workspaces that encapsulate default builder settings and modal positioning.
 - Added new command center comments for switching workspaces and updating existing workspaces.

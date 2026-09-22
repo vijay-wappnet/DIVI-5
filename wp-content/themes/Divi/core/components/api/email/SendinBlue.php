@@ -133,12 +133,12 @@ class ET_Core_API_Email_SendinBlue extends ET_Core_API_Email_Provider {
 	 */
 	public function get_data_keymap( $keymap = array() ) {
 		$keymap = array(
-			'list'         => array(
+			'list'              => array(
 				'list_id'           => 'id',
 				'name'              => 'name',
 				'subscribers_count' => $this->_should_use_legacy_api() ? 'total_subscribers' : 'totalSubscribers',
 			),
-			'subscriber'   => array(
+			'subscriber'        => array(
 				'email'         => 'email',
 				'name'          => 'attributes.FIRSTNAME',
 				'last_name'     => 'attributes.LASTNAME',
@@ -146,10 +146,30 @@ class ET_Core_API_Email_SendinBlue extends ET_Core_API_Email_Provider {
 				'custom_fields' => 'custom_fields',
 				'updateEnabled' => 'updateEnabled',
 			),
-			'custom_field' => array(
-				'native_type' => 'type',
+			'custom_field'      => array(
 				'field_id'    => 'name',
 				'name'        => 'name',
+				// Provider::_fetch_custom_fields reads `type` before applying custom_field_type; keep API value here.
+				'type'        => 'type',
+				// Subscribe payload handling compares against API attribute type strings.
+				'native_type' => 'type',
+				// Brevo enumeration arrays (category, multiple-choice) carry allowed values here.
+				'options'     => 'enumeration',
+			),
+			'custom_field_type' => array(
+				// Brevo / Sendinblue contact attribute types (v3): text, date, float, boolean, category, id, multiple-choice.
+				// Us => Them (reverse lookup when sending our format to the provider).
+				'input'           => 'text',
+				'select'          => 'category',
+				'checkbox'        => 'boolean',
+				// Them => Us (API type string from GET /contacts/attributes).
+				'text'            => 'input',
+				'date'            => 'input',
+				'float'           => 'input',
+				'id'              => 'input',
+				'boolean'         => 'checkbox',
+				'category'        => 'select',
+				'multiple-choice' => 'checkbox',
 			),
 		);
 

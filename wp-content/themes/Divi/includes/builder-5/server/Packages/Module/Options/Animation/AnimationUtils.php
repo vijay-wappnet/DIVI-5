@@ -140,6 +140,11 @@ class AnimationUtils {
 
 				$value = $attrs[ $attr_name ] ?? $preset['default'];
 
+				// Empty strings are corrupted unset data; fall back to preset defaults for timing fields.
+				if ( '' === $value && in_array( $attr_name, array( 'duration', 'delay' ), true ) ) {
+					$value = $preset['default'];
+				}
+
 				if ( isset( $preset['filter_value'] ) && is_callable( $preset['filter_value'] ) ) {
 					$value = call_user_func( $preset['filter_value'], $value, $attrs, $presets );
 				}

@@ -139,7 +139,11 @@ class DynamicContentOptionsController extends RESTController {
 	 *
 	 * @return bool Returns `true` if the current user has the permission to use the Visual Builder, `false` otherwise.
 	 */
-	public static function index_permission(): bool {
-		return UserRole::can_current_user_use_visual_builder();
+	public static function index_permission( \WP_REST_Request $request ): bool {
+		$post_id = absint( $request->get_param( 'postId' ) );
+
+		return UserRole::can_current_user_use_visual_builder()
+			&& 0 < $post_id
+			&& current_user_can( 'edit_post', $post_id );
 	}
 }

@@ -32,6 +32,7 @@ use ET\Builder\Packages\Module\Options\Text\TextStyle;
 use ET\Builder\Packages\ModuleLibrary\ModuleRegistration;
 use ET\Builder\Packages\ModuleUtils\ChildrenUtils;
 use ET\Builder\Packages\ModuleUtils\ModuleUtils;
+use ET\Builder\Packages\StyleLibrary\Declarations\Background\Utils\BackgroundStyleUtils;
 use ET\Builder\Packages\StyleLibrary\Declarations\Declarations;
 use ET\Builder\Packages\StyleLibrary\Utils\StyleDeclarations;
 use ET\Builder\Packages\GlobalData\GlobalData;
@@ -128,7 +129,7 @@ class LoginModule implements DependencyInterface {
 		$attrs               = $args['attrs'];
 
 		$use_focus_border_color = $attrs['field']['advanced']['focusUseBorder']['desktop']['value'] ?? 'off';
-		$background_color       = $attrs['module']['decoration']['background']['desktop']['value']['color'] ?? '#7EBEC5';
+		$background_value       = $attrs['module']['decoration']['background']['desktop']['value'] ?? [];
 		$title                  = $attrs['title']['innerContent']['desktop']['value'] ?? '';
 		$content                = $attrs['content']['innerContent']['desktop']['value'] ?? '';
 
@@ -145,7 +146,8 @@ class LoginModule implements DependencyInterface {
 		$classnames_instance->add( 'et_pb_with_focus_border', 'on' === $use_focus_border_color );
 		$classnames_instance->add( 'et_pb_newsletter_description_no_title', empty( $title ) );
 		$classnames_instance->add( 'et_pb_newsletter_description_no_content', empty( $content ) );
-		$classnames_instance->add( 'et_pb_no_bg', empty( $background_color ) );
+		// '#7EBEC5' fallback prevents et_pb_no_bg on fresh Login modules with no explicit background attrs.
+		$classnames_instance->add( 'et_pb_no_bg', ! BackgroundStyleUtils::has_active_background( $background_value, '#7EBEC5' ) );
 
 		// Module.
 		$classnames_instance->add(

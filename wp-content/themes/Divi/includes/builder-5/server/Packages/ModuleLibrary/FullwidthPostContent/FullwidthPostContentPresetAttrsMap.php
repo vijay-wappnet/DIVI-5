@@ -32,7 +32,7 @@ class FullwidthPostContentPresetAttrsMap {
 	 * @return array
 	 */
 	public static function get_map( array $map, string $module_name ) {
-		if ( 'divi/fullwidth-post-content' !== $module_name ) {
+		if ( ! in_array( $module_name, [ 'divi/fullwidth-post-content', 'divi/post-content' ], true ) ) {
 			return $map;
 		}
 
@@ -1048,6 +1048,21 @@ class FullwidthPostContentPresetAttrsMap {
 					'attrName' => 'module.decoration.bodyFont.quote.textEffects',
 					'preset'   => [ 'style' ],
 					'subName'  => 'strokeWidth',
+				],
+				'module.decoration.bodyFont.dropCap.textShadow__horizontal' => [
+					'attrName' => 'module.decoration.bodyFont.dropCap.textShadow',
+					'preset'   => [ 'style' ],
+					'subName'  => 'horizontal',
+				],
+				'module.decoration.bodyFont.dropCap.textShadow__vertical' => [
+					'attrName' => 'module.decoration.bodyFont.dropCap.textShadow',
+					'preset'   => [ 'style' ],
+					'subName'  => 'vertical',
+				],
+				'module.decoration.bodyFont.dropCap.textShadow__blur' => [
+					'attrName' => 'module.decoration.bodyFont.dropCap.textShadow',
+					'preset'   => [ 'style' ],
+					'subName'  => 'blur',
 				],
 			]
 		);

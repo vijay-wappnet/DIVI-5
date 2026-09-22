@@ -3403,11 +3403,12 @@ return [
                 'type' => 'object',
                 'label' => 'Image or Icon',
                 'selector' =>
-                    '{{selector}} .et_pb_main_blurb_image .et-pb-icon, {{selector}} .et_pb_main_blurb_image img',
+                    '{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et-pb-icon, {{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image img',
                 'supportsCustomAttributes' => true,
                 'scriptDataProps' => [
                     'animation' => [
-                        'selector' => '{{selector}} .et_pb_main_blurb_image'
+                        'selector' =>
+                            '{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image'
                     ]
                 ],
                 'settings' => [
@@ -3599,64 +3600,66 @@ return [
                 ],
                 'styleProps' => [
                     'selector' =>
-                        '{{selector}} .et-pb-icon, {{selector}} .et_pb_image_wrap',
+                        '{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et-pb-icon, {{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et_pb_image_wrap',
                     'fit' => [
-                        'selector' => '{{selector}} .et_pb_main_blurb_image img'
+                        'selector' =>
+                            '{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image img'
                     ],
                     'spacing' => [
                         'selector' =>
-                            '{{selector}} .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}} .et_pb_main_blurb_image .et-pb-icon',
+                            '{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et-pb-icon',
                         'important' => true
                     ],
                     'boxShadow' => [
                         'selector' =>
-                            '{{selector}} .et_pb_main_blurb_image .et_pb_image_wrap.et_pb_only_image_mode_wrap',
+                            '{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et_pb_image_wrap.et_pb_only_image_mode_wrap',
                         'useOverlay' => true
                     ],
                     'filters' => [
-                        'selector' => '{{selector}} .et_pb_main_blurb_image',
+                        'selector' =>
+                            '{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image',
                         'selectors' => [
                             'desktop' => [
                                 'value' =>
-                                    '{{selector}} .et_pb_main_blurb_image',
+                                    '{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image',
                                 'hover' =>
-                                    '{{selector}}{{:hover}} .et_pb_main_blurb_image'
+                                    '{{selector}}{{:hover}} > .et_pb_blurb_content > .et_pb_main_blurb_image'
                             ]
                         ]
                     ],
                     'border' => [
                         'selector' =>
-                            '{{selector}} .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}} .et_pb_main_blurb_image .et-pb-icon',
+                            '{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et-pb-icon',
                         'selectors' => [
                             'desktop' => [
                                 'value' =>
-                                    '{{selector}} .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}} .et_pb_main_blurb_image .et-pb-icon',
+                                    '{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et-pb-icon',
                                 'hover' =>
-                                    '{{selector}}{{:hover}} .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}}{{:hover}} .et_pb_main_blurb_image .et-pb-icon'
+                                    '{{selector}}{{:hover}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}}{{:hover}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et-pb-icon'
                             ]
                         ]
                     ],
                     'background' => [
                         'selector' =>
-                            '{{selector}} .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}} .et_pb_main_blurb_image .et-pb-icon',
+                            '{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et-pb-icon',
                         'selectors' => [
                             'desktop' => [
                                 'value' =>
-                                    '{{selector}} .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}} .et_pb_main_blurb_image .et-pb-icon',
+                                    '{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et-pb-icon',
                                 'hover' =>
-                                    '{{selector}}{{:hover}} .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}}{{:hover}} .et_pb_main_blurb_image .et-pb-icon'
+                                    '{{selector}}{{:hover}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}}{{:hover}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et-pb-icon'
                             ]
                         ]
                     ],
                     'sizing' => [
                         'selector' =>
-                            '{{selector}} .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}} .et_pb_main_blurb_image .et-pb-icon',
+                            '{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et_pb_only_image_mode_wrap, {{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image .et-pb-icon',
                         'disableAlignmentStyles' => true,
                         'propertySelectors' => [
                             'desktop' => [
                                 'value' => [
                                     'aspect-ratio' =>
-                                        '{{selector}} .et_pb_main_blurb_image img'
+                                        '{{selector}} > .et_pb_blurb_content > .et_pb_main_blurb_image img'
                                 ]
                             ]
                         ]
@@ -7896,6 +7899,12 @@ return [
                 'type' => 'object',
                 'selector' => '{{selector}} .et_pb_button.wpcf7-submit',
                 'elementType' => 'button',
+                'styleProps' => [
+                    'selector' => '{{selector}} .et_pb_button.wpcf7-submit',
+                    'border' => [
+                        'important' => true
+                    ]
+                ],
                 'settings' => [
                     'advanced' => [],
                     'decoration' => [
@@ -10392,6 +10401,42 @@ return [
                                                 ],
                                                 'inline' => [
                                                     'label' => 'Inline'
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                'horizontalMode' => [
+                                    'groupSlug' => 'designDropdown',
+                                    'priority' => 6,
+                                    'render' => true,
+                                    'visible' => 'isVisibleFields',
+                                    'attrName' => 'module.advanced.dropdown',
+                                    'subName' => 'horizontalMode',
+                                    'label' => 'Horizontal Position Mode',
+                                    'description' =>
+                                        'Choose whether floating dropdown alignment should follow the parent module, parent row, or the viewport.',
+                                    'category' => 'basic_option',
+                                    'features' => [
+                                        'responsive' => true,
+                                        'hover' => false,
+                                        'sticky' => false,
+                                        'preset' => ['script']
+                                    ],
+                                    'component' => [
+                                        'type' => 'field',
+                                        'name' => 'divi/select',
+                                        'props' => [
+                                            'defaultValue' => 'trigger',
+                                            'options' => [
+                                                'trigger' => [
+                                                    'label' => 'Parent Module'
+                                                ],
+                                                'row' => [
+                                                    'label' => 'Parent Row'
+                                                ],
+                                                'viewport' => [
+                                                    'label' => 'Viewport'
                                                 ]
                                             ]
                                         ]
@@ -13578,6 +13623,18 @@ return [
                                     '{{selector}}.et_pb_fullwidth_menu ul li a',
                                 'hover' =>
                                     '{{selector}}.et_pb_fullwidth_menu ul li:hover > a'
+                            ]
+                        ]
+                    ],
+                    'border' => [
+                        'selectors' => [
+                            'desktop' => [
+                                'value' =>
+                                    '{{selector}}.et_pb_fullwidth_menu .et_pb_menu__menu > nav > ul > li > a',
+                                'hover' =>
+                                    '{{selector}}.et_pb_fullwidth_menu .et_pb_menu__menu > nav > ul > li > a',
+                                'active' =>
+                                    '{{selector}}.et_pb_fullwidth_menu .et_pb_menu__menu > nav > ul > li > a'
                             ]
                         ]
                     ]
@@ -24900,6 +24957,18 @@ return [
                                     '{{selector}}.et_pb_menu .et_pb_menu__menu > nav > ul > li > a'
                             ]
                         ]
+                    ],
+                    'border' => [
+                        'selectors' => [
+                            'desktop' => [
+                                'value' =>
+                                    '{{selector}}.et_pb_menu .et_pb_menu__menu > nav > ul > li > a',
+                                'hover' =>
+                                    '{{selector}}.et_pb_menu .et_pb_menu__menu > nav > ul > li > a',
+                                'active' =>
+                                    '{{selector}}.et_pb_menu .et_pb_menu__menu > nav > ul > li > a'
+                            ]
+                        ]
                     ]
                 ],
                 'settings' => [
@@ -29450,6 +29519,15 @@ return [
                                 ]
                             ]
                         ]
+                    ],
+                    'spacing' => [
+                        'important' => [
+                            'desktop' => [
+                                'value' => [
+                                    'margin-left' => true
+                                ]
+                            ]
+                        ]
                     ]
                 ]
             ],
@@ -30526,6 +30604,15 @@ return [
                                     'value' => [
                                         'color' => true
                                     ]
+                                ]
+                            ]
+                        ]
+                    ],
+                    'spacing' => [
+                        'important' => [
+                            'desktop' => [
+                                'value' => [
+                                    'margin-left' => true
                                 ]
                             ]
                         ]
@@ -37286,7 +37373,6 @@ return [
                                 'description' =>
                                     'Here you can define a custom color for the social network icon.',
                                 'features' => [
-                                    'sticky' => false,
                                     'dynamicContent' => [
                                         'type' => 'color'
                                     ]
@@ -37329,7 +37415,6 @@ return [
                                         'Control the size of the icon by increasing or decreasing the font size.',
                                     'category' => 'font_option',
                                     'features' => [
-                                        'sticky' => false,
                                         'dynamicContent' => [
                                             'type' => 'number'
                                         ]
@@ -37660,7 +37745,6 @@ return [
                                 'description' =>
                                     'Here you can define a custom color for the social network icon.',
                                 'features' => [
-                                    'sticky' => false,
                                     'dynamicContent' => [
                                         'type' => 'color'
                                     ]
@@ -37703,7 +37787,6 @@ return [
                                         'Control the size of the icon by increasing or decreasing the font size',
                                     'category' => 'font_option',
                                     'features' => [
-                                        'sticky' => false,
                                         'dynamicContent' => [
                                             'type' => 'number'
                                         ]
@@ -41231,6 +41314,36 @@ return [
                                         ],
                                         'fields' => [
                                             'body' => [
+                                                'size' => [
+                                                    'priority' => 40
+                                                ],
+                                                'color' => [
+                                                    'priority' => 50
+                                                ],
+                                                'lineHeight' => [
+                                                    'priority' => 60
+                                                ],
+                                                'letterSpacing' => [
+                                                    'priority' => 70
+                                                ],
+                                                'capitalization' => [
+                                                    'priority' => 71
+                                                ],
+                                                'style' => [
+                                                    'priority' => 72
+                                                ],
+                                                'lineColor' => [
+                                                    'priority' => 73
+                                                ],
+                                                'lineThickness' => [
+                                                    'priority' => 74
+                                                ],
+                                                'underlineOffset' => [
+                                                    'priority' => 75
+                                                ],
+                                                'lineStyle' => [
+                                                    'priority' => 76
+                                                ],
                                                 'textAlign' => [
                                                     'render' => false
                                                 ]
@@ -43946,6 +44059,490 @@ return [
                             'groupLabel' => 'Closed Title Text',
                             'presetGroup' => 'divi/font',
                             'dynamicSubgroupHost' => true
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ],
+    'tooltip' => [
+        'name' => 'divi/tooltip',
+        'd4Shortcode' => '',
+        'moduleClassName' => 'et_pb_tooltip',
+        'moduleOrderClassName' => 'et_pb_tooltip',
+        'title' => 'Tooltip',
+        'titles' => 'Tooltips',
+        'moduleIcon' => 'divi/module-tooltip',
+        'category' => 'module',
+        'childrenName' => [],
+        'videos' => [
+            [
+                'id' => 'novideo',
+                'name' => 'Tooltip module'
+            ]
+        ],
+        'attributes' => [
+            'content' => [
+                'type' => 'object',
+                'selector' => '{{selector}} .et_pb_tooltip_inner',
+                'supportsCustomAttributes' => true,
+                'elementType' => 'content',
+                'attributes' => [
+                    'class' => 'et_pb_tooltip_inner'
+                ],
+                'settings' => [
+                    'innerContent' => [
+                        'groupType' => 'group-item',
+                        'item' => [
+                            'groupSlug' => 'contentText',
+                            'priority' => 5,
+                            'render' => true,
+                            'attrName' => 'content.innerContent',
+                            'label' => 'Body',
+                            'description' =>
+                                'Here you can create the content that will be used within the tooltip.',
+                            'category' => 'basic_option',
+                            'features' => [
+                                'dynamicContent' => [
+                                    'type' => 'text'
+                                ],
+                                'sticky' => false,
+                                'preset' => 'content'
+                            ],
+                            'component' => [
+                                'type' => 'field',
+                                'name' => 'divi/richtext'
+                            ]
+                        ]
+                    ],
+                    'decoration' => [
+                        'bodyFont' => []
+                    ]
+                ]
+            ],
+            'module' => [
+                'type' => 'object',
+                'selector' => '{{selector}}',
+                'styleProps' => [
+                    'background' => [],
+                    'border' => [],
+                    'boxShadow' => [],
+                    'sizing' => [],
+                    'spacing' => [
+                        'important' => true
+                    ],
+                    'layout' => [],
+                    'filters' => [],
+                    'transform' => [],
+                    'animation' => [],
+                    'transition' => [],
+                    'overflow' => []
+                ],
+                'settings' => [
+                    'meta' => [
+                        'meta' => []
+                    ],
+                    'advanced' => [
+                        'elements' => [],
+                        'html' => [],
+                        'link' => [],
+                        'loop' => [],
+                        'tooltip' => [
+                            'groupType' => 'group-items',
+                            'items' => [
+                                'trigger' => [
+                                    'groupSlug' => 'designTooltip',
+                                    'priority' => 10,
+                                    'render' => true,
+                                    'attrName' => 'module.advanced.tooltip',
+                                    'subName' => 'trigger',
+                                    'label' => 'Show Tooltip On',
+                                    'description' =>
+                                        'Choose when the tooltip is shown to visitors.',
+                                    'category' => 'basic_option',
+                                    'features' => [
+                                        'responsive' => true,
+                                        'hover' => false,
+                                        'sticky' => false,
+                                        'preset' => ['script']
+                                    ],
+                                    'component' => [
+                                        'type' => 'field',
+                                        'name' => 'divi/select',
+                                        'props' => [
+                                            'defaultValue' => 'hover',
+                                            'options' => [
+                                                'hover' => [
+                                                    'label' => 'Hover'
+                                                ],
+                                                'click' => [
+                                                    'label' => 'Click'
+                                                ],
+                                                'always' => [
+                                                    'label' => 'Always'
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                'positionMode' => [
+                                    'groupSlug' => 'designTooltip',
+                                    'priority' => 15,
+                                    'render' => true,
+                                    'attrName' => 'module.advanced.tooltip',
+                                    'subName' => 'positionMode',
+                                    'label' => 'Tooltip Movement',
+                                    'description' =>
+                                        'Anchored keeps the tooltip fixed relative to the target. Follow cursor moves it with the pointer while open.',
+                                    'category' => 'basic_option',
+                                    'features' => [
+                                        'responsive' => true,
+                                        'hover' => false,
+                                        'sticky' => false,
+                                        'preset' => ['script']
+                                    ],
+                                    'component' => [
+                                        'type' => 'field',
+                                        'name' => 'divi/select',
+                                        'props' => [
+                                            'defaultValue' => 'anchored',
+                                            'options' => [
+                                                'anchored' => [
+                                                    'label' => 'Anchored'
+                                                ],
+                                                'followCursor' => [
+                                                    'label' => 'Follow Cursor'
+                                                ]
+                                            ]
+                                        ]
+                                    ]
+                                ],
+                                'tooltipPlacementGrid' => [
+                                    'groupSlug' => 'designTooltip',
+                                    'priority' => 22,
+                                    'render' => true,
+                                    'attrName' => 'module.advanced.tooltip',
+                                    'subName' => 'placement',
+                                    'label' => 'Tooltip Position',
+                                    'description' =>
+                                        'Inner grid keeps the tooltip within the target; outer ring places it outside. This sets placement, inside/outside bounds, and edge alignment.',
+                                    'category' => 'basic_option',
+                                    'features' => [
+                                        'responsive' => true,
+                                        'hover' => false,
+                                        'sticky' => false,
+                                        'preset' => ['script']
+                                    ],
+                                    'component' => [
+                                        'type' => 'field',
+                                        'name' => 'divi/placement-grid-picker',
+                                        'props' => [
+                                            'layout' => 'outer-inner',
+                                            'defaultValue' =>
+                                                'outside top center'
+                                        ]
+                                    ]
+                                ],
+                                'skid' => [
+                                    'groupSlug' => 'designTooltip',
+                                    'priority' => 50,
+                                    'render' => true,
+                                    'attrName' => 'module.advanced.tooltip',
+                                    'subName' => 'skid',
+                                    'label' => 'Tooltip Skid',
+                                    'description' =>
+                                        'Shifts the tooltip along the target edge (cross-axis offset from the placement).',
+                                    'category' => 'basic_option',
+                                    'features' => [
+                                        'responsive' => true,
+                                        'hover' => false,
+                                        'sticky' => false,
+                                        'preset' => ['script'],
+                                        'dynamicContent' => [
+                                            'type' => 'number'
+                                        ]
+                                    ],
+                                    'component' => [
+                                        'type' => 'field',
+                                        'name' => 'divi/range',
+                                        'props' => [
+                                            'cssProperty' => 'margin',
+                                            'defaultUnit' => 'px'
+                                        ]
+                                    ]
+                                ],
+                                'distance' => [
+                                    'groupSlug' => 'designTooltip',
+                                    'priority' => 60,
+                                    'render' => true,
+                                    'attrName' => 'module.advanced.tooltip',
+                                    'subName' => 'distance',
+                                    'label' => 'Tooltip Distance',
+                                    'description' =>
+                                        'Gap from the target along the placement direction (main-axis offset).',
+                                    'category' => 'basic_option',
+                                    'features' => [
+                                        'responsive' => true,
+                                        'hover' => false,
+                                        'sticky' => false,
+                                        'preset' => ['script'],
+                                        'dynamicContent' => [
+                                            'type' => 'number'
+                                        ]
+                                    ],
+                                    'component' => [
+                                        'type' => 'field',
+                                        'name' => 'divi/range',
+                                        'props' => [
+                                            'cssProperty' => 'margin',
+                                            'defaultUnit' => 'px'
+                                        ]
+                                    ]
+                                ],
+                                'openDelay' => [
+                                    'groupSlug' => 'designTooltip',
+                                    'priority' => 70,
+                                    'render' => true,
+                                    'attrName' => 'module.advanced.tooltip',
+                                    'subName' => 'openDelay',
+                                    'label' => 'Tooltip Open Delay',
+                                    'description' =>
+                                        'Delay before the tooltip opens.',
+                                    'category' => 'basic_option',
+                                    'features' => [
+                                        'responsive' => true,
+                                        'hover' => false,
+                                        'sticky' => false,
+                                        'preset' => ['script'],
+                                        'dynamicContent' => [
+                                            'type' => 'number'
+                                        ]
+                                    ],
+                                    'component' => [
+                                        'type' => 'field',
+                                        'name' => 'divi/range',
+                                        'props' => [
+                                            'cssProperty' =>
+                                                'transition-duration',
+                                            'defaultUnit' => 'ms',
+                                            'minLimit' => 0
+                                        ]
+                                    ]
+                                ],
+                                'closeDelay' => [
+                                    'groupSlug' => 'designTooltip',
+                                    'priority' => 80,
+                                    'render' => true,
+                                    'attrName' => 'module.advanced.tooltip',
+                                    'subName' => 'closeDelay',
+                                    'label' => 'Tooltip Close Delay',
+                                    'description' =>
+                                        'Delay before the tooltip closes (mainly for hover).',
+                                    'category' => 'basic_option',
+                                    'features' => [
+                                        'responsive' => true,
+                                        'hover' => false,
+                                        'sticky' => false,
+                                        'preset' => ['script'],
+                                        'dynamicContent' => [
+                                            'type' => 'number'
+                                        ]
+                                    ],
+                                    'component' => [
+                                        'type' => 'field',
+                                        'name' => 'divi/range',
+                                        'props' => [
+                                            'cssProperty' =>
+                                                'transition-duration',
+                                            'defaultUnit' => 'ms',
+                                            'minLimit' => 0
+                                        ]
+                                    ]
+                                ],
+                                'showArrow' => [
+                                    'groupSlug' => 'designTooltip',
+                                    'priority' => 85,
+                                    'render' => true,
+                                    'attrName' => 'module.advanced.tooltip',
+                                    'subName' => 'showArrow',
+                                    'label' => 'Show Tooltip Arrow',
+                                    'description' =>
+                                        'Display a small pointer toward the parent module.',
+                                    'category' => 'basic_option',
+                                    'features' => [
+                                        'responsive' => true,
+                                        'hover' => false,
+                                        'sticky' => false,
+                                        'preset' => ['script']
+                                    ],
+                                    'component' => [
+                                        'type' => 'field',
+                                        'name' => 'divi/toggle',
+                                        'props' => [
+                                            'defaultValue' => 'off'
+                                        ]
+                                    ]
+                                ],
+                                'arrowColor' => [
+                                    'groupSlug' => 'designTooltip',
+                                    'priority' => 90,
+                                    'render' => true,
+                                    'attrName' => 'module.advanced.tooltip',
+                                    'subName' => 'arrowColor',
+                                    'label' => 'Tooltip Arrow Color',
+                                    'description' =>
+                                        'Choose the fill color for the tooltip arrow. By default this matches the module background color.',
+                                    'category' => 'basic_option',
+                                    'features' => [
+                                        'responsive' => true,
+                                        'hover' => false,
+                                        'sticky' => false,
+                                        'preset' => ['script', 'style'],
+                                        'dynamicContent' => [
+                                            'type' => 'color'
+                                        ]
+                                    ],
+                                    'component' => [
+                                        'type' => 'field',
+                                        'name' => 'divi/color-picker'
+                                    ]
+                                ],
+                                'arrowPlacement' => [
+                                    'groupSlug' => 'designTooltip',
+                                    'priority' => 91,
+                                    'render' => true,
+                                    'attrName' => 'module.advanced.tooltip',
+                                    'subName' => 'arrowPlacement',
+                                    'label' => 'Tooltip Arrow Placement',
+                                    'description' =>
+                                        'Choose which tooltip edge shows the arrow and where it sits along that edge (outer ring).',
+                                    'category' => 'basic_option',
+                                    'features' => [
+                                        'responsive' => true,
+                                        'hover' => false,
+                                        'sticky' => false,
+                                        'preset' => ['script']
+                                    ],
+                                    'component' => [
+                                        'type' => 'field',
+                                        'name' => 'divi/placement-grid-picker',
+                                        'props' => [
+                                            'layout' => 'outer-only',
+                                            'defaultValue' =>
+                                                'outside bottom center'
+                                        ]
+                                    ]
+                                ],
+                                'arrowOffset' => [
+                                    'groupSlug' => 'designTooltip',
+                                    'priority' => 95,
+                                    'render' => true,
+                                    'attrName' => 'module.advanced.tooltip',
+                                    'subName' => 'arrowOffset',
+                                    'label' => 'Tooltip Arrow Position',
+                                    'description' =>
+                                        'Slide the arrow along the edge that faces the target.',
+                                    'category' => 'basic_option',
+                                    'features' => [
+                                        'responsive' => true,
+                                        'hover' => false,
+                                        'sticky' => false,
+                                        'preset' => ['script'],
+                                        'dynamicContent' => [
+                                            'type' => 'number'
+                                        ]
+                                    ],
+                                    'component' => [
+                                        'type' => 'field',
+                                        'name' => 'divi/range',
+                                        'props' => [
+                                            'cssProperty' => 'margin',
+                                            'defaultUnit' => 'px'
+                                        ]
+                                    ]
+                                ],
+                                'arrowSize' => [
+                                    'groupSlug' => 'designTooltip',
+                                    'priority' => 96,
+                                    'render' => true,
+                                    'attrName' => 'module.advanced.tooltip',
+                                    'subName' => 'arrowSize',
+                                    'label' => 'Tooltip Arrow Size',
+                                    'description' =>
+                                        'Control how large the arrow appears.',
+                                    'category' => 'basic_option',
+                                    'features' => [
+                                        'responsive' => true,
+                                        'hover' => false,
+                                        'sticky' => false,
+                                        'preset' => ['script'],
+                                        'dynamicContent' => [
+                                            'type' => 'number'
+                                        ]
+                                    ],
+                                    'component' => [
+                                        'type' => 'field',
+                                        'name' => 'divi/range',
+                                        'props' => [
+                                            'cssProperty' => 'margin',
+                                            'defaultUnit' => 'px'
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ],
+                    'decoration' => [
+                        'animation' => [],
+                        'attributes' => [],
+                        'background' => [],
+                        'border' => [],
+                        'boxShadow' => [],
+                        'conditions' => [],
+                        'disabledOn' => [],
+                        'filters' => [],
+                        'interactions' => [],
+                        'layout' => [],
+                        'order' => [],
+                        'overflow' => [],
+                        'scroll' => [],
+                        'sizing' => [],
+                        'spacing' => [],
+                        'sticky' => [],
+                        'transform' => [],
+                        'transition' => [],
+                        'zIndex' => []
+                    ]
+                ]
+            ]
+        ],
+        'customCssFields' => [],
+        'settings' => [
+            'content' => 'auto',
+            'design' => 'auto',
+            'advanced' => 'auto',
+            'groups' => [
+                'contentText' => [
+                    'panel' => 'content',
+                    'priority' => 5,
+                    'groupName' => 'contentText',
+                    'component' => [
+                        'name' => 'divi/composite',
+                        'props' => [
+                            'groupLabel' => 'Text',
+                            'preset' => 'content'
+                        ]
+                    ]
+                ],
+                'designTooltip' => [
+                    'panel' => 'design',
+                    'priority' => 3,
+                    'groupName' => 'designTooltip',
+                    'component' => [
+                        'name' => 'divi/composite',
+                        'props' => [
+                            'groupLabel' => 'Tooltip',
+                            'presetGroup' => 'divi/tooltip'
                         ]
                     ]
                 ]
@@ -48700,30 +49297,30 @@ return [
                 ],
                 'styleProps' => [
                     'selector' =>
-                        '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} form .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} form .form-row .input-text',
+                        '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} .checkout .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} .checkout .form-row .input-text',
                     'background' => [
                         'selector' =>
-                            '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} form .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} form .form-row .input-text'
+                            '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} .checkout .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} .checkout .form-row .input-text'
                     ],
                     'border' => [
                         'propertySelectors' => [
                             'desktop' => [
                                 'value' => [
                                     'border-radius' =>
-                                        '.woocommerce {{selector}} .select2-container--default.select2-container--open .select2-selection--single,.woocommerce {{selector}} form .form-row input.input-text:focus, {{selector}} .select2-container--default.select2-container--open .select2-selection--single:focus, {{selector}} form .form-row .input-text:focus',
+                                        '.woocommerce {{selector}} .select2-container--default.select2-container--open .select2-selection--single,.woocommerce {{selector}} .checkout .form-row input.input-text:focus, {{selector}} .select2-container--default.select2-container--open .select2-selection--single:focus, {{selector}} .checkout .form-row .input-text:focus',
                                     'border-style' =>
-                                        '.woocommerce {{selector}} .select2-container--default.select2-container--open .select2-selection--single,.woocommerce {{selector}} form .form-row .input-text:focus, {{selector}} .select2-container--default.select2-container--open .select2-selection--single:focus, {{selector}} form .form-row .input-text:focus'
+                                        '.woocommerce {{selector}} .select2-container--default.select2-container--open .select2-selection--single,.woocommerce {{selector}} .checkout .form-row .input-text:focus, {{selector}} .select2-container--default.select2-container--open .select2-selection--single:focus, {{selector}} .checkout .form-row .input-text:focus'
                                 ]
                             ]
                         ]
                     ],
                     'boxShadow' => [
                         'selector' =>
-                            '{{selector}} .select2-container--default .select2-selection--single,{{selector}} form .form-row input.input-text'
+                            '{{selector}} .select2-container--default .select2-selection--single,{{selector}} .checkout .form-row input.input-text'
                     ],
                     'font' => [
                         'selector' =>
-                            '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} form .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} form .form-row .input-text',
+                            '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} .checkout .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} .checkout .form-row .input-text',
                         'important' => [
                             'desktop' => [
                                 'value' => [
@@ -48739,14 +49336,14 @@ return [
                             'desktop' => [
                                 'value' => [
                                     'color' =>
-                                        '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} form .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} form .form-row .input-text'
+                                        '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} .checkout .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} .checkout .form-row .input-text'
                                 ]
                             ]
                         ]
                     ],
                     'spacing' => [
                         'selector' =>
-                            '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} form .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} form .form-row .input-text',
+                            '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} .checkout .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} .checkout .form-row .input-text',
                         'important' => [
                             'desktop' => [
                                 'value' => [
@@ -48759,9 +49356,9 @@ return [
                             'desktop' => [
                                 'value' => [
                                     'margin' =>
-                                        '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} form .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} form .form-row .input-text',
+                                        '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} .checkout .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} .checkout .form-row .input-text',
                                     'padding' =>
-                                        '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} form .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} form .form-row .input-text'
+                                        '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} .checkout .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} .checkout .form-row .input-text'
                                 ]
                             ]
                         ]
@@ -48976,13 +49573,13 @@ return [
             'fieldLabel' => [
                 'label' => 'Field Label',
                 'subName' => 'fieldLabel',
-                'selectorSuffix' => ' form .form-row label'
+                'selectorSuffix' => ' .checkout .form-row label'
             ],
             'formField' => [
                 'label' => 'Fields',
                 'subName' => 'formField',
                 'selectorSuffix' =>
-                    ' .select2-container--default .select2-selection--single, form .form-row .input-text'
+                    ' .select2-container--default .select2-selection--single, .checkout .form-row .input-text'
             ],
             'formNotice' => [
                 'label' => 'Form Notice',
@@ -49267,16 +49864,16 @@ return [
                             'desktop' => [
                                 'value' => [
                                     'border-radius' =>
-                                        '{{selector}} form .form-row textarea.input-text:focus',
+                                        '{{selector}} .checkout .form-row textarea.input-text:focus',
                                     'border-style' =>
-                                        '{{selector}} form .form-row textarea.input-text:focus'
+                                        '{{selector}} .checkout .form-row textarea.input-text:focus'
                                 ]
                             ]
                         ]
                     ],
                     'font' => [
                         'selector' =>
-                            '{{selector}} form .form-row .input-text, {{selector}} form .form-row .input-text::placeholder, {{selector}} form .form-row .input-text::-webkit-input-placeholder, {{selector}} form .form-row .input-text::-moz-placeholder, {{selector}} form .form-row .input-text:-ms-input-placeholder',
+                            '{{selector}} .checkout .form-row .input-text, {{selector}} .checkout .form-row .input-text::placeholder, {{selector}} .checkout .form-row .input-text::-webkit-input-placeholder, {{selector}} .checkout .form-row .input-text::-moz-placeholder, {{selector}} .checkout .form-row .input-text:-ms-input-placeholder',
                         'important' => [
                             'desktop' => [
                                 'value' => [
@@ -49289,7 +49886,7 @@ return [
                         'selectors' => [
                             'desktop' => [
                                 'hover' =>
-                                    '{{selector}} form .input-text, {{selector}} form .input-text:hover::placeholder, {{selector}} form .input-text:hover::-webkit-input-placeholder, {{selector}} form .input-text:hover::-moz-placeholder, {{selector}} form .input-text:hover:-ms-input-placeholder'
+                                    '{{selector}} .checkout .input-text, {{selector}} .checkout .input-text:hover::placeholder, {{selector}} .checkout .input-text:hover::-webkit-input-placeholder, {{selector}} .checkout .input-text:hover::-moz-placeholder, {{selector}} .checkout .input-text:hover:-ms-input-placeholder'
                             ]
                         ]
                     ]
@@ -49305,18 +49902,18 @@ return [
             'fieldLabel' => [
                 'label' => 'Field Label',
                 'subName' => 'fieldLabel',
-                'selectorSuffix' => ' form .form-row label'
+                'selectorSuffix' => ' .checkout .form-row label'
             ],
             'fields' => [
                 'label' => 'Fields',
                 'subName' => 'fields',
-                'selectorSuffix' => ' form .input-text'
+                'selectorSuffix' => ' .checkout .input-text'
             ],
             'fieldsPlaceholder' => [
                 'label' => 'Fields Placeholder',
                 'subName' => 'fieldsPlaceholder',
                 'selectorSuffix' =>
-                    ' form .form-row .input-text::placeholder, form .form-row .input-text::-webkit-input-placeholder, form .form-row .input-text::-moz-placeholder, form .form-row .input-text:-ms-input-placeholder'
+                    ' .checkout .form-row .input-text::placeholder, .checkout .form-row .input-text::-webkit-input-placeholder, .checkout .form-row .input-text::-moz-placeholder, .checkout .form-row .input-text:-ms-input-placeholder'
             ]
         ],
         'settings' => [
@@ -51256,30 +51853,30 @@ return [
                 ],
                 'styleProps' => [
                     'selector' =>
-                        '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} form .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} form .form-row .input-text',
+                        '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} .checkout .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} .checkout .form-row .input-text',
                     'background' => [
                         'selector' =>
-                            '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} form .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} form .form-row .input-text'
+                            '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} .checkout .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} .checkout .form-row .input-text'
                     ],
                     'border' => [
                         'propertySelectors' => [
                             'desktop' => [
                                 'value' => [
                                     'border-radius' =>
-                                        '.woocommerce {{selector}} .select2-container--default.select2-container--open .select2-selection--single,.woocommerce {{selector}} form .form-row input.input-text:focus, {{selector}} .select2-container--default.select2-container--open .select2-selection--single:focus, {{selector}} form .form-row .input-text:focus',
+                                        '.woocommerce {{selector}} .select2-container--default.select2-container--open .select2-selection--single,.woocommerce {{selector}} .checkout .form-row input.input-text:focus, {{selector}} .select2-container--default.select2-container--open .select2-selection--single:focus, {{selector}} .checkout .form-row .input-text:focus',
                                     'border-style' =>
-                                        '.woocommerce {{selector}} .select2-container--default.select2-container--open .select2-selection--single,.woocommerce {{selector}} form .form-row .input-text:focus, {{selector}} .select2-container--default.select2-container--open .select2-selection--single:focus, {{selector}} form .form-row .input-text:focus'
+                                        '.woocommerce {{selector}} .select2-container--default.select2-container--open .select2-selection--single,.woocommerce {{selector}} .checkout .form-row .input-text:focus, {{selector}} .select2-container--default.select2-container--open .select2-selection--single:focus, {{selector}} .checkout .form-row .input-text:focus'
                                 ]
                             ]
                         ]
                     ],
                     'boxShadow' => [
                         'selector' =>
-                            '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} form .form-row input.input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} form .form-row .input-text'
+                            '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} .checkout .form-row input.input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} .checkout .form-row .input-text'
                     ],
                     'font' => [
                         'selector' =>
-                            '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} form .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} form .form-row .input-text',
+                            '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} .checkout .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} .checkout .form-row .input-text',
                         'important' => [
                             'desktop' => [
                                 'value' => [
@@ -51295,14 +51892,14 @@ return [
                             'desktop' => [
                                 'value' => [
                                     'color' =>
-                                        '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} form .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} form .form-row .input-text'
+                                        '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} .checkout .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} .checkout .form-row .input-text'
                                 ]
                             ]
                         ]
                     ],
                     'spacing' => [
                         'selector' =>
-                            '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} form .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} form .form-row .input-text',
+                            '.woocommerce {{selector}} .select2-container--default .select2-selection--single,.woocommerce {{selector}} .checkout .form-row .input-text, {{selector}} .select2-container--default .select2-selection--single, {{selector}} .checkout .form-row .input-text',
                         'important' => [
                             'desktop' => [
                                 'value' => [
@@ -51381,13 +51978,13 @@ return [
             'fieldLabel' => [
                 'label' => 'Field Label',
                 'subName' => 'fieldLabel',
-                'selectorSuffix' => ' form .form-row label'
+                'selectorSuffix' => ' .checkout .form-row label'
             ],
             'formField' => [
                 'label' => 'Fields',
                 'subName' => 'formField',
                 'selectorSuffix' =>
-                    ' .select2-container--default .select2-selection--single, form .form-row .input-text'
+                    ' .select2-container--default .select2-selection--single, .checkout .form-row .input-text'
             ]
         ],
         'settings' => [
@@ -53539,18 +54136,37 @@ return [
                         'galleryCaptions' => []
                     ],
                     'decoration' => [
+                        'sizing' => [
+                            'groupType' => 'group-item',
+                            'item' => [
+                                'groupSlug' => 'designImage',
+                                'attrName' => 'image.decoration.sizing',
+                                'priority' => 10,
+                                'render' => true,
+                                'component' => [
+                                    'type' => 'group',
+                                    'name' => 'divi/sizing',
+                                    'props' => [
+                                        'grouped' => true,
+                                        'fieldLabel' => 'Image',
+                                        'dynamicSubgroupHostLayoutStyle' =>
+                                            'moduleLayout'
+                                    ]
+                                ]
+                            ]
+                        ],
                         'border' => [
                             'groupType' => 'group-item',
                             'item' => [
                                 'groupSlug' => 'designImage',
                                 'attrName' => 'image.decoration.border',
-                                'priority' => 10,
+                                'priority' => 20,
                                 'render' => true,
                                 'component' => [
                                     'type' => 'group',
                                     'name' => 'divi/border',
                                     'props' => [
-                                        'grouped' => false,
+                                        'grouped' => true,
                                         'fieldLabel' => 'Image'
                                     ]
                                 ]
@@ -53561,13 +54177,13 @@ return [
                             'item' => [
                                 'groupSlug' => 'designImage',
                                 'attrName' => 'image.decoration.border',
-                                'priority' => 20,
+                                'priority' => 30,
                                 'render' => true,
                                 'component' => [
                                     'type' => 'group',
                                     'name' => 'divi/box-shadow',
                                     'props' => [
-                                        'grouped' => false,
+                                        'grouped' => true,
                                         'fieldLabel' => 'Image'
                                     ]
                                 ]
@@ -53578,7 +54194,7 @@ return [
                             'item' => [
                                 'groupSlug' => 'designImage',
                                 'attrName' => 'image.decoration.border',
-                                'priority' => 30,
+                                'priority' => 40,
                                 'render' => true,
                                 'component' => [
                                     'type' => 'group',
@@ -54017,7 +54633,8 @@ return [
                         'name' => 'divi/composite',
                         'props' => [
                             'groupLabel' => 'Image',
-                            'dynamicSubgroupHost' => true
+                            'dynamicSubgroupHost' => true,
+                            'dynamicSubgroupHostLayoutStyle' => 'moduleLayout'
                         ]
                     ]
                 ],
@@ -59608,14 +60225,19 @@ return [
                     'border' => [
                         'propertySelectors' => [
                             'desktop' => [
+                                'hover' => [
+                                    'border-radius' =>
+                                        '{{selector}}.et_pb_module .et_shop_image > img{{:hover}}, {{selector}}.et_pb_module .et_shop_image .et_overlay'
+                                ],
                                 'value' => [
                                     'border-radius' =>
-                                        '{{selector}}.et_pb_module .et_shop_image',
+                                        '{{selector}}.et_pb_module .et_shop_image > img, {{selector}}.et_pb_module .et_shop_image .et_overlay',
                                     'border-style' =>
-                                        '{{selector}}.et_pb_module .et_shop_image'
+                                        '{{selector}}.et_pb_module .et_shop_image > img, {{selector}}.et_pb_module .et_shop_image .et_overlay'
                                 ]
                             ]
-                        ]
+                        ],
+                        'important' => true
                     ],
                     'boxShadow' => [
                         'selector' => '{{selector}} .et_shop_image',

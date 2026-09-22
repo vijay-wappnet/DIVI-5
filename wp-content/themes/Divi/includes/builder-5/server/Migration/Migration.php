@@ -38,7 +38,11 @@ use ET\Builder\Migration\ImageGroupMigration;
 use ET\Builder\Migration\ImageGroupPresetMigration;
 use ET\Builder\Migration\FocusFieldsMigration;
 use ET\Builder\Migration\FocusFieldsPresetMigration;
+use ET\Builder\Migration\FontCapitalizationMigration;
+use ET\Builder\Migration\FontCapitalizationPresetMigration;
 use ET\Builder\Migration\TextBodyFontWeightMigration;
+use ET\Builder\Migration\GridOffsetRulesMigration;
+use ET\Builder\Migration\GridOffsetRulesPresetMigration;
 use ET\Builder\Migration\Utils\MigrationUtils;
 use ET\Builder\Framework\Utility\StringUtility;
 
@@ -568,6 +572,8 @@ class Migration {
 		$migration->register_content_migration( new ImageGroupMigration() );
 		$migration->register_content_migration( new FocusFieldsMigration() );
 		$migration->register_content_migration( new TextBodyFontWeightMigration() );
+		$migration->register_content_migration( new FontCapitalizationMigration() );
+		$migration->register_content_migration( new GridOffsetRulesMigration() );
 
 		// Register preset migrations here.
 		$migration->register_presets_migration( new AttributePresetMigration() );
@@ -575,6 +581,8 @@ class Migration {
 		$migration->register_presets_migration( new ComposibleOptionsPresetMigration() );
 		$migration->register_presets_migration( new ImageGroupPresetMigration() );
 		$migration->register_presets_migration( new FocusFieldsPresetMigration() );
+		$migration->register_presets_migration( new FontCapitalizationPresetMigration() );
+		$migration->register_presets_migration( new GridOffsetRulesPresetMigration() );
 
 		return $migration;
 	}

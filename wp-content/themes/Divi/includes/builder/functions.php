@@ -12,7 +12,7 @@ use ET\Builder\Packages\GlobalLayout\GlobalLayout;
 
 if ( ! defined( 'ET_BUILDER_PRODUCT_VERSION' ) ) {
 	// Note, this will be updated automatically during grunt release task.
-	define( 'ET_BUILDER_PRODUCT_VERSION', '5.7.4' );
+	define( 'ET_BUILDER_PRODUCT_VERSION', '5.9.0' );
 }
 
 if ( ! defined( 'ET_BUILDER_VERSION' ) ) {
@@ -3525,6 +3525,105 @@ if ( ! function_exists( 'et_builder_get_element_style_css' ) ) :
 	}
 endif;
 
+if ( ! function_exists( 'et_builder_get_canonical_variable_axes' ) ) :
+	/**
+	 * Build canonical variable axes list for Google Fonts css2 URLs.
+	 *
+	 * @param mixed $axes Raw variable axis list from font metadata.
+	 *
+	 * @return array<int, array{tag:string,min:float,max:float}>
+	 */
+	function et_builder_get_canonical_variable_axes( $axes ) {
+		if ( ! is_array( $axes ) || empty( $axes ) ) {
+			return array();
+		}
+
+		$standard_axis_tags = array( 'opsz', 'slnt', 'wdth', 'wght' );
+		$axis_map           = array();
+
+		foreach ( $axes as $axis ) {
+			if ( ! is_array( $axis ) ) {
+				continue;
+			}
+
+			$tag = isset( $axis['tag'] ) ? trim( (string) $axis['tag'] ) : '';
+			$min = $axis['min'] ?? null;
+			$max = $axis['max'] ?? null;
+
+			// Variable font axis tags are 4-character alphanumeric identifiers.
+			if ( '' === $tag || 1 !== preg_match( '/^[A-Za-z0-9]{4}$/', $tag ) || ! is_numeric( $min ) || ! is_numeric( $max ) ) {
+				continue;
+			}
+
+			$normalized_tag = in_array( strtolower( $tag ), $standard_axis_tags, true )
+				? strtolower( $tag )
+				: strtoupper( $tag );
+			$normalized_min = (float) $min;
+			$normalized_max = (float) $max;
+
+			if ( ! isset( $axis_map[ $normalized_tag ] ) ) {
+				$axis_map[ $normalized_tag ] = array(
+					'tag' => $normalized_tag,
+					'min' => $normalized_min,
+					'max' => $normalized_max,
+				);
+				continue;
+			}
+
+			$axis_map[ $normalized_tag ]['min'] = min( $axis_map[ $normalized_tag ]['min'], $normalized_min );
+			$axis_map[ $normalized_tag ]['max'] = max( $axis_map[ $normalized_tag ]['max'], $normalized_max );
+		}
+
+		if ( empty( $axis_map ) ) {
+			return array();
+		}
+
+		ksort( $axis_map, SORT_STRING );
+
+		return array_values( $axis_map );
+	}
+endif;
+
+if ( ! function_exists( 'et_builder_get_variable_font_family_expression' ) ) :
+	/**
+	 * Build Google Fonts css2 family expression for variable fonts.
+	 *
+	 * @param string $font_name Font family.
+	 * @param array  $font_data Font registry data.
+	 *
+	 * @return string
+	 */
+	function et_builder_get_variable_font_family_expression( $font_name, $font_data ) {
+		if ( ! is_array( $font_data ) ) {
+			return '';
+		}
+
+		$valid_axes = et_builder_get_canonical_variable_axes( $font_data['axes'] ?? array() );
+
+		if ( empty( $valid_axes ) ) {
+			return '';
+		}
+
+		$axis_tags   = implode( ',', array_column( $valid_axes, 'tag' ) );
+		$axis_ranges = implode(
+			',',
+			array_map(
+				static function ( $axis ) {
+					return $axis['min'] . '..' . $axis['max'];
+				},
+				$valid_axes
+			)
+		);
+
+		return sprintf(
+			'%1$s:%2$s@%3$s',
+			str_replace( '%20', '+', rawurlencode( (string) $font_name ) ),
+			$axis_tags,
+			$axis_ranges
+		);
+	}
+endif;
+
 if ( ! function_exists( 'et_builder_enqueue_font' ) ) :
 	/**
 	 * Enqueue fonts.
@@ -3583,12 +3682,16 @@ if ( ! function_exists( 'et_builder_enqueue_font' ) ) :
 			strtolower( str_replace( ' ', '-', $font_name ) )
 		);
 
-		$queued_font = array(
-			'font'   => sprintf(
+		$variable_font_family_expression = et_builder_get_variable_font_family_expression( $font_name, $fonts[ $font_name ] );
+		$queued_font_family              = '' !== $variable_font_family_expression
+			? $variable_font_family_expression
+			: sprintf(
 				'%s:%s',
 				str_replace( ' ', '+', $font_name ),
 				apply_filters( 'et_builder_set_styles', $fonts[ $font_name ]['styles'], $font_name )
-			),
+			);
+		$queued_font = array(
+			'font'   => $queued_font_family,
 			'subset' => apply_filters( 'et_builder_set_character_set', $font_character_set, $font_name ),
 		);
 
@@ -3701,6 +3804,86 @@ function et_builder_preconnect_google_fonts() {
 }
 add_action( 'wp_enqueue_scripts', 'et_builder_preconnect_google_fonts', 9 );
 
+if ( ! function_exists( 'et_builder_split_font_requests_by_api' ) ) :
+	/**
+	 * Split queued font request fragments by Google Fonts API version.
+	 *
+	 * @param array $font_families Formatted font family fragments.
+	 *
+	 * @return array<string, array<int, string>>
+	 */
+	function et_builder_split_font_requests_by_api( $font_families ) {
+		$split_font_families = array(
+			'standard' => array(),
+			'variable' => array(),
+		);
+
+		if ( ! is_array( $font_families ) || empty( $font_families ) ) {
+			return $split_font_families;
+		}
+
+		foreach ( $font_families as $font_family ) {
+			$font_family = (string) $font_family;
+
+			if ( false !== strpos( $font_family, '@' ) ) {
+				$split_font_families['variable'][] = $font_family;
+			} else {
+				$split_font_families['standard'][] = $font_family;
+			}
+		}
+
+		return $split_font_families;
+	}
+endif;
+
+if ( ! function_exists( 'et_builder_get_google_fonts_variable_url' ) ) :
+	/**
+	 * Build Google Fonts css2 URL for variable-font family expressions.
+	 *
+	 * @param array $variable_families Variable font family expressions.
+	 * @param array $subsets       Character subsets.
+	 *
+	 * @return string
+	 */
+	function et_builder_get_google_fonts_variable_url( $variable_families, $subsets ) {
+		if ( ! is_array( $variable_families ) || empty( $variable_families ) ) {
+			return '';
+		}
+
+		$query_segments = array();
+
+		foreach ( $variable_families as $variable_family ) {
+			$variable_family = trim( (string) $variable_family );
+
+			// Keep variable family expressions constrained to expected URL-safe tokens.
+			if ( '' === $variable_family || 1 !== preg_match( '/^[A-Za-z0-9+:%,@.\-]+$/', $variable_family ) ) {
+				continue;
+			}
+
+			$query_segments[] = 'family=' . $variable_family;
+		}
+
+		if ( empty( $query_segments ) ) {
+			return '';
+		}
+
+		$subset_string = implode(
+			',',
+			array_filter(
+				array_map( 'strval', is_array( $subsets ) ? $subsets : array() )
+			)
+		);
+
+		if ( '' !== $subset_string ) {
+			$query_segments[] = 'subset=' . rawurlencode( $subset_string );
+		}
+
+		$query_segments[] = 'display=swap';
+
+		return 'https://fonts.googleapis.com/css2?' . implode( '&', $query_segments );
+	}
+endif;
+
 /**
  * Enqueue queued Google Fonts into WordPress' wp_enqueue_style as one request
  *
@@ -3809,36 +3992,49 @@ function et_builder_print_font() {
 		// Note: We don't return early here to ensure cache update logic below still runs
 		// to clear stale cached fonts when page now uses only websafe fonts.
 		if ( ! empty( $filtered_fonts ) ) {
-			// Append combined subset at the end of the URL as different query string.
-			$google_fonts_url_args = array(
-				'family'  => implode( '|', $filtered_fonts ),
-				'subset'  => implode( ',', $unique_subsets ),
-				'display' => 'swap',
-			);
+			$split_font_families = et_builder_split_font_requests_by_api( $filtered_fonts );
 
-			$feature_manager  = ET_Builder_Google_Fonts_Feature::instance();
-			$google_fonts_url = $feature_manager->get_google_fonts_url( $google_fonts_url_args );
-			$output_inline    = $feature_manager->is_option_enabled( 'google_fonts_inline' );
-
-			if ( $output_inline ) {
-				$contents = $feature_manager->get(
-					'google-fonts',
-					function () use ( $feature_manager, $google_fonts_url ) {
-						return $feature_manager->fetch( $google_fonts_url );
-					},
-					sanitize_text_field( et_core_esc_previously( $google_fonts_url ) )
+			if ( ! empty( $split_font_families['standard'] ) ) {
+				// Append combined subset at the end of the URL as different query string.
+				$google_fonts_url_args = array(
+					'family'  => implode( '|', $split_font_families['standard'] ),
+					'subset'  => implode( ',', $unique_subsets ),
+					'display' => 'swap',
 				);
 
-				// if something went wrong fetching the contents.
-				if ( false === $contents ) {
-					// phpcs:ignore WordPress.WP.EnqueuedResourceParameters --  Google fonts api does not have versions
-					wp_enqueue_style( 'et-builder-googlefonts', et_core_esc_previously( $google_fonts_url ), array(), null );
+				$feature_manager  = ET_Builder_Google_Fonts_Feature::instance();
+				$google_fonts_url = $feature_manager->get_google_fonts_url( $google_fonts_url_args );
+				$output_inline    = $feature_manager->is_option_enabled( 'google_fonts_inline' );
+
+				if ( $output_inline ) {
+					$contents = $feature_manager->get(
+						'google-fonts',
+						function () use ( $feature_manager, $google_fonts_url ) {
+							return $feature_manager->fetch( $google_fonts_url );
+						},
+						sanitize_text_field( et_core_esc_previously( $google_fonts_url ) )
+					);
+
+					// if something went wrong fetching the contents.
+					if ( false === $contents ) {
+						// phpcs:ignore WordPress.WP.EnqueuedResourceParameters --  Google fonts api does not have versions
+						wp_enqueue_style( 'et-builder-googlefonts', et_core_esc_previously( $google_fonts_url ), array(), null );
+					} else {
+						echo '<style id="et-builder-googlefonts-inline">' . et_core_esc_previously( $contents ) . '</style>';
+					}
 				} else {
-					echo '<style id="et-builder-googlefonts-inline">' . et_core_esc_previously( $contents ) . '</style>';
+					// phpcs:ignore WordPress.WP.EnqueuedResourceParameters -- Google fonts api does not have versions
+					wp_enqueue_style( 'et-builder-googlefonts', et_core_esc_previously( $google_fonts_url ), array(), null );
 				}
-			} else {
-				// phpcs:ignore WordPress.WP.EnqueuedResourceParameters -- Google fonts api does not have versions
-				wp_enqueue_style( 'et-builder-googlefonts', et_core_esc_previously( $google_fonts_url ), array(), null );
+			}
+
+			if ( ! empty( $split_font_families['variable'] ) ) {
+				$google_fonts_variable_url = et_builder_get_google_fonts_variable_url( $split_font_families['variable'], $unique_subsets );
+
+				if ( '' !== $google_fonts_variable_url ) {
+					// phpcs:ignore WordPress.WP.EnqueuedResourceParameters -- Google fonts api does not have versions
+					wp_enqueue_style( 'et-builder-googlefonts-variable', esc_url_raw( $google_fonts_variable_url ), array(), null );
+				}
 			}
 		}
 	}
@@ -3977,35 +4173,48 @@ function et_builder_preprint_font() {
 	// Mark that preprint is actually going to output the cached request for this render.
 	do_action( 'et_builder_internal_google_fonts_preprint_emitted' );
 
-	$google_fonts_url_args = array(
-		'family'  => implode( '|', $fonts_family ),
-		'subset'  => implode( ',', $unique_subsets ),
-		'display' => 'swap',
-	);
+	$split_font_families = et_builder_split_font_requests_by_api( $fonts_family );
 
-	$feature_manager  = ET_Builder_Google_Fonts_Feature::instance();
-	$google_fonts_url = $feature_manager->get_google_fonts_url( $google_fonts_url_args );
-	$output_inline    = $feature_manager->is_option_enabled( 'google_fonts_inline' );
-
-	if ( $output_inline ) {
-		$contents = $feature_manager->get(
-			'google-fonts',
-			function () use ( $feature_manager, $google_fonts_url ) {
-				return $feature_manager->fetch( $google_fonts_url );
-			},
-			sanitize_text_field( et_core_esc_previously( $google_fonts_url ) ) . '_modern_ua'
+	if ( ! empty( $split_font_families['standard'] ) ) {
+		$google_fonts_url_args = array(
+			'family'  => implode( '|', $split_font_families['standard'] ),
+			'subset'  => implode( ',', $unique_subsets ),
+			'display' => 'swap',
 		);
 
-		// if something went wrong fetching the contents.
-		if ( false === $contents ) {
-			// phpcs:ignore WordPress.WP.EnqueuedResourceParameters --  Google fonts api does not have versions
-			wp_enqueue_style( 'et-builder-googlefonts-cached', et_core_esc_previously( $google_fonts_url ), array(), null );
+		$feature_manager  = ET_Builder_Google_Fonts_Feature::instance();
+		$google_fonts_url = $feature_manager->get_google_fonts_url( $google_fonts_url_args );
+		$output_inline    = $feature_manager->is_option_enabled( 'google_fonts_inline' );
+
+		if ( $output_inline ) {
+			$contents = $feature_manager->get(
+				'google-fonts',
+				function () use ( $feature_manager, $google_fonts_url ) {
+					return $feature_manager->fetch( $google_fonts_url );
+				},
+				sanitize_text_field( et_core_esc_previously( $google_fonts_url ) ) . '_modern_ua'
+			);
+
+			// if something went wrong fetching the contents.
+			if ( false === $contents ) {
+				// phpcs:ignore WordPress.WP.EnqueuedResourceParameters --  Google fonts api does not have versions
+				wp_enqueue_style( 'et-builder-googlefonts-cached', et_core_esc_previously( $google_fonts_url ), array(), null );
+			} else {
+				echo '<style id="et-builder-googlefonts-cached-inline">' . $contents . '</style>';
+			}
 		} else {
-			echo '<style id="et-builder-googlefonts-cached-inline">' . $contents . '</style>';
+			// phpcs:ignore WordPress.WP.EnqueuedResourceParameters -- Google fonts api does not have versions.
+			wp_enqueue_style( 'et-builder-googlefonts-cached', et_core_esc_previously( $google_fonts_url ), array(), null );
 		}
-	} else {
-		// phpcs:ignore WordPress.WP.EnqueuedResourceParameters -- Google fonts api does not have versions.
-		wp_enqueue_style( 'et-builder-googlefonts-cached', et_core_esc_previously( $google_fonts_url ), array(), null );
+	}
+
+	if ( ! empty( $split_font_families['variable'] ) ) {
+		$google_fonts_variable_url = et_builder_get_google_fonts_variable_url( $split_font_families['variable'], $unique_subsets );
+
+		if ( '' !== $google_fonts_variable_url ) {
+			// phpcs:ignore WordPress.WP.EnqueuedResourceParameters -- Google fonts api does not have versions.
+			wp_enqueue_style( 'et-builder-googlefonts-cached-variable', esc_url_raw( $google_fonts_variable_url ), array(), null );
+		}
 	}
 }
 add_action( 'wp_enqueue_scripts', 'et_builder_preprint_font' );

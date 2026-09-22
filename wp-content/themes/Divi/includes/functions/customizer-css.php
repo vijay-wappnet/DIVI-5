@@ -47,4 +47,62 @@ function et_divi_add_main_content_background_css( $css ) {
 	return $css;
 }
 
+/**
+ * Sync parent background theme mods into child theme on activation.
+ *
+ * @since ??
+ *
+ * @return void
+ */
+function et_divi_sync_background_theme_mods_on_child_activation() {
+	if ( ! is_child_theme() ) {
+		return;
+	}
+
+	$parent_stylesheet = get_template();
+	$child_stylesheet  = get_stylesheet();
+
+	if ( $parent_stylesheet === $child_stylesheet ) {
+		return;
+	}
+
+	$parent_theme_mods = get_option( "theme_mods_{$parent_stylesheet}" );
+	if ( ! is_array( $parent_theme_mods ) ) {
+		return;
+	}
+
+	$child_theme_mods = get_option( "theme_mods_{$child_stylesheet}" );
+	if ( ! is_array( $child_theme_mods ) ) {
+		$child_theme_mods = array();
+	}
+
+	$background_keys = array(
+		'background_color',
+		'background_image',
+	);
+
+	foreach ( $background_keys as $background_key ) {
+		$child_has_background_value = array_key_exists( $background_key, $child_theme_mods );
+		$child_background_value     = $child_has_background_value ? $child_theme_mods[ $background_key ] : null;
+		$child_value_is_empty       = '' === $child_background_value || null === $child_background_value || false === $child_background_value;
+
+		if ( $child_has_background_value && ! $child_value_is_empty ) {
+			continue;
+		}
+
+		if ( ! array_key_exists( $background_key, $parent_theme_mods ) ) {
+			continue;
+		}
+
+		$parent_background_value = $parent_theme_mods[ $background_key ];
+
+		if ( '' === $parent_background_value || null === $parent_background_value || false === $parent_background_value ) {
+			continue;
+		}
+
+		set_theme_mod( $background_key, $parent_background_value );
+	}
+}
+
 add_filter( 'et_divi_theme_customizer_css_output', 'et_divi_add_main_content_background_css' );
+add_action( 'after_switch_theme', 'et_divi_sync_background_theme_mods_on_child_activation' );

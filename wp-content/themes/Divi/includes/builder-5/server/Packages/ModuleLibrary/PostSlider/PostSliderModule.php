@@ -168,6 +168,61 @@ class PostSliderModule implements DependencyInterface {
 	}
 
 	/**
+	 * Slide description text shadow style declaration.
+	 *
+	 * Clears text-shadow on slide description when Text Color is UI Dark (stored `light`)
+	 * at the current breakpoint, unless the user has explicitly enabled Text Shadow.
+	 *
+	 * This function is equivalent of JS function slideDescriptionTextShadowStyleDeclaration located in
+	 * visual-builder/packages/module-library/src/components/post-slider/style-declarations/slide-description-text-shadow/index.ts.
+	 *
+	 * @since ??
+	 *
+	 * @param array $params {
+	 *     An array of arguments.
+	 *
+	 *     @type array      $attrValue  The value (breakpoint > state > value) of module attribute.
+	 *     @type string     $state      Attribute state.
+	 *     @type string     $breakpoint Current breakpoint.
+	 * }
+	 * @param array $attrs Module attributes.
+	 *
+	 * @return string Style declaration.
+	 */
+	public static function slide_description_text_shadow_style_declaration( array $params, array $attrs ): string {
+		$style_declarations = new StyleDeclarations(
+			[
+				'returnType' => 'string',
+				'important'  => false,
+			]
+		);
+
+		$state = $params['state'] ?? 'value';
+
+		if ( 'value' !== $state ) {
+			return $style_declarations->value();
+		}
+
+		$text_color = $params['attrValue']['color'] ?? '';
+
+		// UI Dark = stored 'light'.
+		if ( 'light' !== $text_color ) {
+			return $style_declarations->value();
+		}
+
+		$breakpoint        = $params['breakpoint'] ?? 'desktop';
+		$text_shadow_style = $attrs['module']['advanced']['text']['textShadow'][ $breakpoint ]['value']['style'] ?? '';
+
+		if ( ! empty( $text_shadow_style ) && 'none' !== $text_shadow_style ) {
+			return $style_declarations->value();
+		}
+
+		$style_declarations->add( 'text-shadow', 'unset' );
+
+		return $style_declarations->value();
+	}
+
+	/**
 	 * Set CSS class names to the module.
 	 *
 	 * This function is equivalent of JS function moduleClassnames located in
@@ -499,6 +554,16 @@ class PostSliderModule implements DependencyInterface {
 											'declarationFunction' => [ ModuleUtils::class, 'remove_text_shadow_style_declaration' ],
 										],
 									],
+									[
+										'componentName' => 'divi/common',
+										'props'         => [
+											'selector'            => "{$order_class} .et_pb_slide .et_pb_slide_description",
+											'attr'                => $attrs['module']['advanced']['text']['text'] ?? [],
+											'declarationFunction' => function ( array $params ) use ( $attrs ) {
+												return self::slide_description_text_shadow_style_declaration( $params, $attrs );
+											},
+										],
+									],
 								],
 							],
 						]
@@ -727,8 +792,15 @@ class PostSliderModule implements DependencyInterface {
 
 		$query = new \WP_Query( $query_args );
 
-		$slides   = [];
-		$post_ids = [];
+		$slides                             = [];
+		$post_ids                           = [];
+		$slide_background_layout_classnames = TextClassnames::get_background_layout_classnames( $attrs['module']['advanced']['text'] ?? [] );
+
+		// Compute slide-level background layout classnames once — all slides share the same
+		// module-level text color setting. The slider JS script reads these classes from the
+		// active slide after each transition to update the module wrapper's layout class, so
+		// every slide must carry them to prevent the JS from defaulting to et_pb_bg_layout_dark.
+		$slide_background_layout_classnames = TextClassnames::get_background_layout_classnames( $attrs['module']['advanced']['text'] ?? [] );
 
 		if ( $query->have_posts() ) {
 			while ( $query->have_posts() ) {
@@ -749,6 +821,9 @@ class PostSliderModule implements DependencyInterface {
 				$slide_classnames->add( 'et_pb_media_alignment_center', $has_image_at_left_or_right );
 				$slide_classnames->add( 'et_pb_slide_with_no_image', $has_et_pb_slide_with_no_image_class );
 				$slide_classnames->add( 'et_pb_post_slide-' . get_the_ID(), true );
+				$slide_classnames->add( $slide_background_layout_classnames, ! empty( $slide_background_layout_classnames ) );
+
+				$slide_classnames_value = $slide_classnames->value();
 
 				// Slide/Background Overlay.
 				$slide_overlay = 'on' === $show_slide_overlay ? HTMLUtility::render(
@@ -1000,7 +1075,7 @@ class PostSliderModule implements DependencyInterface {
 					[
 						'tagName'           => 'div',
 						'attributes'        => [
-							'class' => $slide_classnames->value(),
+							'class' => $slide_classnames_value,
 							'style' => ! empty( $slide_style ) ? $slide_style : null,
 						],
 						'children'          => [

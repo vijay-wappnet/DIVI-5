@@ -208,6 +208,23 @@ class DynamicAssetsUtils {
 	}
 
 	/**
+	 * Enqueues D5 tooltip module script.
+	 *
+	 * @since ??
+	 *
+	 * @return void
+	 */
+	public static function enqueue_tooltip_script() {
+		wp_enqueue_script(
+			'divi-module-library-script-tooltip',
+			ET_BUILDER_5_URI . '/visual-builder/build/module-library-script-tooltip.js',
+			[ 'jquery', 'divi-script-library' ],
+			ET_CORE_VERSION,
+			true
+		);
+	}
+
+	/**
 	 * Enqueues D5 dropdown script, used for dropdown modules.
 	 *
 	 * @since ??
@@ -1584,6 +1601,9 @@ class DynamicAssetsUtils {
 			'divi/timeline-item'                        => [],
 			'divi/toggle'                               => [
 				'css' => "{$prefix}/css/toggle{$suffix}.css",
+			],
+			'divi/tooltip'                              => [
+				'css' => "{$prefix}/css/tooltip{$suffix}.css",
 			],
 			'divi/video'                                => [
 				'css' => [
@@ -3515,8 +3535,14 @@ class DynamicAssetsUtils {
 		if ( null === $is_dynamic_front_end_request ) {
 			$is_dynamic_front_end_request = false;
 
+			// WordPress auto-update scrape requests are health checks and should not generate cache files.
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Read-only request inspection for cache-safety behavior.
+			$is_wp_auto_update_scrape_request = isset( $_GET['wp_scrape_key'], $_GET['wp_scrape_nonce'] );
+
 			if ( // Skip static file requests.
 				! self::is_static_file_request()
+				// Disable for WordPress auto-update scrape health-check requests.
+				&& ! $is_wp_auto_update_scrape_request
 				// Disable for WordPress admin requests.
 				&& ! is_admin()
 				// Disable for non-front-end requests.
@@ -3706,6 +3732,41 @@ class DynamicAssetsUtils {
 		 * @param bool $should_generate_assets
 		 */
 		return apply_filters( 'divi_frontend_assets_dynamic_assets_utils_should_generate_dynamic_assets', (bool) $should_generate_assets );
+	}
+
+	/**
+	 * Check if the dynamic assets detection pipeline should run on this request.
+	 *
+	 * When false, early content parsing, render-time logging, and late detection are skipped.
+	 * Generation and enqueue remain governed by should_generate_dynamic_assets() and use_dynamic_assets().
+	 *
+	 * @since ??
+	 *
+	 * @return bool
+	 */
+	public static function should_run_detection(): bool {
+		static $should_run_detection = null;
+
+		if ( null === $should_run_detection ) {
+			$should_run_detection = true;
+
+			/**
+			 * Filters whether to run the dynamic assets detection pipeline.
+			 *
+			 * Skips early content parsing, render_block_data / pre_do_shortcode_tag logging,
+			 * and late detection when false. Does not affect generation or enqueue.
+			 *
+			 * @since ??
+			 *
+			 * @param bool $should_run_detection Whether to run detection.
+			 */
+			$should_run_detection = apply_filters(
+				'divi_frontend_assets_dynamic_assets_utils_should_run_detection',
+				(bool) $should_run_detection
+			);
+		}
+
+		return $should_run_detection;
 	}
 
 	/**

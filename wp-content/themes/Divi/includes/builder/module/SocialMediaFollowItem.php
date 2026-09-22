@@ -625,7 +625,7 @@ class ET_Builder_Module_Social_Media_Follow_Item extends ET_Builder_Module {
 
 			$follow_button = sprintf(
 				'<a href="%1$s" class="follow_button" title="%2$s"%3$s%5$s>%4$s</a>',
-				! $is_skype ? esc_url( $url ) : $skype_url,
+				esc_url( ! $is_skype ? $url : $skype_url ),
 				$network_name,
 				( 'on' === $et_pb_social_media_follow_link['url_new_window'] ? ' target="_blank"' : '' ),
 				esc_html__( 'Follow', 'et_builder' ),
@@ -683,7 +683,7 @@ class ET_Builder_Module_Social_Media_Follow_Item extends ET_Builder_Module {
 
 		$video_background           = $this->video_background();
 		$parallax_image_background  = $this->get_parallax_image_background();
-		$social_network_link_url    = ! $is_skype ? esc_url( $url ) : $skype_url;
+		$social_network_link_url    = esc_url( ! $is_skype ? $url : $skype_url );
 		$social_network_link_target = 'on' === $et_pb_social_media_follow_link['url_new_window'] ? ' target="_blank"' : '';
 
 		// Get custom borders, if any

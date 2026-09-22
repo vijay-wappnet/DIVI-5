@@ -145,6 +145,8 @@ class LoopUtils {
 			? sanitize_key( $loop['desktop']['value']['queryType'] )
 			: 'post_types';
 
+		$default_order_by = self::_get_default_order_by_for_query_type( $query_type );
+
 		// Handle query type mapping - post_taxonomies should be treated as terms query.
 		if ( 'post_taxonomies' === $query_type ) {
 			$query_type = 'terms';
@@ -161,7 +163,7 @@ class LoopUtils {
 
 		$order_by_raw = isset( $loop['desktop']['value']['orderBy'] )
 			? sanitize_key( $loop['desktop']['value']['orderBy'] )
-			: 'date';
+			: $default_order_by;
 
 		$order_raw = isset( $loop['desktop']['value']['order'] )
 			? sanitize_key( self::_extract_order_by_value( $loop['desktop']['value']['order'] ) )
@@ -1286,15 +1288,187 @@ class LoopUtils {
 	}
 
 	/**
+	 * Checks whether a loop subTypes entry looks like a value-label pair.
+	 *
+	 * @since ??
+	 *
+	 * @param mixed $entry Raw entry value.
+	 *
+	 * @return bool True when entry has a string `value` property.
+	 */
+	private static function _is_loop_sub_type_value_label_item( $entry ): bool {
+		if ( ! is_array( $entry ) && ! is_object( $entry ) ) {
+			return false;
+		}
+
+		$item = (array) $entry;
+
+		return isset( $item['value'] ) && is_string( $item['value'] );
+	}
+
+	/**
+	 * Filters and normalizes loop subTypes value-label entries.
+	 *
+	 * @since ??
+	 *
+	 * @param array $entries Raw entries.
+	 *
+	 * @return array|null Normalized entries, empty array when input is empty, or null when none are valid.
+	 */
+	private static function _filter_valid_loop_sub_type_entries( array $entries ): ?array {
+		$valid_entries = array_values(
+			array_filter(
+				$entries,
+				[ self::class, '_is_loop_sub_type_value_label_item' ]
+			)
+		);
+
+		if ( empty( $valid_entries ) ) {
+			return null;
+		}
+
+		return array_map(
+			static function ( $entry ) {
+				$item = (array) $entry;
+
+				return [
+					'value' => $item['value'],
+					'label' => isset( $item['label'] ) && is_string( $item['label'] ) ? $item['label'] : $item['value'],
+				];
+			},
+			$valid_entries
+		);
+	}
+
+	/**
+	 * Checks whether an array uses numeric keys (array-like serialization shape).
+	 *
+	 * @since ??
+	 *
+	 * @param array $value Array value.
+	 *
+	 * @return bool True when all keys are numeric.
+	 */
+	private static function _is_numeric_keyed_array_like( array $value ): bool {
+		if ( empty( $value ) ) {
+			return false;
+		}
+
+		foreach ( array_keys( $value ) as $key ) {
+			if ( is_int( $key ) ) {
+				continue;
+			}
+
+			if ( is_string( $key ) && ctype_digit( $key ) ) {
+				continue;
+			}
+
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Checks whether an array is a zero-indexed sequential list.
+	 *
+	 * @since ??
+	 *
+	 * @param array $value Array value.
+	 *
+	 * @return bool True when keys are 0..n-1.
+	 */
+	private static function _is_sequential_array( array $value ): bool {
+		if ( empty( $value ) ) {
+			return true;
+		}
+
+		return array_keys( $value ) === range( 0, count( $value ) - 1 );
+	}
+
+	/**
+	 * Normalizes runtime loop `subTypes` values into value-label item arrays.
+	 *
+	 * Mirrors Visual Builder `normalizeLoopSubTypes` read-path rules for VB/FE parity.
+	 *
+	 * @since ??
+	 *
+	 * @param mixed $raw_value Raw `subTypes` attribute value.
+	 *
+	 * @return array|null Normalized items, empty array for intentional empty selection, or null to use caller defaults.
+	 */
+	private static function _normalize_loop_sub_types_items( $raw_value ): ?array {
+		if ( null === $raw_value ) {
+			return null;
+		}
+
+		if ( is_array( $raw_value ) ) {
+			if ( empty( $raw_value ) ) {
+				return [];
+			}
+
+			if ( self::_is_numeric_keyed_array_like( $raw_value ) && ! self::_is_sequential_array( $raw_value ) ) {
+				return self::_filter_valid_loop_sub_type_entries( array_values( $raw_value ) );
+			}
+
+			return self::_filter_valid_loop_sub_type_entries( $raw_value );
+		}
+
+		if ( is_string( $raw_value ) ) {
+			$trimmed = trim( $raw_value );
+
+			if ( '' === $trimmed ) {
+				return null;
+			}
+
+			$tags = array_values(
+				array_filter(
+					array_map( 'trim', explode( ',', $trimmed ) ),
+					static function ( $tag ) {
+						return '' !== $tag;
+					}
+				)
+			);
+
+			if ( empty( $tags ) ) {
+				return null;
+			}
+
+			return array_map(
+				static function ( $tag ) {
+					return [
+						'value' => $tag,
+						'label' => $tag,
+					];
+				},
+				$tags
+			);
+		}
+
+		if ( is_object( $raw_value ) ) {
+			$record = (array) $raw_value;
+
+			if ( ! self::_is_numeric_keyed_array_like( $record ) ) {
+				return null;
+			}
+
+			return self::_filter_valid_loop_sub_type_entries( array_values( $record ) );
+		}
+
+		return null;
+	}
+
+	/**
 	 * Extract and sanitize sub-type values from loop configuration.
 	 *
 	 * @param array $loop The loop configuration array.
 	 * @return string Comma-separated string of sanitized values, or empty string if none found.
 	 */
 	private static function _extract_sub_type_values( array $loop ): array {
-		$sub_types = $loop['desktop']['value']['subTypes'] ?? null;
+		$sub_types        = $loop['desktop']['value']['subTypes'] ?? null;
+		$normalized_items = self::_normalize_loop_sub_types_items( $sub_types );
 
-		if ( ! $sub_types || ! is_array( $sub_types ) ) {
+		if ( null === $normalized_items || empty( $normalized_items ) ) {
 			return [];
 		}
 
@@ -1312,11 +1486,38 @@ class LoopUtils {
 					}
 					return sanitize_key( $value );
 				},
-				$sub_types
+				$normalized_items
 			)
 		);
 
 		return $values;
+	}
+
+	/**
+	 * Default order by value for a loop query type when attrs omit orderBy.
+	 *
+	 * Mirrors Visual Builder `defaultOrderByType` in loop group constants.
+	 *
+	 * @since ??
+	 *
+	 * @param string $query_type Loop query type from saved attrs.
+	 *
+	 * @return string Default order by key.
+	 */
+	private static function _get_default_order_by_for_query_type( string $query_type ): string {
+		switch ( $query_type ) {
+			case 'current_page':
+				return 'relevance';
+			case 'post_taxonomies':
+				return 'name';
+			case 'user_roles':
+				return 'display_name';
+			case 'menus':
+				return 'menu_order';
+			case 'post_types':
+			default:
+				return 'date';
+		}
 	}
 
 	/**
@@ -1660,6 +1861,9 @@ class LoopUtils {
 
 			case 'loop_post_comment_count':
 				return (string) get_comments_number( $post->ID );
+
+			case 'loop_post_id':
+				return (string) absint( $post->ID );
 
 			case 'loop_post_thumbnail':
 				$thumbnail = get_the_post_thumbnail( $post->ID, 'full' );
@@ -2209,7 +2413,7 @@ class LoopUtils {
 	 *
 	 * Detects pagination by checking:
 	 * 1. If page content has loop-enabled blocks
-	 * 2. If URL parameters contain numeric values > 1 (indicating pagination)
+	 * 2. If loop pagination parameters contain numeric values > 1.
 	 *
 	 * @since ??
 	 *
@@ -2242,10 +2446,10 @@ class LoopUtils {
 		}
 
 		// Loop pagination uses module IDs as parameter names with page numbers as values.
-		// Check if any URL parameter has a numeric value > 1 (indicating pagination).
+		// Check for loop-specific parameters only to avoid false positives from unrelated query args.
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- URL parameter check, no security risk.
 		foreach ( $_GET as $param => $value ) {
-			if ( is_numeric( $value ) && (int) $value > 1 ) {
+			if ( is_string( $param ) && str_starts_with( $param, 'loop-' ) && is_numeric( $value ) && (int) $value > 1 ) {
 				// Found pagination parameter - page has paginated loops.
 				return true;
 			}
@@ -3262,6 +3466,23 @@ class LoopUtils {
 	}
 
 	/**
+	 * Build intentionally empty query args for current_page contexts without loopable content.
+	 *
+	 * @since ??
+	 *
+	 * @param array $query_args Base query arguments.
+	 *
+	 * @return array WP_Query arguments that return no posts.
+	 */
+	private static function _build_empty_current_page_query_args( array $query_args ): array {
+		// WordPress strips 0 from post__in via wp_parse_id_list(), so use a non-existent ID.
+		$query_args['post__in']            = [ PHP_INT_MAX ];
+		$query_args['ignore_sticky_posts'] = 1;
+
+		return $query_args;
+	}
+
+	/**
 	 * Build query args for current_page query type based on current page context.
 	 *
 	 * @since ??
@@ -3281,7 +3502,12 @@ class LoopUtils {
 			'post_status'    => 'publish',
 		];
 
-		$has_runtime_context = is_singular() || is_archive() || is_author() || is_date() || is_search() || is_home() || is_404();
+		// 404 requests have no current page context; return an intentionally empty query.
+		if ( is_404() ) {
+			return self::_build_empty_current_page_query_args( $query_args );
+		}
+
+		$has_runtime_context = is_singular() || is_archive() || is_author() || is_date() || is_search() || is_home();
 
 		// In REST requests, archive context is often unavailable.
 		// First, use explicit main-loop context from settings when available.
@@ -3292,6 +3518,10 @@ class LoopUtils {
 		$context_author_id      = absint( $main_loop_settings_data['authorId'] ?? 0 );
 
 		if ( ! $has_runtime_context && '' !== $context_main_loop_type ) {
+			if ( '404' === $context_main_loop_type ) {
+				return self::_build_empty_current_page_query_args( $query_args );
+			}
+
 			if ( 'category' === $context_main_loop_type ) {
 				$context_taxonomy = 'category';
 			} elseif ( 'tag' === $context_main_loop_type ) {

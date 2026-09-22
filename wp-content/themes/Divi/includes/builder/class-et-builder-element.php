@@ -2083,7 +2083,7 @@ class ET_Builder_Element {
 		$shortcode_attributes      = array();
 		$font_icon_options         = et_pb_get_font_icon_field_names();
 		$font_icon_options_as_keys = array_flip( $font_icon_options );
-		$url_options               = array( 'url', 'button_link', 'button_url', 'redirect_url' );
+		$url_options               = array( 'url', 'button_link', 'button_url', 'image_src', 'redirect_url' );
 		$url_options_as_keys       = array_flip( $url_options );
 
 		foreach ( $this->props as $attribute_key => $attribute_value ) {

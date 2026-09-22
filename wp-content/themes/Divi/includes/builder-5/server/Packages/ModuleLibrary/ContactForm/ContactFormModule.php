@@ -361,8 +361,9 @@ class ContactFormModule implements DependencyInterface {
 			'text-decoration-line',
 			'text-decoration-color',
 			'text-decoration-style',
-			// UI "Capitalize" uses `font-variant: small-caps`, not `text-transform`; keep it off the icon selector like other label font longhands.
+			// Keep small-caps on the label text selector for both legacy and new capitalization outputs.
 			'font-variant',
+			'font-variant-caps',
 		];
 		$font_property_selectors                   = array_fill_keys( $font_group_properties, implode( ', ', $text_group_targets ) );
 		$font_property_selectors_hover             = array_fill_keys( $font_group_properties, implode( ', ', $text_group_targets_hover ) );
@@ -802,10 +803,15 @@ class ContactFormModule implements DependencyInterface {
 					// Module - Only for Custom CSS.
 					CssStyle::style(
 						[
-							'selector'         => $args['orderClass'] . '.et_pb_contact_form_container',
-							'attr'             => $attrs['css'] ?? [],
-							'cssFields'        => self::custom_css(),
-							'selectorFunction' => [ self::class, 'custom_css_selector_function' ],
+							'selector'               => $args['orderClass'] . '.et_pb_contact_form_container',
+							'attr'                   => $attrs['css'] ?? [],
+							'cssFields'              => self::custom_css(),
+							'selectorFunction'       => [ self::class, 'custom_css_selector_function' ],
+							'orderClass'             => $order_class,
+							'baseOrderClass'         => $base_order_class,
+							'isInsideStickyModule'   => $is_inside_sticky_module,
+							'stickyParentOrderClass' => $sticky_parent_order_class,
+							'isCustomPostType'       => $is_custom_post_type,
 						]
 					),
 				],
@@ -912,7 +918,7 @@ class ContactFormModule implements DependencyInterface {
 		$should_render_form = true;
 
 		if ( $form_handler->is_submitted() ) {
-			$should_emit_submitted_message = ContactFormHandler::claim_submitted_contact_form_outcome_message_render( $unique_id );
+			$should_emit_submitted_message = ContactFormHandler::claim_submitted_contact_form_outcome_message_render( $unique_id, $block->parsed_block['storeInstance'] );
 
 			if ( $form_handler->get_error()->has_errors() ) {
 				if ( $should_emit_submitted_message ) {

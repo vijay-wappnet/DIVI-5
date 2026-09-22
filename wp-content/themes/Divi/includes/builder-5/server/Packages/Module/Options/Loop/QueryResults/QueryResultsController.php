@@ -389,6 +389,7 @@ class QueryResultsController extends RESTController {
 				'rand',
 				'comment_count',
 				'menu_order',
+				'relevance',
 			];
 
 			// Add WooCommerce specific options if any post type is product.
@@ -453,6 +454,7 @@ class QueryResultsController extends RESTController {
 			'posts_per_page' => $pagination['per_page'],
 			'offset'         => $pagination['offset'],
 			'post_status'    => 'attachment' === $post_type ? [ 'inherit', 'private' ] : 'publish',
+			'perm'           => 'readable',
 		];
 
 		// Handle post status for attachments and 'any' post type.
@@ -744,6 +746,7 @@ class QueryResultsController extends RESTController {
 			$current_page_main_loop_type,
 			$current_page_main_loop_data
 		);
+		$query_args['perm'] = 'readable';
 
 		$meta_query = self::_get_meta_query_from_params( $params );
 		if ( ! empty( $meta_query ) ) {
@@ -775,6 +778,10 @@ class QueryResultsController extends RESTController {
 		$wordpress_date_format = get_option( 'date_format' );
 
 		foreach ( $query->posts as $post ) {
+			if ( 'publish' !== $post->post_status && ! current_user_can( 'read_post', $post->ID ) ) {
+				continue;
+			}
+
 			// Get thumbnail size from request parameters, default to 'large'.
 			$thumbnail_size = isset( $params['thumbnail_size'] ) ? sanitize_text_field( $params['thumbnail_size'] ) : 'large';
 			// Handle attachment post types specially - they ARE the images themselves.
@@ -1735,9 +1742,25 @@ class QueryResultsController extends RESTController {
 	 *
 	 * @since ??
 	 *
+	 * @param WP_REST_Request $request REST request object.
+	 *
 	 * @return bool
 	 */
-	public static function index_permission(): bool {
-		return UserRole::can_current_user_use_visual_builder();
+	public static function index_permission( WP_REST_Request $request ): bool {
+		if ( ! UserRole::can_current_user_use_visual_builder() ) {
+			return false;
+		}
+
+		$query_type   = (string) $request->get_param( 'query_type' );
+		$is_repeater  = 'repeater' === $query_type || DynamicContentACFUtils::is_repeater_query( $query_type );
+		$request_data = $request->get_params();
+
+		if ( ! $is_repeater ) {
+			return true;
+		}
+
+		$current_post_id = self::get_current_post_id( is_array( $request_data ) ? $request_data : [] );
+
+		return 0 < $current_post_id && current_user_can( 'edit_post', $current_post_id );
 	}
 }

@@ -90,7 +90,6 @@
               "label": "Icon Color",
               "description": "Here you can define a custom color for the social network icon.",
               "features": {
-                "sticky": false,
                 "dynamicContent": {
                   "type": "color"
                 }
@@ -131,7 +130,6 @@
                 "description": "Control the size of the icon by increasing or decreasing the font size",
                 "category": "font_option",
                 "features": {
-                  "sticky": false,
                   "dynamicContent": {
                     "type": "number"
                   }

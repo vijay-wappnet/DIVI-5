@@ -132,9 +132,7 @@ class TextBodyFontWeightMigration extends MigrationContentBase {
 			add_filter(
 				'the_content',
 				function ( $the_content ) {
-					$new_content = self::migrate_content_block( $the_content );
-					remove_filter( 'the_content', __FUNCTION__ );
-					return $new_content;
+					return self::migrate_content_block( $the_content );
 				},
 				8
 			);
@@ -222,20 +220,27 @@ class TextBodyFontWeightMigration extends MigrationContentBase {
 			return $content;
 		}
 
-		$default_weight = self::get_default_text_body_font_weight();
+		$default_weight = self::_get_default_text_body_font_weight();
 
 		if ( '' === $default_weight ) {
 			return $content;
 		}
 
+		// Disable Divi's custom block parser so parse_blocks() uses WordPress's native
+		// WP_Block_Parser, which does not create BlockParserBlock instances and therefore
+		// does not increment ET_Builder_Module_Order order indexes. Incrementing those
+		// counters here (at priority 8, before do_blocks) would shift the section indexes
+		// seen by the HTML renderer at priority 9, causing et_pb_section_0 to be absent.
+		add_filter( 'divi_module_library_block_parser_enable', '__return_false', 99 );
 		$blocks = parse_blocks( $content );
+		remove_filter( 'divi_module_library_block_parser_enable', '__return_false', 99 );
 
 		if ( empty( $blocks ) ) {
 			return $content;
 		}
 
 		$changes_made = false;
-		$blocks       = self::backfill_blocks( $blocks, $default_weight, $changes_made );
+		$blocks       = self::_backfill_blocks( $blocks, $default_weight, $changes_made );
 
 		if ( ! $changes_made ) {
 			return $content;
@@ -255,18 +260,18 @@ class TextBodyFontWeightMigration extends MigrationContentBase {
 	 *
 	 * @return array
 	 */
-	private static function backfill_blocks( array $blocks, string $default_weight, bool &$changes_made ): array {
+	private static function _backfill_blocks( array $blocks, string $default_weight, bool &$changes_made ): array {
 		foreach ( $blocks as &$block ) {
 			$attrs = $block['attrs'] ?? [];
 
-			if ( 'divi/text' === ( $block['blockName'] ?? '' ) && self::should_backfill_attrs( $attrs ) ) {
+			if ( 'divi/text' === ( $block['blockName'] ?? '' ) && self::_should_backfill_attrs( $attrs ) ) {
 				$block['attrs']['content']['decoration']['bodyFont']['body']['font']['desktop']['value']['weight'] = $default_weight;
 				$block['attrs']['builderVersion'] = self::$_release_version;
-				$changes_made = true;
+				$changes_made                     = true;
 			}
 
 			if ( ! empty( $block['innerBlocks'] ) ) {
-				$block['innerBlocks'] = self::backfill_blocks( $block['innerBlocks'], $default_weight, $changes_made );
+				$block['innerBlocks'] = self::_backfill_blocks( $block['innerBlocks'], $default_weight, $changes_made );
 			}
 		}
 
@@ -282,7 +287,7 @@ class TextBodyFontWeightMigration extends MigrationContentBase {
 	 *
 	 * @return bool
 	 */
-	private static function should_backfill_attrs( array $attrs ): bool {
+	private static function _should_backfill_attrs( array $attrs ): bool {
 		if ( empty( $attrs ) ) {
 			return false;
 		}
@@ -319,7 +324,7 @@ class TextBodyFontWeightMigration extends MigrationContentBase {
 	 *
 	 * @return string
 	 */
-	private static function get_default_text_body_font_weight(): string {
+	private static function _get_default_text_body_font_weight(): string {
 		static $default_weight = null;
 
 		if ( null !== $default_weight ) {

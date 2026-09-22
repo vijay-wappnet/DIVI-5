@@ -87,6 +87,7 @@ function et_theme_builder_frontend_override_template( $template ) {
 
 		add_action( 'get_header', 'et_theme_builder_frontend_override_header' );
 		add_action( 'get_footer', 'et_theme_builder_frontend_override_footer' );
+		et_prioritize_deferred_block_css_for_theme_builder();
 
 		return $page_template;
 	}
@@ -94,7 +95,7 @@ function et_theme_builder_frontend_override_template( $template ) {
 	$override_header   = et_theme_builder_overrides_layout( ET_THEME_BUILDER_HEADER_LAYOUT_POST_TYPE );
 	$override_body     = et_theme_builder_overrides_layout( ET_THEME_BUILDER_BODY_LAYOUT_POST_TYPE );
 	$override_footer   = et_theme_builder_overrides_layout( ET_THEME_BUILDER_FOOTER_LAYOUT_POST_TYPE );
-	$is_visual_builder = isset( $_GET['et_fb'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Value is not used
+	$is_visual_builder = et_core_is_fb_enabled();
 	$is_theme_builder  = et_builder_tb_enabled();
 
 	if ( $override_header || $override_footer ) {
@@ -103,6 +104,7 @@ function et_theme_builder_frontend_override_template( $template ) {
 
 		add_action( 'get_header', 'et_theme_builder_frontend_override_header' );
 		add_action( 'get_footer', 'et_theme_builder_frontend_override_footer' );
+		et_prioritize_deferred_block_css_for_theme_builder();
 	}
 
 	// For other themes than Divi, use 'frontend-body-template.php'.

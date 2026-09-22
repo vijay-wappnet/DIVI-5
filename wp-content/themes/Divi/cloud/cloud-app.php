@@ -401,12 +401,11 @@ class ET_Cloud_App {
 		$debug         = $et_debug;
 		$cache_buster  = $debug ? mt_rand() / mt_getrandmax() : $core_version;
 
-		$bundle_deps = [
-			'jquery',
-			'react',
-			'react-dom',
-			'es6-promise',
-		];
+		$bundle_deps = array( 'jquery', 'react', 'react-dom', 'es6-promise' );
+
+		if ( function_exists( 'et_common_is_command_palette_admin_screen' ) && et_common_is_command_palette_admin_screen() ) {
+			$bundle_deps = array( 'jquery', 'divi-legacy-react', 'divi-legacy-react-dom', 'es6-promise' );
+		}
 
 		wp_enqueue_script( 'et-cloud-app', self::get_bundle_uri(), $bundle_deps, (string) $cache_buster, true );
 		wp_localize_script( 'et-cloud-app', 'et_cloud_data', self::get_cloud_helpers() );

@@ -79,6 +79,18 @@ function et_theme_builder_enqueue_scripts() {
 		'et-frame-helpers',
 	);
 
+	if ( function_exists( 'et_common_is_command_palette_admin_screen' ) && et_common_is_command_palette_admin_screen() ) {
+		$dependencies = array(
+			'jquery',
+			'jquery-ui-sortable',
+			'divi-legacy-react',
+			'divi-legacy-react-dom',
+			'et-core-admin',
+			'wp-hooks',
+			'et-frame-helpers',
+		);
+	}
+
 	if ( ! wp_script_is( 'wp-hooks', 'registered' ) ) {
 		// Use bundled wp-hooks script when WP < 5.0
 		wp_enqueue_script( 'wp-hooks', ET_BUILDER_URI . '/frontend-builder/assets/backports/hooks.js', array(), $asset_ver, false );
